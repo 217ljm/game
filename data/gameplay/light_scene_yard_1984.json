@@ -1,0 +1,412 @@
+{
+  "id": "light_scene_yard_1984",
+  "version": 1,
+  "title": "院中放学后",
+  "setting": {
+    "year": 1984,
+    "age": 6,
+    "season": "初秋",
+    "period": "放学后",
+    "location": "家属院"
+  },
+  "purpose": "让一次小事留下关系与兴趣的第一道痕迹。",
+  "textLimits": {
+    "nodeLabelChars": { "min": 2, "max": 5 },
+    "actionLabelChars": { "min": 2, "max": 7 },
+    "bubbleChars": 24,
+    "transitionChars": 18,
+    "quarterSummaryChars": 80
+  },
+  "stages": [
+    {
+      "id": "gate",
+      "label": "院门",
+      "purpose": "看见回家的方向和院中的邀请。",
+      "entryLine": "放学铃声刚散。",
+      "exitLine": "院门吱呀一声开了。",
+      "nodeIds": ["schoolbag", "gate_call"],
+      "availableActionIds": []
+    },
+    {
+      "id": "yard",
+      "label": "院中",
+      "purpose": "在天黑前决定和谁相处。",
+      "entryLine": "风从晾衣绳下穿过。",
+      "exitLine": "天色一暗，家门亮了。",
+      "nodeIds": ["partner", "stone_table", "marbles", "bicycle_shed"],
+      "availableActionIds": ["join_marbles", "practice_writing", "inspect_bicycle"]
+    },
+    {
+      "id": "home",
+      "label": "家中",
+      "purpose": "让这段自由时间留下家庭余波。",
+      "entryLine": "屋里传来碗筷碰响。",
+      "exitLine": "饭香盖住了院里的风。",
+      "nodeIds": ["caregiver", "bowls", "homework"],
+      "availableActionIds": ["set_table"]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "schoolbag",
+      "kind": "prop",
+      "stageId": "gate",
+      "anchorId": "gate-bag",
+      "label": "书包",
+      "affordance": "可以放下",
+      "visualStates": ["背在肩上", "靠在门边"]
+    },
+    {
+      "id": "gate_call",
+      "kind": "person",
+      "stageId": "gate",
+      "anchorId": "gate-call",
+      "label": "家门",
+      "affordance": "有人喊你",
+      "visualStates": ["门后有声", "门灯亮起"]
+    },
+    {
+      "id": "partner",
+      "kind": "person",
+      "stageId": "yard",
+      "anchorId": "yard-partner",
+      "label": "伙伴",
+      "affordance": "正在等你",
+      "actionIds": ["join_marbles"]
+    },
+    {
+      "id": "stone_table",
+      "kind": "place",
+      "stageId": "yard",
+      "anchorId": "yard-table",
+      "label": "石桌",
+      "affordance": "可以写一会字",
+      "actionIds": ["practice_writing"]
+    },
+    {
+      "id": "marbles",
+      "kind": "prop",
+      "stageId": "yard",
+      "anchorId": "yard-marbles",
+      "label": "弹珠",
+      "affordance": "滚到车棚边",
+      "actionIds": ["join_marbles", "inspect_bicycle"]
+    },
+    {
+      "id": "bicycle_shed",
+      "kind": "place",
+      "stageId": "yard",
+      "anchorId": "yard-shed",
+      "label": "车棚",
+      "affordance": "有人在修车",
+      "actionIds": ["inspect_bicycle"]
+    },
+    {
+      "id": "caregiver",
+      "kind": "person",
+      "stageId": "home",
+      "anchorId": "home-caregiver",
+      "label": "照护者",
+      "affordance": "等你进门",
+      "actionIds": ["set_table"]
+    },
+    {
+      "id": "bowls",
+      "kind": "prop",
+      "stageId": "home",
+      "anchorId": "home-bowls",
+      "label": "碗筷",
+      "affordance": "可以摆好",
+      "actionIds": ["set_table"]
+    },
+    {
+      "id": "homework",
+      "kind": "prop",
+      "stageId": "home",
+      "anchorId": "home-desk",
+      "label": "作业本",
+      "affordance": "还没打开",
+      "visualStates": ["合着", "写了两行"]
+    }
+  ],
+  "characters": [
+    {
+      "id": "player_child",
+      "role": "player",
+      "label": "你",
+      "age": 6,
+      "motivation": "想把放学后的时间留给自己。",
+      "visibleStates": ["期待", "犹豫", "专注", "疲惫", "开心", "失落"]
+    },
+    {
+      "id": "partner_xiaoyu",
+      "role": "peer",
+      "label": "小宇",
+      "motivation": "想让你加入弹珠游戏。",
+      "visibleStates": ["招呼", "等待", "着急", "投入", "发笑"]
+    },
+    {
+      "id": "older_child_asha",
+      "role": "older_peer",
+      "label": "阿沙",
+      "motivation": "想把自行车链条装回去。",
+      "visibleStates": ["专注", "被打扰", "解释", "点头"]
+    },
+    {
+      "id": "caregiver_mother",
+      "role": "caregiver",
+      "label": "照护者",
+      "motivation": "希望你按时进门，也学会搭把手。",
+      "visibleStates": ["忙碌", "提醒", "认可", "担心"]
+    }
+  ],
+  "timeAndEnergy": {
+    "sceneId": "after_school_45m",
+    "totalSlots": 9,
+    "slotDescription": "每格约五分钟。",
+    "initialEnergy": "充足",
+    "energyLevels": ["充足", "有些累", "明显疲惫"],
+    "costTiers": {
+      "light": { "label": "轻", "timeSlots": 1 },
+      "steady": { "label": "稳", "timeSlots": 2 },
+      "focus": { "label": "专注", "timeSlots": 3 }
+    },
+    "signals": ["远处传来收院门声", "天色慢慢变暗", "照护者喊你回家"],
+    "rules": [
+      "转场不额外消耗时间格。",
+      "行动可提前停止，但会留下不同的现场状态。",
+      "时间用完后，照护者会把你叫回家。",
+      "精力只描述当下状态，不重置人生属性。"
+    ]
+  },
+  "actions": [
+    {
+      "id": "join_marbles",
+      "label": "加入弹珠",
+      "stageId": "yard",
+      "nodeId": "partner",
+      "objectState": {
+        "before": "弹珠在小宇手边。",
+        "during": "弹珠在你指尖。",
+        "after": "弹珠停在车棚边。"
+      },
+      "trigger": "点击伙伴，选择加入玩耍。",
+      "timeCost": { "tier": "steady", "slots": 2 },
+      "energyCost": "轻",
+      "processCues": [
+        { "id": "join_focus", "type": "focus.node", "text": "小宇抬手招呼。", "durationMs": 500 },
+        { "id": "join_move", "type": "actor.move-between-anchors", "text": "你走到石桌旁。", "durationMs": 700 },
+        { "id": "join_crouch", "type": "actor.pose", "text": "你蹲下来。", "durationMs": 500 },
+        { "id": "join_prop", "type": "prop.change", "text": "小宇把弹珠推来。", "durationMs": 600 },
+        { "id": "join_react", "type": "npc.react", "text": "小宇笑着让开位置。", "durationMs": 700 }
+      ],
+      "npcResponse": { "characterId": "partner_xiaoyu", "text": "你来试试？" },
+      "propResponse": { "nodeId": "marbles", "text": "绿色弹珠在地上发亮。" },
+      "immediateCost": "鞋底沾了一点沙。",
+      "longTermFactCandidates": ["peer_play_invitation", "peer_shared_time", "interest_body_play_seed"],
+      "cueTypes": ["focus.node", "actor.move-between-anchors", "actor.pose", "prop.change", "npc.react"],
+      "skipSafe": true
+    },
+    {
+      "id": "practice_writing",
+      "label": "练一会字",
+      "stageId": "yard",
+      "nodeId": "stone_table",
+      "objectState": {
+        "before": "纸和铅笔在石桌上。",
+        "during": "笔尖沿着格子慢慢走。",
+        "after": "纸上留下两行字。"
+      },
+      "trigger": "点击石桌，选择练一会字。",
+      "timeCost": { "tier": "focus", "slots": 3 },
+      "energyCost": "稳",
+      "processCues": [
+        { "id": "write_sit", "type": "actor.pose", "text": "你坐到石桌边。", "durationMs": 500 },
+        { "id": "write_prop", "type": "prop.change", "text": "纸角被风吹起。", "durationMs": 600 },
+        { "id": "write_focus", "type": "actor.pose", "text": "你描完第一行。", "durationMs": 800 },
+        { "id": "write_react", "type": "npc.react", "text": "照护者远远看了一眼。", "durationMs": 700 }
+      ],
+      "npcResponse": { "characterId": "caregiver_mother", "text": "再写两行就进门。" },
+      "propResponse": { "nodeId": "homework", "text": "作业本不再空着。" },
+      "immediateCost": "错过了伙伴的一次招手。",
+      "longTermFactCandidates": ["interest_learning_seed", "focus_practice_seed", "caregiver_learning_notice"],
+      "cueTypes": ["actor.pose", "prop.change", "npc.react"],
+      "skipSafe": true
+    },
+    {
+      "id": "inspect_bicycle",
+      "label": "看看自行车",
+      "stageId": "yard",
+      "nodeId": "bicycle_shed",
+      "objectState": {
+        "before": "阿沙的车链挂在一边。",
+        "during": "脚踏被你轻轻拨动。",
+        "after": "车轮转了一圈。"
+      },
+      "trigger": "点击车棚，选择看看自行车。",
+      "timeCost": { "tier": "steady", "slots": 2 },
+      "energyCost": "稳",
+      "processCues": [
+        { "id": "bike_move", "type": "actor.move-between-anchors", "text": "你靠近车棚。", "durationMs": 650 },
+        { "id": "bike_prop", "type": "prop.change", "text": "脚踏带动车轮转动。", "durationMs": 800 },
+        { "id": "bike_react", "type": "npc.react", "text": "阿沙停下手里的活。", "durationMs": 500 },
+        { "id": "bike_pose", "type": "actor.pose", "text": "你缩回沾油的手。", "durationMs": 500 }
+      ],
+      "npcResponse": { "characterId": "older_child_asha", "text": "别碰链条，会夹手。" },
+      "propResponse": { "nodeId": "bicycle_shed", "text": "车轮发出轻响。" },
+      "immediateCost": "手指沾上了一点黑油。",
+      "longTermFactCandidates": ["interest_hands_on_seed", "older_peer_boundary_notice", "minor_dirt_experience"],
+      "cueTypes": ["actor.move-between-anchors", "prop.change", "npc.react", "actor.pose"],
+      "skipSafe": true
+    },
+    {
+      "id": "set_table",
+      "label": "帮忙摆碗",
+      "stageId": "home",
+      "nodeId": "bowls",
+      "objectState": {
+        "before": "碗筷还叠在灶台边。",
+        "during": "你一只只把碗放下。",
+        "after": "桌边摆好了四副碗筷。"
+      },
+      "trigger": "点击碗筷，选择帮忙摆碗。",
+      "timeCost": { "tier": "focus", "slots": 3 },
+      "energyCost": "稳",
+      "processCues": [
+        { "id": "bowls_pick", "type": "actor.pose", "text": "你抱起两只碗。", "durationMs": 550 },
+        { "id": "bowls_prop", "type": "prop.change", "text": "碗筷在桌上排开。", "durationMs": 800 },
+        { "id": "bowls_react", "type": "npc.react", "text": "照护者的肩膀松下来。", "durationMs": 650 },
+        { "id": "bowls_pose", "type": "actor.pose", "text": "你擦了擦手。", "durationMs": 450 }
+      ],
+      "npcResponse": { "characterId": "caregiver_mother", "text": "今天记得搭把手了。" },
+      "propResponse": { "nodeId": "bowls", "text": "桌面空出了一块地方。" },
+      "immediateCost": "少了一段院中玩耍时间。",
+      "longTermFactCandidates": ["family_help_memory", "family_reliability_seed", "home_routine_participation"],
+      "cueTypes": ["actor.pose", "prop.change", "npc.react"],
+      "skipSafe": true
+    }
+  ],
+  "event": {
+    "id": "marble_to_shed",
+    "label": "弹珠滚进车棚边",
+    "stageId": "yard",
+    "availability": "加入弹珠后可能出现。",
+    "trigger": {
+      "afterActionId": "join_marbles",
+      "requiredNodeId": "marbles",
+      "conditionText": "你和小宇正在一起玩。"
+    },
+    "announce": "弹珠滚进车棚边！",
+    "sequence": [
+      { "id": "event_roll", "type": "prop.change", "text": "弹珠沿砖缝滚出去。", "durationMs": 850 },
+      { "id": "event_search", "type": "npc.react", "text": "小宇停下来找弹珠。", "durationMs": 650 },
+      { "id": "event_focus", "type": "focus.node", "text": "阿沙抬头看向车棚。", "durationMs": 550 }
+    ],
+    "choices": [
+      {
+        "id": "help_search",
+        "label": "帮忙寻找",
+        "triggerText": "点击弹珠事件，选择帮忙寻找。",
+        "processCues": ["actor.move-between-anchors", "prop.change", "npc.react"],
+        "npcResponse": "小宇和你一起趴下找。",
+        "propResponse": "弹珠从车轮后面滚出。",
+        "immediateCost": "少用一格时间。",
+        "longTermFactCandidates": ["peer_cooperation_memory", "problem_solving_attempt"]
+      },
+      {
+        "id": "ask_first",
+        "label": "先问清楚",
+        "triggerText": "点击弹珠事件，选择先问清楚。",
+        "processCues": ["actor.pose", "npc.react", "prop.change"],
+        "npcResponse": "阿沙指了指安全的位置。",
+        "propResponse": "弹珠停在车棚外。",
+        "immediateCost": "多花一小会儿说话。",
+        "longTermFactCandidates": ["older_peer_boundary_notice", "careful_action_memory"]
+      },
+      {
+        "id": "go_home",
+        "label": "回家去",
+        "triggerText": "点击弹珠事件，选择回家去。",
+        "processCues": ["transition", "npc.react", "prop.change"],
+        "npcResponse": "小宇把弹珠捡回手心。",
+        "propResponse": "车棚边重新安静下来。",
+        "immediateCost": "保住回家前的时间。",
+        "longTermFactCandidates": ["peer_unfinished_memory", "time_boundary_followed"]
+      }
+    ],
+    "shortResult": "一颗弹珠让三个孩子记住了彼此。"
+  },
+  "ripples": [
+    {
+      "id": "peer_memory",
+      "title": "同伴记忆",
+      "summary": "小宇记得你曾在车棚边陪他找弹珠。",
+      "sourceFactCandidates": ["peer_shared_time", "peer_cooperation_memory", "peer_unfinished_memory"],
+      "visibleCue": "小宇下次会先叫你的名字。"
+    },
+    {
+      "id": "interest_sprout",
+      "title": "兴趣萌芽",
+      "summary": "写字、玩弹珠或拆看车轮，留下了不同的好奇心。",
+      "sourceFactCandidates": ["interest_body_play_seed", "interest_learning_seed", "interest_hands_on_seed"],
+      "visibleCue": "下次遇到相似物件时，你会多看一眼。"
+    },
+    {
+      "id": "family_impression",
+      "title": "家庭印象",
+      "summary": "照护者记住了你今天是否按时回来，是否搭了把手。",
+      "sourceFactCandidates": ["family_help_memory", "family_reliability_seed", "time_boundary_followed"],
+      "visibleCue": "晚饭时，照护者多问了你一句。"
+    }
+  ],
+  "stageTransitions": [
+    {
+      "id": "gate_to_yard",
+      "fromStageId": "gate",
+      "toStageId": "yard",
+      "line": "院门吱呀一声开了。",
+      "cueTypes": ["transition", "actor.move-between-anchors", "focus.node"]
+    },
+    {
+      "id": "yard_to_home",
+      "fromStageId": "yard",
+      "toStageId": "home",
+      "line": "天色一暗，家门亮了。",
+      "cueTypes": ["transition", "prop.change", "npc.react"]
+    }
+  ],
+  "quarterEchoes": [
+    {
+      "id": "peer_echo",
+      "title": "同伴记忆",
+      "summary": "小宇记得你在放学后陪他玩过，也记得那颗差点滚走的弹珠。"
+    },
+    {
+      "id": "interest_echo",
+      "title": "兴趣萌芽",
+      "summary": "你对玩耍、写字或动手看车，留下了一个还很小的兴趣方向。"
+    },
+    {
+      "id": "family_echo",
+      "title": "家庭印象",
+      "summary": "照护者把今天的回家时间和你是否搭把手，记进了一次日常印象。"
+    }
+  ],
+  "acceptance": {
+    "firstPlayMinutes": 12,
+    "meaningfulInputs": { "min": 8, "max": 14 },
+    "mustShow": [
+      "对象状态改变",
+      "玩家动作过程",
+      "NPC即时回应",
+      "时间格减少",
+      "至少一类季度余波"
+    ],
+    "forbidden": [
+      "大段正文阻塞行动",
+      "一次展示全部行动",
+      "坐标写入内容数据",
+      "内容数据写入模拟公式"
+    ]
+  }
+}

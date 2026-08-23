@@ -45,12 +45,15 @@
     "browser:check": "node scripts/check-browser-ui.mjs",
     "light-scene:spike:check": "node scripts/check-light-scene-spikes.mjs",
     "light-scene:spike:browser:check": "node scripts/check-light-scene-spikes-browser.mjs",
+    "light-scene:contract:check": "node scripts/check-light-scene-contract.mjs",
+    "light-scene:yard:check": "node scripts/check-light-scene-yard-content.mjs",
+    "light-scene:g1:check": "npm run light-scene:contract:check && npm run light-scene:yard:check",
     "h5:build": "node scripts/build-h5-release.mjs",
     "h5:check": "node scripts/check-h5-release.mjs",
     "h5:browser:check": "node scripts/check-h5-browser.mjs",
     "release:check": "npm run check && npm run browser:check && npm run h5:build && npm run h5:check && npm run h5:browser:check",
     "play": "node scripts/serve-game.mjs",
-    "check": "npm run birth:check && npm run foundation:check && npm run process:check && npm run map:check && npm run events:check && npm run variety:check && npm run presentation:check && npm run recovery:check && npm run balance:check && npm run childhood:check && npm run childhood:play:check && npm run primary:check && npm run adolescence:check && npm run youth:check && npm run adult:check && npm run annual:check && npm run social:check && npm run timeline:check && npm run causality:check && npm run mainline:check && npm run youth-mainline:check && npm run engine:check && npm run gateway:check && npm run debug:check && npm run ui:check"
+    "check": "npm run birth:check && npm run foundation:check && npm run process:check && npm run map:check && npm run events:check && npm run variety:check && npm run presentation:check && npm run recovery:check && npm run balance:check && npm run childhood:check && npm run childhood:play:check && npm run primary:check && npm run adolescence:check && npm run youth:check && npm run adult:check && npm run annual:check && npm run social:check && npm run timeline:check && npm run causality:check && npm run mainline:check && npm run youth-mainline:check && npm run light-scene:g1:check && npm run engine:check && npm run gateway:check && npm run debug:check && npm run ui:check"
   },
   "dependencies": {
     "@phosphor-icons/web": "^2.1.2"

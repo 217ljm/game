@@ -1,0 +1,98 @@
+{
+  "id": "dom",
+  "runtime": "dom",
+  "entry": "index.html",
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "resources": [
+    "public/spikes/light-scene/dom/index.html",
+    "public/spikes/light-scene/dom/styles.css",
+    "public/spikes/light-scene/dom/runtime.mjs"
+  ],
+  "nodes": [
+    {
+      "id": "courtyard",
+      "kind": "person",
+      "stageId": "yard",
+      "anchorId": "marbles-line",
+      "label": "小勇·伙伴"
+    },
+    {
+      "id": "table",
+      "kind": "prop",
+      "stageId": "yard",
+      "anchorId": "stone-table",
+      "label": "石桌"
+    },
+    {
+      "id": "bike",
+      "kind": "prop",
+      "stageId": "yard",
+      "anchorId": "bike-shed",
+      "label": "自行车棚"
+    },
+    {
+      "id": "home",
+      "kind": "exit",
+      "stageId": "yard",
+      "anchorId": "home-door",
+      "label": "家门"
+    },
+    {
+      "id": "marbles",
+      "kind": "prop",
+      "stageId": "yard",
+      "anchorId": "marbles-line",
+      "label": "弹珠"
+    }
+  ],
+  "interaction": {
+    "semanticEntry": "native",
+    "reducedMotion": true,
+    "largeTextBlock": false,
+    "actionCardList": false,
+    "physics": false,
+    "pathfinding": false
+  },
+  "copy": {
+    "longTextScroll": false,
+    "maxVisibleParagraphChars": 36,
+    "maxActionLabelChars": 7
+  },
+  "actions": [
+    {
+      "id": "join-marbles",
+      "label": "加入弹珠",
+      "cueTypes": [
+        "actor.move-between-anchors",
+        "actor.pose",
+        "prop.change",
+        "npc.react",
+        "show-result"
+      ],
+      "skipSafe": true
+    },
+    {
+      "id": "inspect-bike",
+      "label": "看看链条",
+      "cueTypes": [
+        "actor.move-between-anchors",
+        "actor.pose",
+        "prop.change",
+        "npc.react",
+        "show-result"
+      ],
+      "skipSafe": true
+    }
+  ],
+  "manualScores": {
+    "sceneFeel": 9,
+    "maintainability": 7.5,
+    "coreIsolation": 9,
+    "performance": 9.5,
+    "accessibility": 9,
+    "buildComplexity": 9.5
+  }
+}

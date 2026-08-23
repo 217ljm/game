@@ -17,9 +17,18 @@ fs.mkdirSync(distRoot, { recursive: true });
 for (const directory of ["src", "data"]) {
   fs.cpSync(path.join(projectRoot, directory), path.join(distRoot, directory), { recursive: true });
 }
-fs.cpSync(path.join(projectRoot, "public"), path.join(distRoot, "public"), {
+const publicRoot = path.join(projectRoot, "public");
+const developmentOnlyPublicRoots = [
+  path.join(publicRoot, "spikes"),
+  path.join(publicRoot, "vendor", "phaser"),
+];
+fs.cpSync(publicRoot, path.join(distRoot, "public"), {
   recursive: true,
-  filter: (source) => path.resolve(source) !== path.join(projectRoot, "public", "index.html"),
+  filter: (source) => {
+    const resolved = path.resolve(source);
+    if (resolved === path.join(publicRoot, "index.html")) return false;
+    return !developmentOnlyPublicRoots.some((root) => resolved === root || resolved.startsWith(`${root}${path.sep}`));
+  },
 });
 fs.copyFileSync(path.join(projectRoot, "public", "index.html"), path.join(distRoot, "index.html"));
 fs.copyFileSync(

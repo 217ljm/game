@@ -26,6 +26,9 @@ for (const relative of requiredFiles) {
 for (const forbidden of ["docs", "scripts", "artifacts", "node_modules", ".git"]) {
   assert.ok(!fs.existsSync(path.join(distRoot, forbidden)), `发布包不应包含 ${forbidden}`);
 }
+for (const forbidden of ["public/spikes", "public/vendor/phaser"]) {
+  assert.ok(!fs.existsSync(path.join(distRoot, forbidden)), `发布包不应包含开发期原型 ${forbidden}`);
+}
 
 function walk(directory) {
   return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {

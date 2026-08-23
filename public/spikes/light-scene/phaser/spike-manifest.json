@@ -1,0 +1,53 @@
+{
+  "id": "phaser",
+  "runtime": "phaser",
+  "entry": "index.html",
+  "viewport": { "width": 390, "height": 844 },
+  "resources": [
+    "public/spikes/light-scene/phaser/index.html",
+    "public/spikes/light-scene/phaser/styles.css",
+    "public/spikes/light-scene/phaser/runtime.mjs",
+    "public/vendor/phaser/phaser.min.js"
+  ],
+  "nodes": [
+    { "id": "partner", "kind": "person", "stageId": "yard", "anchorId": "partner-anchor", "label": "伙伴" },
+    { "id": "table", "kind": "place", "stageId": "yard", "anchorId": "table-anchor", "label": "石桌" },
+    { "id": "marbles", "kind": "prop", "stageId": "yard", "anchorId": "marbles-anchor", "label": "弹珠" },
+    { "id": "home", "kind": "exit", "stageId": "yard", "anchorId": "home-anchor", "label": "家门" }
+  ],
+  "interaction": {
+    "semanticEntry": "equivalent",
+    "reducedMotion": true,
+    "largeTextBlock": false,
+    "actionCardList": false,
+    "physics": false,
+    "pathfinding": false
+  },
+  "copy": {
+    "longTextScroll": false,
+    "maxVisibleParagraphChars": 36,
+    "maxActionLabelChars": 7
+  },
+  "actions": [
+    {
+      "id": "approach-partner",
+      "label": "加入玩耍",
+      "cueTypes": ["transition", "actor.move-between-anchors", "actor.pose", "prop.change", "npc.react"],
+      "skipSafe": true
+    },
+    {
+      "id": "roll-marble",
+      "label": "滚出弹珠",
+      "cueTypes": ["transition", "prop.change", "npc.react", "show-result"],
+      "skipSafe": true
+    }
+  ],
+  "manualScores": {
+    "sceneFeel": 7.5,
+    "maintainability": 8.5,
+    "coreIsolation": 9,
+    "performance": 7.5,
+    "accessibility": 7.5,
+    "buildComplexity": 6
+  }
+}

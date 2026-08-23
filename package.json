@@ -43,6 +43,8 @@
     "debug:check": "node scripts/check-debug-tools.mjs",
     "ui:check": "node scripts/check-ui-contract.mjs",
     "browser:check": "node scripts/check-browser-ui.mjs",
+    "light-scene:spike:check": "node scripts/check-light-scene-spikes.mjs",
+    "light-scene:spike:browser:check": "node scripts/check-light-scene-spikes-browser.mjs",
     "h5:build": "node scripts/build-h5-release.mjs",
     "h5:check": "node scripts/check-h5-release.mjs",
     "h5:browser:check": "node scripts/check-h5-browser.mjs",
@@ -52,5 +54,8 @@
   },
   "dependencies": {
     "@phosphor-icons/web": "^2.1.2"
+  },
+  "devDependencies": {
+    "phaser": "^3.90.0"
   }
 }

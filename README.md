@@ -8,6 +8,8 @@
 
 > **已确认的首切片方向：** 不做大型自由移动场景，采用固定生活舞台、人物/物件热点、节点转场、局部短动作和季度长期结果。开发前唯一执行规格为 [轻场景互动垂直切片开发说明](docs/LIGHT_SCENE_VERTICAL_SLICE_DEVELOPMENT_PLAN.md)，先完成 DOM/Phaser 技术 Spike 和小范围可玩性验证，再决定正式 SceneRuntime。
 
+> **T0 已完成：** 两个 Spike 均通过静态与浏览器合同，正式选择独立 DOM SceneRuntime；它不是旧 Presenter 的换皮页面。Phaser 原型只保留为比较证据，不进入正式客户端和发布首包。选型证据见 [T0 轻场景技术评分表](docs/LIGHT_SCENE_SPIKE_SCORECARD.md)。
+
 > 当前唯一的全面重构开发基线是 [《人生轨迹》全面游戏化重构开发项目说明 V2](docs/FULL_GAME_REBUILD_V2.md)。新规则、界面与后续阶段均以该文档为准，旧文档只保留各子系统的历史细节。
 
 ## 立即游玩
@@ -65,6 +67,7 @@ npm run play
 - [全面游戏化重构开发项目说明 V2（当前基线）](docs/FULL_GAME_REBUILD_V2.md)
 - [产品方向重置、客户端架构决策与首个垂直切片（待批准）](docs/GAME_DIRECTION_RESET_DECISION.md)
 - [轻场景互动垂直切片开发说明（当前开发前规格）](docs/LIGHT_SCENE_VERTICAL_SLICE_DEVELOPMENT_PLAN.md)
+- [T0 轻场景技术 Spike 评分与选型记录](docs/LIGHT_SCENE_SPIKE_SCORECARD.md)
 - [MVP 设计](docs/MVP_DESIGN.md)
 - [社会模拟模型](docs/SOCIAL_SIMULATION_MODEL.md)
 - [事件数据规范](docs/DATA_SCHEMA.md)

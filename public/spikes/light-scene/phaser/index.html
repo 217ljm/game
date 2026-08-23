@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>1984 · 院中放学后 · Phaser Spike</title>
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-motion="full">
+    <main class="spike-shell" aria-labelledby="spike-title">
+      <header class="spike-header">
+        <div>
+          <p class="eyebrow">轻场景互动 · T0 技术 Spike</p>
+          <h1 id="spike-title">院中放学后</h1>
+        </div>
+        <div class="date-chip" aria-label="1984年初秋，六岁">1984<br /><b>初秋 · 6岁</b></div>
+      </header>
+
+      <section class="game-frame" aria-label="可互动的院中生活场景">
+        <div id="game-root" data-main-stage data-scene-state="yard" aria-hidden="true"></div>
+        <div class="stage-caption" id="stage-caption" role="status" aria-live="polite">放学铃声刚散，院子里还有人等你。</div>
+        <div class="scene-hint" id="scene-hint">点人物或物件，看看今天会发生什么</div>
+      </section>
+
+      <section class="action-dock" data-context-action-bar aria-labelledby="action-title">
+        <div class="dock-heading">
+          <div>
+            <span class="dock-kicker">当前焦点</span>
+            <h2 id="action-title">选择一个对象</h2>
+          </div>
+          <div class="time-track" aria-label="放学后剩余时间">
+            <span class="time-label">天黑前</span>
+            <div id="time-slots" class="time-slots" aria-hidden="true"></div>
+          </div>
+        </div>
+        <div id="actions" class="action-row" role="group" aria-label="情境动作"></div>
+        <div class="dock-tools">
+          <button id="skip-btn" class="text-button" type="button" hidden>跳过演出</button>
+          <button id="motion-btn" class="text-button" data-action="reduce-motion" type="button" aria-pressed="false">减少动态</button>
+        </div>
+      </section>
+
+      <section class="accessible-panel" aria-labelledby="objects-title">
+        <div class="panel-heading">
+          <h2 id="objects-title">可互动对象</h2>
+          <span>键盘 / 触摸均可</span>
+        </div>
+        <div id="object-list" class="object-list"></div>
+      </section>
+
+      <footer class="spike-footer"><span class="dot"></span> Phaser SceneRuntime · 灰盒素材 · 不含物理与自由移动</footer>
+    </main>
+    <script src="../../../vendor/phaser/phaser.min.js"></script>
+    <script type="module" src="./runtime.mjs"></script>
+  </body>
+</html>

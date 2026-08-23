@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>1984 · 院中 · DOM SceneRuntime Spike</title>
+  <link rel="icon" href="data:," />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body data-motion="full">
+  <main class="spike-shell" aria-label="1984年院中生活片段">
+    <section class="game-stage" id="gameStage" data-main-stage data-scene-state="courtyard" aria-describedby="stageHint">
+      <div class="sky-wash" aria-hidden="true"></div>
+      <div class="distant-blocks" aria-hidden="true"><i></i><i></i><i></i></div>
+      <div class="wall" aria-hidden="true"><span class="window"></span><span class="window window-2"></span></div>
+      <div class="tree" aria-hidden="true"><b></b><b></b><b></b><i></i></div>
+      <div class="ground" aria-hidden="true"></div>
+      <div class="chalk-line" aria-hidden="true"></div>
+
+      <header class="hud">
+        <div class="date-lockup"><span class="eyebrow">家属院 · 初秋</span><strong>1984 <em>·</em> 6岁</strong></div>
+        <div class="time-readout" aria-label="放学后还有时间">
+          <span class="sun-dot" aria-hidden="true"></span>
+          <span id="timeLabel">放学后 25 分钟</span>
+          <span class="time-dots" id="timeDots" aria-hidden="true"></span>
+        </div>
+        <button class="icon-button" id="motionToggle" data-action="reduce-motion" type="button" aria-pressed="false" title="减少动态效果">◌</button>
+      </header>
+
+      <div class="scene-copy" id="stageHint">院里有人在喊你的名字。</div>
+
+      <div class="stage-node node-home" data-scene-node data-node="home" data-node-id="home" data-label="家门" tabindex="0" role="button" aria-label="家门，可回家帮忙摆碗">
+        <span class="node-glow"></span><span class="node-label">家门</span>
+      </div>
+      <div class="stage-node node-courtyard active" data-scene-node data-node="courtyard" data-node-id="partner" data-label="空地" tabindex="0" role="button" aria-label="伙伴小勇和空地，可加入弹珠游戏">
+        <span class="node-glow"></span><span class="node-label">空地</span>
+      </div>
+      <div class="stage-node node-table" data-scene-node data-node="table" data-node-id="table" data-label="石桌" tabindex="0" role="button" aria-label="石桌，可练一会字">
+        <span class="node-glow"></span><span class="node-label">石桌</span>
+      </div>
+      <div class="stage-node node-bike" data-scene-node data-node="bike" data-node-id="bike" data-label="自行车棚" tabindex="0" role="button" aria-label="自行车棚，可看看链条">
+        <span class="node-glow"></span><span class="node-label">车棚</span>
+      </div>
+      <div class="stage-node node-marbles" data-scene-node data-node="marbles" data-node-id="marbles" data-label="弹珠" tabindex="0" role="button" aria-label="弹珠，可以滚过去或捡起来看">
+        <span class="node-glow"></span><span class="node-label">弹珠</span>
+      </div>
+
+      <div class="prop schoolbag" data-object="bag" aria-label="书包" title="书包"><span></span></div>
+      <div class="prop stone-table" data-object="table" aria-label="石桌" title="石桌"><span class="paper"></span></div>
+      <div class="prop marbles" data-object="marbles" data-node-id="marbles" tabindex="0" role="button" aria-label="弹珠，可以滚过去或捡起来看" title="弹珠"><i></i><i></i><i></i></div>
+      <div class="prop bicycle" data-object="bicycle" aria-label="旧自行车" title="旧自行车"><span class="wheel one"></span><span class="wheel two"></span><span class="frame"></span></div>
+
+      <div class="actor player" id="player" data-pose="idle" aria-label="主角">
+        <span class="actor-shadow"></span><span class="actor-body"></span><span class="actor-head"></span><span class="actor-bag"></span>
+      </div>
+      <div class="actor friend" id="friend" data-pose="beckon" aria-label="伙伴小勇">
+        <span class="actor-shadow"></span><span class="actor-body"></span><span class="actor-head"></span><span class="friend-arm"></span>
+      </div>
+      <div class="actor elder" id="elder" data-pose="fixing" aria-label="年长孩子">
+        <span class="actor-shadow"></span><span class="actor-body"></span><span class="actor-head"></span>
+      </div>
+
+      <div class="speech-bubble" id="speech" role="status" aria-live="polite"><span class="bubble-tail"></span><span id="speechText">“来呀，差你一个！”</span></div>
+      <div class="event-chip" id="eventChip" aria-live="polite"><span class="spark">✦</span><span id="eventText">一颗弹珠滚远了</span></div>
+
+      <div class="focus-card" id="focusCard" data-context-action-bar aria-live="polite">
+        <div class="focus-title"><span class="focus-kicker">当前对象</span><strong id="focusName">小勇 · 伙伴</strong><span class="focus-state" id="focusState">等你加入</span></div>
+        <div class="actions" id="actions" aria-label="情境动作">
+          <button class="action-button primary" data-action="play" type="button"><span class="action-icon">●</span><span><b>加入弹珠</b><small>消耗 3 格时间</small></span></button>
+          <button class="action-button" data-action="ask" type="button"><span class="action-icon">?</span><span><b>问问车棚</b><small>消耗 1 格时间</small></span></button>
+        </div>
+        <div class="focus-foot"><span id="focusHint">点击舞台上的人或物，看看他们正在做什么</span><button class="access-link" id="objectListToggle" type="button">对象列表</button></div>
+      </div>
+
+      <div class="object-list" id="objectList" hidden>
+        <div class="list-heading"><b>附近对象</b><button class="close-list" id="objectListClose" type="button" aria-label="关闭对象列表">×</button></div>
+        <button type="button" data-list-node="courtyard"><span class="list-dot coral"></span>小勇 · 正在等你</button>
+        <button type="button" data-list-node="table"><span class="list-dot mint"></span>石桌 · 有一张纸</button>
+        <button type="button" data-list-node="bike"><span class="list-dot blue"></span>车棚 · 链条卡住了</button>
+        <button type="button" data-list-node="home"><span class="list-dot gold"></span>家门 · 妈妈在喊</button>
+      </div>
+
+      <footer class="stage-footer"><span class="key-hint">Tab 选择对象 · Enter 确认</span><span class="scene-id">T0 / DOM</span></footer>
+    </section>
+  </main>
+  <script type="module" src="./runtime.mjs"></script>
+</body>
+</html>

@@ -145,6 +145,9 @@ function checkContent(content) {
   for (const action of actions) {
     const label = `行动${action.id ?? "未知"}`;
     requiredString(action.label, `${label}.label`);
+    requiredString(action.coreActionId, `${label}.coreActionId`);
+    if (!["trial", "regular", "focus"].includes(action.corePlan?.intensity)) fail(`${label}.corePlan.intensity非法`);
+    requiredNumber(action.corePlan?.timeSlots, `${label}.corePlan.timeSlots`, (value) => Number.isInteger(value) && value >= 1);
     requiredString(action.nodeId, `${label}.nodeId`);
     if (action.nodeId && !indexes.nodeIds.includes(action.nodeId)) fail(`${label}.nodeId不存在：${action.nodeId}`);
     requiredNumber(action.timeCost?.slots, `${label}.timeCost.slots`, (value) => Number.isInteger(value) && value >= 1 && value <= 9);
@@ -167,6 +170,7 @@ function checkContent(content) {
     uniqueIds(choices, "content.event.choices");
     for (const choice of choices) {
       requiredString(choice.label, `事件选项${choice.id ?? "未知"}.label`);
+      requiredNumber(choice.timeCost?.slots, `事件选项${choice.id ?? "未知"}.timeCost.slots`, (value) => Number.isInteger(value) && value >= 0);
       requiredArray(choice.processCues, `事件选项${choice.id ?? "未知"}.processCues`);
       requiredArray(choice.longTermFactCandidates, `事件选项${choice.id ?? "未知"}.longTermFactCandidates`);
     }
@@ -226,8 +230,8 @@ async function checkProtocol(content, indexes) {
     const protocolTimeSlots = action.timeSlots ?? action.timeCost?.slots;
     if (protocolTimeSlots !== contentAction.timeCost?.slots) fail(`动作${action.id}的协议timeSlots与内容不一致：${protocolTimeSlots} ≠ ${contentAction.timeCost?.slots}`);
     const command = protocol.mapSceneActionToCommand(content, action.id);
-    if (command?.allocations?.[0]?.actionId !== action.id) fail(`动作${action.id}的协议命令ID未保持一致`);
-    if (command?.allocations?.[0]?.timeSlots !== contentAction.timeCost?.slots) fail(`动作${action.id}的协议命令timeSlots未保持一致`);
+    if (command?.allocations?.[0]?.actionId !== contentAction.coreActionId) fail(`动作${action.id}的协议命令未映射到coreActionId`);
+    if (command?.allocations?.[0]?.timeSlots !== contentAction.corePlan?.timeSlots) fail(`动作${action.id}的协议命令corePlan.timeSlots未保持一致`);
     const cues = protocol.createActionCues(content, action.id);
     if (!Array.isArray(cues) || cues.length === 0) fail(`动作${action.id}协议未生成Cue`);
     const cueTypes = new Set(cues.map((cue) => cue.type));

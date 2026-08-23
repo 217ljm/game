@@ -129,6 +129,9 @@
           "description": "在熟悉的地方跑动、做游戏，也学习怎样与同伴相处。",
           "autoWeight": 0.3,
           "timeUseHoursPerWeek": 7,
+          "category": "social",
+          "interestTags": ["social_organizing", "sports_movement"],
+          "growthChanges": { "peer_bond": 1, "healthy_rhythm": 1 },
           "effectSummary": "心情、健康和同伴关系改善",
           "stateAssignments": { "cumulativeFacts.peerPlayHoursPerWeek": 7 },
           "statChanges": { "health": 1, "mood": 1, "relationships": 1 }
@@ -161,6 +164,9 @@
           "autoWeight": 0.24,
           "when": { "residenceIn": ["urban"] },
           "timeUseHoursPerWeek": 5,
+          "category": "exploration",
+          "interestTags": ["making_repair", "practical_work"],
+          "growthChanges": { "practical_independence": 1, "interest_exploration": 1 },
           "effectSummary": "实践认识增加，但休息略少",
           "stateAssignments": { "cumulativeFacts.householdSkillPracticeHoursPerWeek": 5 },
           "statChanges": { "ability": 2, "health": -1 }
@@ -171,9 +177,25 @@
           "description": "利用能接触到的纸张、招牌和物件做简单练习。",
           "autoWeight": 0.2,
           "timeUseHoursPerWeek": 4,
+          "category": "learning",
+          "interestTags": ["reading_language", "numbers_logic"],
+          "growthChanges": { "interest_exploration": 1, "school_confidence": 1 },
           "effectSummary": "入学前能力积累增加",
           "stateAssignments": { "cumulativeFacts.selfPracticeHoursPerWeek": 4 },
           "statChanges": { "ability": 2 }
+        },
+        {
+          "id": "child_small_household_task",
+          "label": "主动做一件小家务",
+          "description": "摆碗、递东西或整理自己的物件，完成一件符合年龄的小任务。",
+          "autoWeight": 0.22,
+          "timeUseHoursPerWeek": 3,
+          "category": "family",
+          "interestTags": ["practical_work"],
+          "growthChanges": { "family_participation": 1, "practical_independence": 1 },
+          "effectSummary": "家庭参与、实践能力和责任习惯增加",
+          "stateAssignments": { "cumulativeFacts.householdParticipationHoursPerWeek": 3 },
+          "statChanges": { "relationships": 1, "ability": 1 }
         }
       ]
     },

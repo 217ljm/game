@@ -76,10 +76,6 @@ function safeInteger(value, fallback, min, max) {
   return Number.isInteger(value) && value >= min && value <= max ? value : fallback;
 }
 
-function mapIntensity(tier) {
-  return ({ light: "trial", steady: "regular", focus: "focus" })[tier] ?? "trial";
-}
-
 function cueFromSpec(spec, context = {}, fallbackId) {
   const cue = requireObject(spec, "Cue");
   const type = CUE_TYPE_SET.has(cue.type) ? cue.type : "show-result";
@@ -137,6 +133,9 @@ export function validateLightSceneContent(content) {
     if (!Array.isArray(character.visibleStates) || character.visibleStates.length === 0) throw new Error(`角色${character.id}缺少visibleStates`);
   }
   for (const action of content.actions) {
+    requireString(action.coreActionId, `动作${action.id}.coreActionId`);
+    if (!["trial", "regular", "focus"].includes(action.corePlan?.intensity)) throw new Error(`动作${action.id}.corePlan.intensity非法`);
+    if (!Number.isInteger(action.corePlan?.timeSlots) || action.corePlan.timeSlots <= 0) throw new Error(`动作${action.id}.corePlan.timeSlots非法`);
     requireString(action.stageId, `动作${action.id}.stageId`);
     requireString(action.nodeId, `动作${action.id}.nodeId`);
     if (!stageIds.has(action.stageId) || !nodeIds.has(action.nodeId)) throw new Error(`动作${action.id}引用的舞台或节点不存在`);
@@ -154,6 +153,7 @@ export function validateLightSceneContent(content) {
   }
   for (const choice of content.event.choices) {
     requireString(choice.label, `选择${choice.id}.label`);
+    if (!Number.isInteger(choice.timeCost?.slots) || choice.timeCost.slots < 0) throw new Error(`选择${choice.id}时间消耗非法`);
     if (!Array.isArray(choice.processCues) || choice.processCues.length === 0) throw new Error(`选择${choice.id}缺少processCues`);
     for (const cueType of choice.processCues) if (!CUE_TYPE_SET.has(cueType)) throw new Error(`选择${choice.id}包含未知Cue类型${cueType}`);
   }
@@ -182,9 +182,9 @@ export function mapSceneActionToCommand(content, actionId, context = {}) {
     type: "quarter.plan",
     quarterId: safeString(context.quarterId, `${content.id}:quarter`),
     allocations: [{
-      actionId: action.id,
-      intensity: mapIntensity(action.timeCost.tier),
-      timeSlots: action.timeCost.slots,
+      actionId: action.coreActionId,
+      intensity: action.corePlan.intensity,
+      timeSlots: action.corePlan.timeSlots,
     }],
   });
 }
@@ -242,6 +242,11 @@ export function createSceneRuntimeState(content, options = {}) {
   const totalSlots = content.timeAndEnergy.totalSlots;
   const actorStates = Object.fromEntries(content.characters.map((character) => [character.id, character.visibleStates[0]]));
   const propStates = Object.fromEntries(content.nodes.map((node) => [node.id, node.visualStates?.[0] ?? node.affordance]));
+  const completedActionIds = [...new Set(Array.isArray(options.completedActionIds) ? options.completedActionIds : [])]
+    .filter((id) => content.actions.some((action) => action.id === id));
+  const eventChoiceIds = [...new Set(Array.isArray(options.eventChoiceIds) ? options.eventChoiceIds : [])]
+    .filter((id) => content.event.choices.some((choice) => choice.id === id))
+    .slice(0, 1);
   return freeze({
     schemaVersion: LIGHT_SCENE_CONTRACT_VERSION,
     contentId: content.id,
@@ -249,10 +254,10 @@ export function createSceneRuntimeState(content, options = {}) {
     stageId,
     focusedNodeId,
     usedTimeSlots: safeInteger(options.usedTimeSlots, 0, 0, totalSlots),
-    actorStates,
-    propStates,
-    completedActionIds: [],
-    eventChoiceIds: [],
+    actorStates: { ...actorStates, ...(options.actorStates && typeof options.actorStates === "object" ? clone(options.actorStates) : {}) },
+    propStates: { ...propStates, ...(options.propStates && typeof options.propStates === "object" ? clone(options.propStates) : {}) },
+    completedActionIds,
+    eventChoiceIds,
     presentation: { reducedMotion: options.reducedMotion === true, skipped: false },
   });
 }
@@ -284,9 +289,10 @@ function applyAction(content, state, actionId) {
   };
 }
 
-function applyChoice(state, choiceId) {
+function applyChoice(content, state, choiceId) {
+  const choice = findChoice(content, choiceId);
   const eventChoiceIds = state.eventChoiceIds.includes(choiceId) ? state.eventChoiceIds : [...state.eventChoiceIds, choiceId];
-  return { ...state, eventChoiceIds };
+  return { ...state, usedTimeSlots: state.usedTimeSlots + choice.timeCost.slots, eventChoiceIds };
 }
 
 function actionAvailability(content, state, actionId) {
@@ -295,6 +301,16 @@ function actionAvailability(content, state, actionId) {
   if (!action) return { available: false, reason: "unknown-action", remainingSlots, costSlots: 0 };
   const costSlots = action.timeCost.slots;
   if (state.completedActionIds.includes(action.id)) return { available: false, reason: "already-completed", remainingSlots, costSlots };
+  if (remainingSlots < costSlots) return { available: false, reason: "insufficient-time", remainingSlots, costSlots };
+  return { available: true, reason: null, remainingSlots, costSlots };
+}
+
+function eventChoiceAvailability(content, state, choiceId) {
+  const choice = findChoice(content, choiceId);
+  const remainingSlots = content.timeAndEnergy.totalSlots - state.usedTimeSlots;
+  if (!choice) return { available: false, reason: "unknown-choice", remainingSlots, costSlots: null };
+  const costSlots = choice.timeCost.slots;
+  if (state.eventChoiceIds.length > 0) return { available: false, reason: "event-resolved", remainingSlots, costSlots };
   if (remainingSlots < costSlots) return { available: false, reason: "insufficient-time", remainingSlots, costSlots };
   return { available: true, reason: null, remainingSlots, costSlots };
 }
@@ -313,6 +329,7 @@ export function createSceneRuntimePort(content, options = {}) {
     getCharacters() { return clone(content.characters); },
     getActions(nodeId) { return clone(content.actions.filter((action) => !nodeId || action.nodeId === safeNodeId(content, nodeId))); },
     getActionAvailability(actionId) { return freeze(actionAvailability(content, state, actionId)); },
+    getEventChoiceAvailability(choiceId) { return freeze(eventChoiceAvailability(content, state, choiceId)); },
     dispatchIntent(input) {
       const intent = normalizeLocalSceneIntent(content, input);
       return update(applyIntent(content, state, intent), { kind: "intent", intent, cues: [] });
@@ -331,8 +348,9 @@ export function createSceneRuntimePort(content, options = {}) {
     },
     prepareEventChoice(choiceId, context = {}) {
       const choice = findChoice(content, choiceId);
-      if (!choice) return { state: clone(state), command: null, cues: [], rejected: true };
-      return update(applyChoice(state, choice.id), {
+      const availability = eventChoiceAvailability(content, state, choiceId);
+      if (!choice || !availability.available) return { state: clone(state), command: null, cues: [], rejected: true, reason: availability.reason };
+      return update(applyChoice(content, state, choice.id), {
         kind: "event-choice",
         choiceId: choice.id,
         command: mapEventChoiceToCommand(content, choice.id),

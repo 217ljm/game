@@ -45,8 +45,9 @@ for (const action of content.actions) {
   const command = mapSceneActionToCommand(content, action.id);
   assert.equal(command.type, "quarter.plan");
   assert.equal(command.allocations.length, 1);
-  assert.equal(command.allocations[0].actionId, action.id);
-  assert.equal(command.allocations[0].timeSlots, action.timeCost.slots);
+  assert.equal(command.allocations[0].actionId, action.coreActionId);
+  assert.equal(command.allocations[0].intensity, action.corePlan.intensity);
+  assert.equal(command.allocations[0].timeSlots, action.corePlan.timeSlots);
 }
 
 console.log("【4/8】校验事件与3个事件选择命令...");
@@ -78,6 +79,16 @@ assert.deepEqual(normalizeLocalSceneIntent(content, { type: "scene.focus", nodeI
 assert.deepEqual(normalizeLocalSceneIntent(content, { type: "scene.transition", targetStageId: "missing" }), { type: "scene.transition", targetStageId: "gate" });
 assert.equal(mapSceneActionToCommand(content, "missing"), null);
 assert.equal(mapEventChoiceToCommand(content, "missing"), null);
+const restoredState = createSceneRuntimeState(content, {
+  stageId: "home",
+  focusedNodeId: "bowls",
+  usedTimeSlots: 6,
+  completedActionIds: ["join_marbles", "join_marbles", "missing"],
+  eventChoiceIds: ["help_search", "ask_first"],
+});
+assert.deepEqual(restoredState.completedActionIds, ["join_marbles"]);
+assert.deepEqual(restoredState.eventChoiceIds, ["help_search"]);
+assert.equal(validateSceneRuntimeState(content, restoredState), true);
 
 console.log("【7/8】校验端口动作、事件选择与状态边界...");
 const port = createSceneRuntimePort(content, { reducedMotion: true });
@@ -97,6 +108,11 @@ assert.deepEqual(repeated.state, afterFirstAction);
 const eventPrepared = port.prepareEventChoice("help_search");
 assert.equal(eventPrepared.rejected, false);
 assert.deepEqual(eventPrepared.command, mapEventChoiceToCommand(content, "help_search"));
+assert.equal(eventPrepared.state.usedTimeSlots, 3);
+assert.deepEqual(port.getEventChoiceAvailability("ask_first"), { available: false, reason: "event-resolved", remainingSlots: 6, costSlots: 1 });
+const repeatedEvent = port.prepareEventChoice("ask_first");
+assert.equal(repeatedEvent.rejected, true);
+assert.equal(repeatedEvent.reason, "event-resolved");
 assert.equal(port.prepareAction("missing").rejected, true);
 assert.equal(before.usedTimeSlots, 0);
 const boundaryPort = createSceneRuntimePort(content, { usedTimeSlots: 8 });
@@ -108,6 +124,9 @@ assert.equal(insufficient.reason, "insufficient-time");
 assert.equal(insufficient.command, null);
 assert.deepEqual(insufficient.cues, []);
 assert.deepEqual(insufficient.state, boundaryBefore);
+const fullPort = createSceneRuntimePort(content, { usedTimeSlots: 9 });
+assert.deepEqual(fullPort.getEventChoiceAvailability("ask_first"), { available: false, reason: "insufficient-time", remainingSlots: 0, costSlots: 1 });
+assert.deepEqual(fullPort.getEventChoiceAvailability("go_home"), { available: true, reason: null, remainingSlots: 0, costSlots: 0 });
 
 console.log("【8/8】校验skip保序、payload与命令不变...");
 const commandBefore = mapSceneActionToCommand(content, "join_marbles");

@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#eaf8f5" />
+    <title>院中放学后 · 1984</title>
+    <link rel="icon" href="../assets/icons/app-icon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body data-motion="full">
+    <main class="light-scene-app" data-light-scene-runtime aria-label="1984年院中放学后的生活片段">
+      <header class="scene-topbar">
+        <div class="scene-title">
+          <span class="scene-kicker">家属院 · 初秋</span>
+          <h1>院中放学后</h1>
+        </div>
+        <div class="scene-date" aria-label="1984年初秋，六岁">1984 <b>· 6岁</b></div>
+      </header>
+
+      <section class="scene-stage-wrap" data-light-scene-stage-shell aria-label="当前生活舞台：院门">
+        <div class="scene-sky" aria-hidden="true"><i class="sun"></i><i class="cloud cloud-a"></i><i class="cloud cloud-b"></i></div>
+        <div class="scene-buildings" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="scene-wall" aria-hidden="true"><i class="window window-a"></i><i class="window window-b"></i><i class="clothesline"></i></div>
+        <div class="scene-ground" aria-hidden="true"><i class="chalk-ring"></i><i class="ground-shadow"></i></div>
+        <div class="scene-tree" aria-hidden="true"><i class="trunk"></i><b></b><b></b><b></b></div>
+
+        <div class="stage-layer stage-layer-gate" data-main-stage data-stage-id="gate" aria-hidden="false">
+          <div class="scene-door gate-door" aria-hidden="true"><i></i></div>
+          <button class="scene-node prop-bag" data-scene-node data-node-id="schoolbag" data-state="shoulder" type="button" aria-label="书包，可以放下">书包</button>
+          <button class="scene-node node-gate-call" data-scene-node data-node-id="gate_call" data-state="calling" type="button" aria-label="家门，有人在喊你">家门</button>
+          <div class="scene-actor actor-player gate-player" data-character-id="player_child" data-pose="idle" aria-label="主角：你"><i class="actor-shadow"></i><i class="actor-body"></i><i class="actor-head"></i><i class="actor-bag"></i></div>
+          <div class="stage-copy">放学铃声刚散。</div>
+        </div>
+
+        <div class="stage-layer stage-layer-yard" data-main-stage data-stage-id="yard" aria-hidden="true">
+          <button class="scene-node node-partner" data-scene-node data-node-id="partner" data-state="waiting" type="button" aria-label="伙伴小宇，正在等你"><i class="focus-ring"></i><span>伙伴</span></button>
+          <button class="scene-node node-table" data-scene-node data-node-id="stone_table" data-state="waiting" type="button" aria-label="石桌，可以练一会字"><i class="table-top"></i><i class="paper"></i><span>石桌</span></button>
+          <button class="scene-node node-marbles" data-scene-node data-node-id="marbles" data-state="waiting" type="button" aria-label="弹珠，滚到车棚边"><i class="marble marble-coral"></i><i class="marble marble-mint"></i><i class="marble marble-gold"></i><span>弹珠</span></button>
+          <button class="scene-node node-shed" data-scene-node data-node-id="bicycle_shed" data-state="busy" type="button" aria-label="车棚，阿沙正在修车"><i class="bike-wheel bike-wheel-a"></i><i class="bike-wheel bike-wheel-b"></i><i class="bike-frame"></i><span>车棚</span></button>
+
+          <div class="scene-actor actor-player yard-player" data-character-id="player_child" data-pose="idle" aria-label="主角：你"><i class="actor-shadow"></i><i class="actor-body"></i><i class="actor-head"></i><i class="actor-bag"></i></div>
+          <div class="scene-actor actor-partner" data-character-id="partner_xiaoyu" data-pose="beckon" aria-label="伙伴：小宇"><i class="actor-shadow"></i><i class="actor-body"></i><i class="actor-head"></i><i class="actor-arm"></i><b>小宇</b></div>
+          <div class="scene-actor actor-elder" data-character-id="older_child_asha" data-pose="fixing" aria-label="年长孩子：阿沙"><i class="actor-shadow"></i><i class="actor-body"></i><i class="actor-head"></i><b>阿沙</b></div>
+          <div class="scene-copy">风从晾衣绳下穿过。</div>
+        </div>
+
+        <div class="stage-layer stage-layer-home" data-main-stage data-stage-id="home" aria-hidden="true">
+          <div class="scene-door home-door" aria-hidden="true"><i></i></div>
+          <button class="scene-node node-caregiver" data-scene-node data-node-id="caregiver" data-state="calling" type="button" aria-label="照护者，等你进门"><i class="focus-ring"></i><span>照护者</span></button>
+          <button class="scene-node node-bowls" data-scene-node data-node-id="bowls" data-state="waiting" type="button" aria-label="碗筷，可以摆好"><i class="bowl bowl-a"></i><i class="bowl bowl-b"></i><span>碗筷</span></button>
+          <button class="scene-node node-homework" data-scene-node data-node-id="homework" data-state="closed" type="button" aria-label="作业本，还没打开"><i class="homework-paper"></i><span>作业本</span></button>
+          <div class="scene-actor actor-player home-player" data-character-id="player_child" data-pose="tired" aria-label="主角：你"><i class="actor-shadow"></i><i class="actor-body"></i><i class="actor-head"></i></div>
+          <div class="scene-actor actor-caregiver" data-character-id="caregiver_mother" data-pose="calling" aria-label="照护者"><i class="actor-shadow"></i><i class="actor-body"></i><i class="actor-head"></i><b>照护者</b></div>
+          <div class="scene-copy">屋里传来碗筷碰响。</div>
+        </div>
+
+        <div class="scene-actor actor-caregiver yard-caller" data-character-id="caregiver_mother" data-pose="calling" aria-label="照护者的声音"><i class="call-wave"></i></div>
+        <div class="scene-speech" data-scene-feedback data-visible="false" role="status" aria-live="polite"><span class="speech-tail"></span><span data-speech-text></span></div>
+        <div class="scene-event" data-event-layer data-visible="false" aria-live="polite"><span>✦</span> <span data-event-text>弹珠滚进车棚边</span></div>
+      </section>
+
+      <section class="scene-hud" aria-label="生活状态与时间">
+        <div class="time-hud"><div class="time-copy"><span>放学后</span><strong>天黑前</strong></div><div class="time-slots" aria-label="九格时间，尚未使用"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="energy-pill">精力 · 充足</span></div>
+        <div class="stage-tabs" aria-label="三个生活舞台"><button type="button" data-stage-id="gate" aria-current="true">院门</button><button type="button" data-stage-id="yard" aria-current="false">院中</button><button type="button" data-stage-id="home" aria-current="false">家中</button></div>
+      </section>
+
+      <section class="action-dock" data-context-action-bar aria-labelledby="action-title">
+        <div class="dock-title"><span>当前焦点 · 伙伴</span><h2 id="action-title">小宇在等你</h2></div>
+        <div class="scene-actions" data-scene-actions aria-label="情境动作"><p class="actions-empty">先看一个身边的对象，动作会从这里出现。</p></div>
+        <p class="action-note">动作会改变现场，也会被身边的人记住。</p>
+      </section>
+
+      <section class="scene-ripple" data-ripple-layer data-visible="false" aria-label="季度余波">
+        <div class="ripple-heading"><span>这一天可能留下</span><b>季度余波</b></div>
+        <div class="ripple-items"><span>同伴记忆</span><span>兴趣萌芽</span><span>家庭印象</span></div>
+      </section>
+
+      <details class="object-panel" data-object-list>
+        <summary id="scene-object-list-toggle">查看附近对象 <span>9个生活对象</span></summary>
+        <div id="scene-object-list" class="object-list" aria-label="可互动对象列表">
+          <button type="button" data-node-id="schoolbag">书包 · 刚从肩上放下</button>
+          <button type="button" data-node-id="gate_call">家门 · 有人在喊你</button>
+          <button type="button" data-node-id="partner">伙伴 · 正在等你</button>
+          <button type="button" data-node-id="stone_table">石桌 · 可以练字</button>
+          <button type="button" data-node-id="marbles">弹珠 · 滚到车棚边</button>
+          <button type="button" data-node-id="bicycle_shed">车棚 · 阿沙在修车</button>
+          <button type="button" data-node-id="caregiver">照护者 · 等你进门</button>
+          <button type="button" data-node-id="bowls">碗筷 · 可以摆好</button>
+          <button type="button" data-node-id="homework">作业本 · 还没打开</button>
+        </div>
+      </details>
+
+      <section class="scene-controls" aria-label="场景设置">
+        <label>动画<select id="scene-motion-mode"><option value="full">完整</option><option value="reduced">减少</option><option value="off">关闭</option></select></label>
+        <label class="switch-control"><input id="scene-sound-toggle" type="checkbox" checked />声音</label>
+        <button id="scene-skip" type="button">跳过演出</button>
+        <button id="scene-restart" type="button">重新开始</button>
+      </section>
+
+      <div class="scene-result" data-scene-feedback data-visible="false" aria-live="polite">现场反馈：</div>
+      <div class="sr-only" id="scene-description">固定院中舞台。可以聚焦伙伴、石桌、弹珠和车棚，再从底部动作条选择一个短动作。</div>
+    </main>
+    <script type="module" src="./runtime.mjs"></script>
+  </body>
+</html>

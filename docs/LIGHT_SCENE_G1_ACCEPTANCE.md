@@ -54,6 +54,8 @@ caregiver    照护者
 
 ```text
 id
+coreActionId
+corePlan
 nodeId
 timeCost.slots
 processCues
@@ -66,7 +68,7 @@ longTermFactCandidates
 - `prop.change`；
 - `npc.react`。
 
-脚本不强行要求内容中不存在的`actorId`、`propId`、`npcId`或`timeLabel`字段。人物、物件、NPC由节点、角色回应和Cue共同表达。
+`coreActionId`必须指向既有季度模拟可结算的稳定活动；`corePlan`声明进入季度时的投入强度和季度时间格。现场的5分钟时间格只使用`timeCost.slots`，不能冒充季度投入。现场动作ID继续用于场景表现，两者不能混用。脚本不强行要求内容中不存在的`actorId`、`propId`、`npcId`或`timeLabel`字段。人物、物件、NPC由节点、角色回应和Cue共同表达。
 
 ### 2.4 动态弹珠事件
 

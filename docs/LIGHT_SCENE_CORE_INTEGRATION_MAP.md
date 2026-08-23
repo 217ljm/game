@@ -1,25 +1,28 @@
 # G1→G3 轻场景接入审计地图
 
-版本：1.0　日期：2026-08-23　状态：接入前审计，不包含代码修改
+版本：1.1　日期：2026-08-24　状态：G1 自动化闸门后更新；正式主路由接入仍待实施
 
 本文件只审计当前仓库的接入边界，不能替代G1内容合同、T0评分或G3实现规格。
 
 ## 1. 审计结论
 
-T0已经选择DOM SceneRuntime，两个Spike和上游纯协议检查当前均可通过：
+T0已经选择DOM SceneRuntime，两个Spike、正式灰盒和上游纯协议检查当前均可通过：
 
 - DOM Spike入口：`public/spikes/light-scene/dom/index.html`；
 - Phaser Spike入口：`public/spikes/light-scene/phaser/index.html`；
+- 正式灰盒入口：`public/light-scene/index.html`；
 - 纯协议入口：`src/game/light-scene-contract.mjs`；
+- Core桥：`src/game/light-scene-core-bridge.mjs`；
 - 当前正式应用入口仍是`public/index.html`加载`public/app.mjs`。
 
 当前还没有把轻场景接入正式`#/life`流程。现有页面仍由`public/app.mjs`调用`buildPageViewModels`后渲染旧的页面式生活界面，`src/app/routes.mjs`也没有`scene-y1984`路由。正式接入必须保留旧`#/life`作为回退路径，并在独立路由和开关下挂载轻场景。
 
-目前存在三个必须先解决的合同缺口：
+G1 实施已经关闭以下两个合同缺口：
 
-1. [G1验收文档](LIGHT_SCENE_G1_ACCEPTANCE.md)、内容检查脚本和协议检查已经统一使用`data/gameplay/light_scene_yard_1984.json`与`src/game/light-scene-contract.mjs`，当前不存在第二份G1 JSON。正式应用仍未加载这份唯一内容源，这是接入缺口，不是内容合同缺口。
-2. [轻场景协议](../src/game/light-scene-contract.mjs)已经改为由调用方传入canonical content，不再复制舞台、节点、人物和动作ID；但`src/game/load-game-data.mjs`仍没有加载该内容，正式应用也没有把它注入协议端口。
-3. `createSceneRuntimePort().prepareAction()`只返回本地场景状态、Core命令和Cue，没有现成的“提交命令→取得引擎回复→写入存档→把回复映射为Cue”的应用层用例。直接把Spike按钮接到`ReplayGameGateway.submitChoice()`会绕过G1内容与正式季度选项的映射校验。
+1. [G1验收文档](LIGHT_SCENE_G1_ACCEPTANCE.md)、内容检查、正式运行时和协议已统一使用`data/gameplay/light_scene_yard_1984.json`，没有创建第二份G1内容。
+2. `src/game/light-scene-core-bridge.mjs`已把场景journal聚合成一次合法的`quarter.plan`，校验1984年6岁Q3 pending、去重行动，并把本地事件与长期事实候选写入可恢复的`session.sceneRecords`；它不让DOM直接改Core快照，也不把本地事件伪装成旧Core随机事件。
+
+仍待 G3 解决的是正式应用接入：`src/game/load-game-data.mjs`尚未加载轻场景内容，`public/app.mjs`和`src/app/routes.mjs`尚未挂载独立场景路由，正式人生主/备份存档也尚未调用上述Core桥。`public/light-scene/scene-checkpoint.mjs`当前只恢复独立灰盒，不等于正式人生存档已经接通。
 
 因此，下一批开发的第一目标不是改旧页面，而是冻结一个canonical JSON、一个契约适配器和一个独立场景用例，再挂到`#/scene-y1984`。
 
@@ -135,7 +138,7 @@ parseRouteHash
 
 [src/game/game-application.mjs](../src/game/game-application.mjs)实际导出`getGameGateway()`、`restoreLifeSession()`、`startLife()`、`resumeLife()`和`submitLifeChoice()`。这些是旧人生流程的可复用入口。
 
-当前缺口：没有`submitSceneAction()`或`resolveSceneEvent()`。正式桥接应新建独立用例文件，避免让DOM直接依赖`ReplayGameGateway`内部实现：
+当前已有纯应用层桥`src/game/light-scene-core-bridge.mjs`，其检查证明场景journal可以在合法 pending 上聚合并只提交一次；正式主应用仍需要调用该桥，并把返回的session交给现有可恢复存档仓库。目标调用链保持为：
 
 ```text
 prepareSceneAction(sceneState, actionId, context)
@@ -145,7 +148,7 @@ prepareSceneAction(sceneState, actionId, context)
 → return { session, result, domainEvents, presentationCues }
 ```
 
-在四项G1行动没有进入当前Core的`pendingDecision.options`以前，不能声称它们已经接入了人生模拟。当前`SCENE_ACTION_COMMANDS`中的`child_play_nearby`、`child_practice_symbols`等ID必须能在正式季度内容中找到，否则只能作为Spike演示命令。
+四项G1行动当前已映射到`child_play_nearby`、`child_practice_symbols`、`child_observe_neighborhood_work`和`child_small_household_task`，并由`check-light-scene-core-bridge.mjs`证明它们在1984年6岁Q3的`pendingDecision.options`中可用。该结论证明桥接合同成立；在`public/app.mjs`真正调用桥并轮换正式主/备份存档以前，仍不能声称`#/life`已经接入轻场景。
 
 ### 4.3 存档恢复
 
@@ -163,7 +166,7 @@ prepareSceneAction(sceneState, actionId, context)
 - `readSavedSession()`在约第197行调用恢复；
 - `saveActiveSession()`在约第213行调用轮换写入。
 
-当前存档只保存人生`session`，没有保存`SceneRuntimeState`的舞台、焦点、9格已用时间、场景完成动作或本地事件演出状态。G1正式接入必须把“已经发生的场景事实”写入Core命令/事实或可验证的场景checkpoint；不能只把DOM状态塞进`localStorage`。
+独立灰盒目前使用`people-life:light-scene:yard-1984:v1`检查点，严格校验舞台、焦点、9格时间、完成行动、事件选择、journal、演出和设置；损坏项会回退初始场景。Core桥还能把完成行动、Core行动、事件选择、长期事实候选和稳定journal摘要写入`session.sceneRecords`。尚缺的是把这两段恢复协议接到正式主/备份存档轮换，而不是恢复能力本身。
 
 ### 4.4 动画、声音和设置
 
@@ -178,7 +181,7 @@ prepareSceneAction(sceneState, actionId, context)
 - `npc.react`、`prop.change`等Cue可以调用`playSound()`和`triggerHaptic()`；
 - 音效和震动只表现已完成的事实，不能参与随机或结算。
 
-当前缺口：没有`SceneAudioDirector`或`SceneMotionDirector`，没有把Cue类型映射到音效/震动的统一表，也没有面向SceneRuntime的设置注入接口。G3应新建独立适配器，不能让DOM节点直接调用平台音频状态。
+正式灰盒已有`CueDirector`、完整/减少/关闭三档、跳过演出和`public/sound-haptic-service.mjs`声音开关，浏览器矩阵已覆盖三档状态一致性。尚缺面向主应用的设置注入与统一音效/震动Cue映射；G3仍应增加独立适配器，不能让未来多个场景各自读取平台设置。
 
 ## 5. Canonical JSON与light-scene-contract数据流
 

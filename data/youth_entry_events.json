@@ -1,0 +1,167 @@
+{
+  "schemaVersion": 1,
+  "stage": "senior_education_and_first_work_entry",
+  "events": [
+    {
+      "id": "academic_senior_entry_routine",
+      "path": "academic_senior",
+      "trigger": "on_school_entry",
+      "title": "普通高中的时间安排",
+      "prompt": "课程变多，家庭事务也没有消失。你准备怎样安排课外时间？",
+      "contentStatus": "design_assumption",
+      "assumptionId": "YWE14",
+      "options": [
+        {
+          "id": "academic_regular_schedule",
+          "label": "保持固定复习节奏",
+          "autoWeight": 0.42,
+          "studyHoursPerWeek": 16,
+          "householdLaborHoursPerWeek": 6,
+          "peerHoursPerWeek": 4,
+          "expenseMultiplier": 1.0,
+          "immediateStatEffects": { "ability": 1 }
+        },
+        {
+          "id": "academic_exam_focus",
+          "label": "把更多时间用于备考",
+          "autoWeight": 0.31,
+          "studyHoursPerWeek": 22,
+          "householdLaborHoursPerWeek": 4,
+          "peerHoursPerWeek": 2,
+          "expenseMultiplier": 1.08,
+          "immediateStatEffects": { "ability": 2, "mood": -1 }
+        },
+        {
+          "id": "academic_family_balance",
+          "label": "先兼顾家里的生产和家务",
+          "autoWeight": 0.27,
+          "studyHoursPerWeek": 11,
+          "householdLaborHoursPerWeek": 14,
+          "peerHoursPerWeek": 3,
+          "expenseMultiplier": 0.88,
+          "immediateStatEffects": { "relationships": 2 }
+        }
+      ]
+    },
+    {
+      "id": "academic_final_year_direction",
+      "path": "academic_senior",
+      "trigger": "before_final_grade",
+      "title": "高中毕业前的方向",
+      "prompt": "最后一学年，你准备把有限的时间主要放在哪里？",
+      "contentStatus": "design_assumption",
+      "assumptionId": "YWE14",
+      "options": [
+        {
+          "id": "academic_prepare_higher_education",
+          "label": "集中准备普通高校升学",
+          "autoWeight": 0.52,
+          "studyHoursPerWeek": 25,
+          "householdLaborHoursPerWeek": 3,
+          "higherEducationPreparationHours": 320,
+          "jobSearchContacts": 1,
+          "immediateStatEffects": { "ability": 2, "mood": -1 }
+        },
+        {
+          "id": "academic_dual_preparation",
+          "label": "同时准备升学和找工作",
+          "autoWeight": 0.31,
+          "studyHoursPerWeek": 17,
+          "householdLaborHoursPerWeek": 7,
+          "higherEducationPreparationHours": 170,
+          "jobSearchContacts": 6,
+          "immediateStatEffects": { "ability": 1, "relationships": 1 }
+        },
+        {
+          "id": "academic_prepare_work",
+          "label": "重点打听毕业后的工作",
+          "autoWeight": 0.17,
+          "studyHoursPerWeek": 11,
+          "householdLaborHoursPerWeek": 10,
+          "higherEducationPreparationHours": 35,
+          "jobSearchContacts": 12,
+          "immediateStatEffects": { "relationships": 2 }
+        }
+      ]
+    },
+    {
+      "id": "vocational_entry_direction",
+      "path": "vocational_secondary",
+      "trigger": "on_school_entry",
+      "title": "中职里的学习侧重",
+      "prompt": "课堂、实训和家庭事务都需要时间。你打算把重点放在哪里？",
+      "contentStatus": "design_assumption",
+      "assumptionId": "YWE14",
+      "options": [
+        {
+          "id": "vocational_practice_focus",
+          "label": "多投入实训和技能练习",
+          "autoWeight": 0.43,
+          "studyHoursPerWeek": 10,
+          "practiceHoursPerWeek": 16,
+          "householdLaborHoursPerWeek": 6,
+          "expenseMultiplier": 1.05,
+          "immediateStatEffects": { "ability": 2 }
+        },
+        {
+          "id": "vocational_balanced_schedule",
+          "label": "平衡课程、实训与生活",
+          "autoWeight": 0.36,
+          "studyHoursPerWeek": 13,
+          "practiceHoursPerWeek": 11,
+          "householdLaborHoursPerWeek": 7,
+          "expenseMultiplier": 1.0,
+          "immediateStatEffects": { "ability": 1, "mood": 1 }
+        },
+        {
+          "id": "vocational_family_balance",
+          "label": "减少开销并多帮家里",
+          "autoWeight": 0.21,
+          "studyHoursPerWeek": 9,
+          "practiceHoursPerWeek": 8,
+          "householdLaborHoursPerWeek": 15,
+          "expenseMultiplier": 0.82,
+          "immediateStatEffects": { "relationships": 2 }
+        }
+      ]
+    },
+    {
+      "id": "vocational_final_year_connection",
+      "path": "vocational_secondary",
+      "trigger": "before_final_grade",
+      "title": "结业前怎样接触工作",
+      "prompt": "毕业前可以通过不同方式接触工作，你准备怎么做？",
+      "contentStatus": "design_assumption",
+      "assumptionId": "YWE14",
+      "options": [
+        {
+          "id": "vocational_school_introduction",
+          "label": "参加学校组织的岗位介绍",
+          "autoWeight": 0.42,
+          "practiceHoursPerWeek": 14,
+          "jobSearchContacts": 8,
+          "familyIntroductions": 0,
+          "immediateStatEffects": { "relationships": 1 }
+        },
+        {
+          "id": "vocational_family_introduction",
+          "label": "请家人和熟人帮忙打听",
+          "autoWeight": 0.33,
+          "practiceHoursPerWeek": 10,
+          "jobSearchContacts": 5,
+          "familyIntroductions": 4,
+          "immediateStatEffects": { "relationships": 2 }
+        },
+        {
+          "id": "vocational_skill_portfolio",
+          "label": "先完成更多实作练习",
+          "autoWeight": 0.25,
+          "practiceHoursPerWeek": 19,
+          "jobSearchContacts": 3,
+          "familyIntroductions": 1,
+          "immediateStatEffects": { "ability": 2 }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,296 @@
+{
+  "schemaVersion": 1,
+  "scope": {
+    "country": "中国大陆",
+    "startYear": 1986,
+    "endYear": 2000,
+    "minimumStageAge": 7,
+    "maximumStageAge": 18,
+    "formalEmploymentMinimumAge": 16,
+    "currency": "CNY",
+    "priceBasis": "各年名义价格"
+  },
+  "rules": [
+    "初中毛入学率、在校生辍学率、毕业生升学率和高中阶段职业教育占比是不同统计指标，不得互换。",
+    "小学结局直接决定本阶段入口，不以全国初中毛入学率重新抽取一次入学资格。",
+    "未满16岁的家庭劳动、家务或教育训练不得写成用人单位正式就业。",
+    "全国就业结构和平均工资只用于提供时代参考，不直接赋给具体青少年。",
+    "个人的出勤、学习、家庭劳动、教育支出和去向必须保存为具体事实，五项属性变化必须引用事实编号。"
+  ],
+  "sources": [
+    {
+      "id": "nbs_income_engel_1978_2000",
+      "publisher": "国家统计局",
+      "title": "中国统计年鉴2001：城乡居民家庭人均收入及恩格尔系数",
+      "url": "https://www.stats.gov.cn/sj/ndsj/2001c/j1003c.htm"
+    },
+    {
+      "id": "moe_junior_gross_enrollment_1990_2000",
+      "publisher": "教育部",
+      "title": "2000年各级普通教育毛入学率",
+      "url": "https://www.moe.gov.cn/jyb_sjzl/moe_560/moe_566/moe_588/201002/t20100226_7844.html"
+    },
+    {
+      "id": "moe_progression_1990_2000",
+      "publisher": "教育部",
+      "title": "2000年各级普通学校毕业生升学率",
+      "url": "https://www.moe.gov.cn/jyb_sjzl/moe_560/moe_566/moe_588/201002/t20100226_7843.html"
+    },
+    {
+      "id": "nbs_education_1991",
+      "publisher": "国家统计局",
+      "title": "1991年国民经济和社会发展统计公报",
+      "url": "https://www.stats.gov.cn/sj/tjgb/ndtjgb/qgndtjgb/202302/t20230206_1901935.html"
+    },
+    {
+      "id": "nbs_education_1992",
+      "publisher": "国家统计局",
+      "title": "1992年国民经济和社会发展统计公报",
+      "url": "https://www.stats.gov.cn/xxgk/sjfb/tjgb2020/201311/P020200617516948855158.PDF"
+    },
+    {
+      "id": "nbs_education_1993",
+      "publisher": "国家统计局",
+      "title": "1993年国民经济和社会发展统计公报",
+      "url": "https://www.stats.gov.cn/xxgk/sjfb/tjgb2020/201311/P020200617516950101432.PDF"
+    },
+    {
+      "id": "nbs_education_1994",
+      "publisher": "国家统计局",
+      "title": "1994年国民经济和社会发展统计公报",
+      "url": "https://www.stats.gov.cn/xxgk/sjfb/tjgb2020/201311/P020200617516950577971.PDF"
+    },
+    {
+      "id": "nbs_education_1995",
+      "publisher": "国家统计局",
+      "title": "1995年国民经济和社会发展统计公报",
+      "url": "https://www.stats.gov.cn/sj/tjgb/ndtjgb/qgndtjgb/202302/t20230206_1901939.html"
+    },
+    {
+      "id": "moe_education_1998",
+      "publisher": "教育部",
+      "title": "1998年全国教育事业发展统计公报",
+      "url": "https://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/tnull_842.html"
+    },
+    {
+      "id": "moe_education_1999",
+      "publisher": "教育部",
+      "title": "1999年全国教育事业发展统计公报",
+      "url": "https://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/tnull_841.html"
+    },
+    {
+      "id": "nbs_education_2000",
+      "publisher": "国家统计局",
+      "title": "2000年国民经济和社会发展统计公报",
+      "url": "https://www.stats.gov.cn/xxgk/sjfb/tjgb2020/201310/P020200617516941504186.PDF"
+    },
+    {
+      "id": "moe_teacher_ratio_1992_2000",
+      "publisher": "教育部",
+      "title": "2000年各级普通学校生师比",
+      "url": "https://www.moe.gov.cn/jyb_sjzl/moe_560/moe_566/moe_588/201002/t20100226_7841.html"
+    },
+    {
+      "id": "moe_education_plan_1996",
+      "publisher": "国家教育委员会",
+      "title": "全国教育事业‘九五’计划和2010年发展规划",
+      "url": "https://www.moe.gov.cn/srcsite/A03/s7050/199604/t19960410_77143.html"
+    },
+    {
+      "id": "nbs_employment_1999",
+      "publisher": "国家统计局",
+      "title": "就业基本情况（1999年）",
+      "url": "https://www.stats.gov.cn/zt_18555/ztsj/hjtjzl/1999/202303/t20230302_1923318.html"
+    },
+    {
+      "id": "nbs_wage_1985_2000",
+      "publisher": "国家统计局",
+      "title": "中国统计年鉴2001：人民物质文化生活提高情况",
+      "url": "https://www.stats.gov.cn/sj/ndsj/2001c/j1001c.htm"
+    },
+    {
+      "id": "gov_child_labor_1991_gazette",
+      "publisher": "广西壮族自治区人民政府办公厅（转载国务院令第81号）",
+      "title": "禁止使用童工规定（1991年国务院令第81号）",
+      "url": "https://www.gxzf.gov.cn/data/file/2018/06/28/0e9cc0fae59738a4dd6a10cc4d97849c.pdf"
+    },
+    {
+      "id": "gov_labor_law_1995",
+      "publisher": "全国人民代表大会常务委员会",
+      "title": "中华人民共和国劳动法",
+      "url": "https://www.gov.cn/banshi/2005-05/25/content_905.htm"
+    },
+    {
+      "id": "gov_vocational_education_law_1996",
+      "publisher": "全国人民代表大会常务委员会",
+      "title": "中华人民共和国职业教育法（1996年文本）",
+      "url": "https://www.gov.cn/banshi/2005-05/25/content_928.htm"
+    }
+  ],
+  "observations": {
+    "yearlyHouseholdReferences": [
+      { "year": 1986, "urbanIncomePerPersonYuan": 899.6, "ruralIncomePerPersonYuan": 423.8, "urbanEngelCoefficient": 0.524, "ruralEngelCoefficient": 0.564, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1987, "urbanIncomePerPersonYuan": 1002.2, "ruralIncomePerPersonYuan": 462.6, "urbanEngelCoefficient": 0.535, "ruralEngelCoefficient": 0.558, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1988, "urbanIncomePerPersonYuan": 1181.4, "ruralIncomePerPersonYuan": 544.9, "urbanEngelCoefficient": 0.514, "ruralEngelCoefficient": 0.540, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1989, "urbanIncomePerPersonYuan": 1375.7, "ruralIncomePerPersonYuan": 601.5, "urbanEngelCoefficient": 0.544, "ruralEngelCoefficient": 0.548, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1990, "urbanIncomePerPersonYuan": 1510.2, "ruralIncomePerPersonYuan": 686.3, "urbanEngelCoefficient": 0.542, "ruralEngelCoefficient": 0.588, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1991, "urbanIncomePerPersonYuan": 1700.6, "ruralIncomePerPersonYuan": 708.6, "urbanEngelCoefficient": 0.538, "ruralEngelCoefficient": 0.576, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1992, "urbanIncomePerPersonYuan": 2026.6, "ruralIncomePerPersonYuan": 784.0, "urbanEngelCoefficient": 0.529, "ruralEngelCoefficient": 0.576, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1993, "urbanIncomePerPersonYuan": 2577.4, "ruralIncomePerPersonYuan": 921.6, "urbanEngelCoefficient": 0.501, "ruralEngelCoefficient": 0.581, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1994, "urbanIncomePerPersonYuan": 3496.2, "ruralIncomePerPersonYuan": 1221.0, "urbanEngelCoefficient": 0.499, "ruralEngelCoefficient": 0.589, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1995, "urbanIncomePerPersonYuan": 4283.0, "ruralIncomePerPersonYuan": 1577.7, "urbanEngelCoefficient": 0.499, "ruralEngelCoefficient": 0.586, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1996, "urbanIncomePerPersonYuan": 4838.9, "ruralIncomePerPersonYuan": 1926.1, "urbanEngelCoefficient": 0.486, "ruralEngelCoefficient": 0.563, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1997, "urbanIncomePerPersonYuan": 5160.3, "ruralIncomePerPersonYuan": 2090.1, "urbanEngelCoefficient": 0.464, "ruralEngelCoefficient": 0.551, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1998, "urbanIncomePerPersonYuan": 5425.1, "ruralIncomePerPersonYuan": 2162.0, "urbanEngelCoefficient": 0.445, "ruralEngelCoefficient": 0.534, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1999, "urbanIncomePerPersonYuan": 5854.0, "ruralIncomePerPersonYuan": 2210.3, "urbanEngelCoefficient": 0.419, "ruralEngelCoefficient": 0.526, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 2000, "urbanIncomePerPersonYuan": 6280.0, "ruralIncomePerPersonYuan": 2253.4, "urbanEngelCoefficient": 0.392, "ruralEngelCoefficient": 0.491, "sourceId": "nbs_income_engel_1978_2000" }
+    ],
+    "juniorGrossEnrollmentRateAnchors": [
+      { "year": 1990, "rate": 0.667, "sourceId": "moe_junior_gross_enrollment_1990_2000" },
+      { "year": 1991, "rate": 0.697, "sourceId": "moe_junior_gross_enrollment_1990_2000" },
+      { "year": 1992, "rate": 0.718, "sourceId": "moe_junior_gross_enrollment_1990_2000" },
+      { "year": 1993, "rate": 0.731, "sourceId": "moe_junior_gross_enrollment_1990_2000" },
+      { "year": 1994, "rate": 0.738, "sourceId": "moe_junior_gross_enrollment_1990_2000" },
+      { "year": 1995, "rate": 0.784, "sourceId": "moe_junior_gross_enrollment_1990_2000" },
+      { "year": 1996, "rate": 0.824, "sourceId": "moe_junior_gross_enrollment_1990_2000" },
+      { "year": 1997, "rate": 0.871, "sourceId": "moe_junior_gross_enrollment_1990_2000" },
+      { "year": 1998, "rate": 0.873, "sourceId": "moe_junior_gross_enrollment_1990_2000" },
+      { "year": 1999, "rate": 0.886, "sourceId": "moe_education_1999" },
+      { "year": 2000, "rate": 0.886, "sourceId": "nbs_education_2000" }
+    ],
+    "juniorDropoutRateAnchors": [
+      { "year": 1991, "rate": 0.0538, "sourceId": "nbs_education_1991" },
+      { "year": 1992, "rate": 0.0580, "sourceId": "nbs_education_1992" },
+      { "year": 1993, "rate": 0.0710, "sourceId": "nbs_education_1993" },
+      { "year": 1994, "rate": 0.0511, "sourceId": "nbs_education_1994" },
+      { "year": 1995, "rate": 0.0395, "sourceId": "nbs_education_1995" },
+      { "year": 1998, "rate": 0.0323, "sourceId": "moe_education_1998" },
+      { "year": 1999, "rate": 0.0328, "sourceId": "moe_education_1999" },
+      { "year": 2000, "rate": 0.0321, "sourceId": "nbs_education_2000" }
+    ],
+    "juniorToSeniorProgressionAnchors": [
+      { "year": 1990, "rate": 0.406, "sourceId": "moe_progression_1990_2000" },
+      { "year": 1991, "rate": 0.429, "sourceId": "moe_progression_1990_2000" },
+      { "year": 1992, "rate": 0.436, "sourceId": "moe_progression_1990_2000" },
+      { "year": 1993, "rate": 0.441, "sourceId": "moe_progression_1990_2000" },
+      { "year": 1994, "rate": 0.478, "sourceId": "moe_progression_1990_2000" },
+      { "year": 1995, "rate": 0.503, "sourceId": "moe_progression_1990_2000" },
+      { "year": 1996, "rate": 0.498, "sourceId": "moe_progression_1990_2000" },
+      { "year": 1997, "rate": 0.515, "sourceId": "moe_progression_1990_2000" },
+      { "year": 1998, "rate": 0.507, "sourceId": "moe_progression_1990_2000" },
+      { "year": 1999, "rate": 0.500, "sourceId": "moe_progression_1990_2000" },
+      { "year": 2000, "rate": 0.511, "sourceId": "moe_progression_1990_2000" }
+    ],
+    "juniorStudentsPerTeacherReference": [
+      { "year": 1992, "value": 15.85, "sourceId": "moe_teacher_ratio_1992_2000" },
+      { "year": 1995, "value": 16.73, "sourceId": "moe_teacher_ratio_1992_2000" },
+      { "year": 1998, "value": 17.56, "sourceId": "moe_teacher_ratio_1992_2000" },
+      { "year": 2000, "value": 19.03, "sourceId": "moe_teacher_ratio_1992_2000" }
+    ],
+    "seniorStageVocationalShareAnchors": [
+      { "year": 1990, "rate": 0.457, "metric": "share_of_senior_stage_students", "sourceId": "moe_education_plan_1996" },
+      { "year": 1995, "rate": 0.568, "metric": "share_of_senior_stage_students", "sourceId": "moe_education_plan_1996" },
+      { "year": 1999, "rate": 0.5647, "metric": "share_of_senior_stage_students", "sourceId": "moe_education_1999" }
+    ],
+    "employmentStructureAnchors": [
+      { "year": 1991, "primary": 0.597, "secondary": 0.214, "tertiary": 0.189, "urbanPrivateEmployeesTenThousands": 68, "urbanIndividualWorkersTenThousands": 692, "ruralTownshipEnterpriseWorkersTenThousands": 9609, "sourceId": "nbs_employment_1999" },
+      { "year": 1995, "primary": 0.522, "secondary": 0.230, "tertiary": 0.248, "urbanPrivateEmployeesTenThousands": 485, "urbanIndividualWorkersTenThousands": 1560, "ruralTownshipEnterpriseWorkersTenThousands": 12862, "sourceId": "nbs_employment_1999" },
+      { "year": 1999, "primary": 0.501, "secondary": 0.230, "tertiary": 0.269, "urbanPrivateEmployeesTenThousands": 1053, "urbanIndividualWorkersTenThousands": 2414, "ruralTownshipEnterpriseWorkersTenThousands": 12704, "sourceId": "nbs_employment_1999" }
+    ],
+    "staffAverageWageAnchors": [
+      { "year": 1990, "yuanPerYear": 2140, "sourceId": "nbs_wage_1985_2000" },
+      { "year": 1995, "yuanPerYear": 5500, "sourceId": "nbs_wage_1985_2000" },
+      { "year": 2000, "yuanPerYear": 9371, "sourceId": "nbs_wage_1985_2000" }
+    ],
+    "laborLaw": {
+      "effective": "1995-01-01",
+      "minimumOrdinaryEmploymentAge": 16,
+      "sourceId": "gov_labor_law_1995"
+    },
+    "childLaborRegulation1991": {
+      "effective": "1991-04-15",
+      "under16DefinedAsChildLaborWhereLaborRelationshipOrIndividualPaidLaborExists": true,
+      "familyLaborExcludedFromChildLaborDefinition": true,
+      "localizedPoorRuralAuxiliaryLaborExceptionExisted": true,
+      "sourceId": "gov_child_labor_1991_gazette"
+    },
+    "vocationalEducationLaw": {
+      "effective": "1996-09-01",
+      "juniorAfterDiversionEmphasized": true,
+      "sourceId": "gov_vocational_education_law_1996"
+    }
+  },
+  "assumptions": {
+    "householdIncomeContinuation": {
+      "id": "A01",
+      "description": "延续小学末家庭相对同年同城乡收入位置，每年叠加均值为1的随机冲击；成员职业转换暂未在本阶段重建。",
+      "annualShockSigma": { "urban": 0.14, "rural": 0.20 }
+    },
+    "schoolFormDistribution": {
+      "id": "A02",
+      "description": "缺少全国逐年城乡初中办学形态份额，以下为可替换代理；具体学校生师比保持空值。",
+      "urban": { "district_public_junior": 0.66, "work_unit_affiliated_junior": 0.18, "nine_year_school_junior_section": 0.16 },
+      "rural1990": { "township_junior": 0.68, "county_junior": 0.16, "nine_year_school_junior_section": 0.16 },
+      "rural2000": { "township_junior": 0.61, "county_junior": 0.25, "nine_year_school_junior_section": 0.14 }
+    },
+    "instructionAndExpense": {
+      "id": "A03",
+      "description": "每学年200个教学日及教育现金支出占同年城乡人均收入的比例为首版时间和现金尺度。",
+      "instructionDays": 200,
+      "baseExpenseShareOfReferenceIncome": { "urban": 0.090, "rural": 0.125 },
+      "schoolFormExpenseMultiplier": { "district_public_junior": 1.00, "work_unit_affiliated_junior": 0.88, "nine_year_school_junior_section": 0.92, "township_junior": 1.00, "county_junior": 1.28 }
+    },
+    "studentIllnessAbsence": {
+      "id": "A04",
+      "description": "青少年症状事件、病假和较重症状概率为首版代理，不生成未经证实的医学诊断。",
+      "meanEpisodesPerYear": 0.52,
+      "severeEpisodeProbability": 0.045
+    },
+    "learningProgress": {
+      "id": "A05",
+      "description": "0至100学习进展值由出勤、练习、既有能力、家庭劳动、同伴时间与随机冲击生成，不冒充统考或中考成绩。",
+      "annualShockStandardDeviation": 9
+    },
+    "individualDropoutProbability": {
+      "id": "A06",
+      "description": "以当年全国初中辍学率为基线，再按教育支出占家庭收入、家庭劳动、缺课和学习进展调整。"
+    },
+    "gradeProgressionAndGraduation": {
+      "id": "A07",
+      "description": "初中按三年制推进；留级和毕业概率由出勤、学习进展生成，缺少同口径全国逐年数据。",
+      "years": 3,
+      "baseRepeatProbability": 0.018,
+      "baseGraduationProbability": 0.955
+    },
+    "seniorTransitionProbability": {
+      "id": "A08",
+      "description": "以初中毕业生升入高中阶段的全国比例为基线，按学习进展、方向准备、教育支出压力和家庭收入生成个体结果。"
+    },
+    "seniorTrackAllocation": {
+      "id": "A09",
+      "description": "高中阶段职业教育在校生占比被用作新入学方向的近似锚点，再由学术和职业准备小时调整；两种统计口径并不完全相同。"
+    },
+    "visibleStatEvolution": {
+      "id": "A10",
+      "description": "财富由当年家庭人均收入与教育现金支出重算，其他属性只因已记录的健康、学习、劳动、同伴和决定事实变化。"
+    },
+    "under16NonStudentActivity": {
+      "id": "A11",
+      "description": "未满16岁的非在校人物只模拟家庭生产、家务、自学和技能观察，不生成用人单位、工资或劳动合同。1991年规定曾为尚不具备初中义务教育条件的农村贫困地区13至15岁少年保留受省级办法严格限制的辅助劳动例外；因没有省份、贫困地区认定和地方办法数据，首版不生成该例外并明确记录。",
+      "baseHouseholdHoursPerWeek": { "urban": 15, "rural": 25 },
+      "baseSelfStudyHoursPerWeek": { "urban": 5, "rural": 3 }
+    },
+    "age16PreparationOutcome": {
+      "id": "A12",
+      "description": "16岁时只生成下一阶段方向、训练小时、求职准备和可接触行业参考，不在本阶段宣称已经获得工作。"
+    },
+    "parentEmploymentContinuity": {
+      "id": "A13",
+      "description": "父母和其他家庭成员在本阶段沿用上一阶段职业实体，只更新年龄、劳动月份和收入贡献；转业、下岗和退休由后续家庭职业模块统一实现。"
+    },
+    "noJuniorReentry": {
+      "id": "A14",
+      "description": "首版对没有进入初中或提前退出初中的人物暂不模拟复学；可通过自学与训练积累能力，缺口在结局中保留。"
+    }
+  }
+}

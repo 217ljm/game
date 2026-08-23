@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 2,
+  "workingTitle": "人生轨迹",
+  "productStatus": "playable_vertical_slice",
+  "birthYears": [1978, 1979, 1980, 1981, 1982],
+  "stages": ["childhood", "primary", "adolescence", "youth", "adult"],
+  "visibleStats": ["health", "wealth", "mood", "ability", "relationships"],
+  "rules": {
+    "deriveSocialConditionsFromAnnualFacts": true,
+    "storeAbstractSocialTiers": false,
+    "preserveUnchosenOptions": true,
+    "deterministicReplayFromSeedAndChoices": true,
+    "historicalObservationThroughYear": 2025,
+    "postObservationScenarioId": "SCENARIO_BASELINE_2026_PLUS",
+    "maximumScenarioYear": 2087
+  },
+  "activeContentFiles": {
+    "choiceEvents": [
+      "childhood_events.json",
+      "primary_education_events.json",
+      "adolescence_events.json",
+      "youth_entry_events.json",
+      "adult_life_events.json"
+    ],
+    "jobCatalogs": ["entry_job_catalog.json", "adult_job_catalog.json"],
+    "calibrationDirectory": "calibration"
+  }
+}

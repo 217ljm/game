@@ -1,0 +1,164 @@
+{
+  "schemaVersion": 1,
+  "stage": "adult_life",
+  "events": [
+    {
+      "id": "higher_education_entry_routine",
+      "trigger": "on_higher_education_entry",
+      "title": "进入大学后的时间",
+      "prompt": "课程、生活费和新认识的人同时出现。你准备怎样安排这一阶段？",
+      "assumptionId": "AL12",
+      "options": [
+        { "id": "higher_focus_study", "label": "把主要时间用于课程", "autoWeight": 0.36, "studyHoursPerWeek": 24, "partTimeHoursPerWeek": 0, "socialHoursPerWeek": 5, "expenseMultiplier": 1.0, "statEffects": { "ability": 2 } },
+        { "id": "higher_work_study", "label": "一边学习一边补贴生活", "autoWeight": 0.31, "studyHoursPerWeek": 17, "partTimeHoursPerWeek": 12, "socialHoursPerWeek": 4, "expenseMultiplier": 0.82, "statEffects": { "ability": 1, "wealth": 1 } },
+        { "id": "higher_build_connections", "label": "兼顾课程和同学活动", "autoWeight": 0.33, "studyHoursPerWeek": 18, "partTimeHoursPerWeek": 0, "socialHoursPerWeek": 12, "expenseMultiplier": 1.05, "statEffects": { "relationships": 2, "mood": 1 } }
+      ]
+    },
+    {
+      "id": "higher_education_final_direction",
+      "trigger": "before_higher_education_final_year",
+      "title": "毕业前的一年",
+      "prompt": "毕业临近，你准备把最后一年的额外时间放在哪里？",
+      "assumptionId": "AL12",
+      "options": [
+        { "id": "higher_prepare_professional_job", "label": "准备专业相关岗位", "autoWeight": 0.44, "studyHoursPerWeek": 22, "jobSearchContacts": 10, "careerSkillHours": 260, "statEffects": { "ability": 2 } },
+        { "id": "higher_prepare_broad_job", "label": "广泛投递并参加见习", "autoWeight": 0.36, "studyHoursPerWeek": 16, "jobSearchContacts": 18, "careerSkillHours": 140, "statEffects": { "relationships": 1, "ability": 1 } },
+        { "id": "higher_finish_steadily", "label": "先把课程稳定完成", "autoWeight": 0.20, "studyHoursPerWeek": 25, "jobSearchContacts": 4, "careerSkillHours": 80, "statEffects": { "mood": 1, "ability": 1 } }
+      ]
+    },
+    {
+      "id": "early_career_rhythm",
+      "trigger": "age_range_employed",
+      "minAge": 22,
+      "maxAge": 29,
+      "title": "工作的最初几年",
+      "prompt": "你已经能独立完成日常工作。接下来打算把额外精力放在哪里？",
+      "assumptionId": "AL12",
+      "options": [
+        { "id": "early_career_learn_more", "label": "跟前辈做更难的任务", "autoWeight": 0.38, "careerSkillHours": 320, "workHoursDelta": 5, "promotionLogOddsBonus": 0.35, "statEffects": { "ability": 3, "health": -1 } },
+        { "id": "early_career_save_more", "label": "多接班次并增加储蓄", "autoWeight": 0.30, "careerSkillHours": 120, "workHoursDelta": 7, "savingRateDelta": 0.08, "statEffects": { "wealth": 2, "mood": -1 } },
+        { "id": "early_career_keep_balance", "label": "保留休息和交往时间", "autoWeight": 0.32, "careerSkillHours": 80, "workHoursDelta": -2, "savingRateDelta": -0.02, "statEffects": { "health": 2, "mood": 2, "relationships": 1 } }
+      ]
+    },
+    {
+      "id": "adult_migration_crossroad",
+      "trigger": "age_range_not_migrated",
+      "minAge": 24,
+      "maxAge": 31,
+      "title": "外地出现的机会",
+      "prompt": "一份外地机会意味着换住处、重新建立关系，也可能接触更多岗位。你怎么决定？",
+      "assumptionId": "AL12",
+      "options": [
+        { "id": "migration_move_for_work", "label": "搬去城镇租住并尝试机会", "autoWeightByResidence": { "urban": 0.34, "rural": 0.56 }, "migrationAction": "move_to_urban_rental", "jobSearchContacts": 10, "statEffects": { "ability": 1, "relationships": -1, "mood": 1 } },
+        { "id": "migration_stay_near_family", "label": "留在熟悉的地方", "autoWeightByResidence": { "urban": 0.66, "rural": 0.44 }, "migrationAction": "stay", "familyCareHoursPerWeek": 4, "statEffects": { "relationships": 2 } }
+      ]
+    },
+    {
+      "id": "partnership_decision",
+      "trigger": "age_range_single",
+      "minAge": 25,
+      "maxAge": 34,
+      "title": "一段逐渐认真的关系",
+      "prompt": "你和一个认识了一段时间的人开始谈论以后。你愿意把这段关系带进共同生活吗？",
+      "assumptionId": "AL12",
+      "options": [
+        { "id": "partnership_commit", "label": "认真经营并共同生活", "autoWeight": 0.68, "relationshipAction": "form_partner_household", "relationshipHoursPerWeek": 9, "statEffects": { "relationships": 4, "mood": 2 } },
+        { "id": "partnership_remain_independent", "label": "保持各自生活", "autoWeight": 0.32, "relationshipAction": "remain_single", "relationshipHoursPerWeek": 4, "statEffects": { "mood": 1 } }
+      ]
+    },
+    {
+      "id": "housing_long_term_choice",
+      "trigger": "age_range_housing",
+      "minAge": 29,
+      "maxAge": 39,
+      "title": "住处要不要改变",
+      "prompt": "目前的住处可以继续，但你也可以用已有现金和未来收入换一种长期安排。",
+      "assumptionId": "AL12",
+      "options": [
+        { "id": "housing_attempt_purchase", "label": "核算首付并尝试购房", "autoWeight": 0.34, "housingAction": "attempt_purchase", "statEffects": { "mood": 1 } },
+        { "id": "housing_continue_renting", "label": "继续租住，保留流动现金", "autoWeight": 0.36, "housingAction": "continue_renting", "statEffects": { "wealth": 1 } },
+        { "id": "housing_stay_with_family", "label": "继续与家人共住或使用农村家庭住房", "autoWeight": 0.30, "housingAction": "stay_or_return_family_housing", "statEffects": { "relationships": 2 } }
+      ]
+    },
+    {
+      "id": "first_child_decision",
+      "trigger": "age_range_partnered_no_child",
+      "minAge": 27,
+      "maxAge": 39,
+      "title": "是否准备养育一个孩子",
+      "prompt": "你们开始认真计算时间、住处和收入。要不要尝试迎接一个孩子？",
+      "assumptionId": "AL12",
+      "options": [
+        { "id": "child_try", "label": "一起做准备并尝试", "autoWeight": 0.70, "childAction": "try_first_child", "statEffects": { "relationships": 2, "mood": 1 } },
+        { "id": "child_decline", "label": "不把生育纳入现在的生活", "autoWeight": 0.30, "childAction": "decline_child", "statEffects": { "mood": 1 } }
+      ]
+    },
+    {
+      "id": "midcareer_direction",
+      "trigger": "age_range_employed",
+      "minAge": 35,
+      "maxAge": 46,
+      "title": "工作到了中段",
+      "prompt": "你熟悉了手上的工作，也看见另一条可能的路。接下来怎样安排？",
+      "assumptionId": "AL12",
+      "options": [
+        { "id": "midcareer_seek_change", "label": "准备一次转岗或换行业", "autoWeight": 0.27, "careerAction": "seek_change", "jobSearchContacts": 14, "careerSkillHours": 280, "statEffects": { "ability": 2, "mood": 1 } },
+        { "id": "midcareer_deepen_current", "label": "继续深耕当前岗位", "autoWeight": 0.40, "careerAction": "deepen_current", "careerSkillHours": 240, "promotionLogOddsBonus": 0.30, "statEffects": { "ability": 2, "wealth": 1 } },
+        { "id": "midcareer_reduce_overtime", "label": "减少额外工时", "autoWeight": 0.33, "careerAction": "reduce_overtime", "workHoursDelta": -5, "statEffects": { "health": 2, "mood": 2 } }
+      ]
+    },
+    {
+      "id": "parent_care_arrangement",
+      "trigger": "age_range_parent_alive",
+      "minAge": 45,
+      "maxAge": 56,
+      "title": "父母开始需要更多帮助",
+      "prompt": "父母的日常事务明显多了。你准备怎样提供长期帮助？",
+      "assumptionId": "AL12",
+      "options": [
+        { "id": "parent_care_time", "label": "固定留出陪诊和照护时间", "autoWeight": 0.38, "familyCareHoursPerWeek": 10, "familyCareCashShare": 0.04, "statEffects": { "relationships": 3, "health": -1 } },
+        { "id": "parent_care_money", "label": "主要承担现金支出", "autoWeight": 0.34, "familyCareHoursPerWeek": 3, "familyCareCashShare": 0.10, "statEffects": { "relationships": 2, "wealth": -1 } },
+        { "id": "parent_care_shared", "label": "和其他家人分工", "autoWeight": 0.28, "familyCareHoursPerWeek": 6, "familyCareCashShare": 0.05, "statEffects": { "relationships": 2 } }
+      ]
+    },
+    {
+      "id": "midlife_health_routine",
+      "trigger": "age_range",
+      "minAge": 48,
+      "maxAge": 59,
+      "title": "身体发出的提醒",
+      "prompt": "一次持续的不适没有给出明确诊断，但提醒你要改变日常安排。",
+      "assumptionId": "AL12",
+      "options": [
+        { "id": "health_regular_activity", "label": "固定运动并减少超时工作", "autoWeight": 0.39, "exerciseHoursPerWeek": 4, "workHoursDelta": -3, "medicalCheck": false, "statEffects": { "health": 4, "mood": 1 } },
+        { "id": "health_check_and_follow", "label": "检查并按建议调整", "autoWeight": 0.35, "exerciseHoursPerWeek": 2, "medicalCheck": true, "medicalExpenseReferenceShare": 0.12, "statEffects": { "health": 3, "wealth": -1 } },
+        { "id": "health_keep_current_rhythm", "label": "先维持现在的节奏", "autoWeight": 0.26, "exerciseHoursPerWeek": 0, "medicalCheck": false, "statEffects": { "mood": 1 } }
+      ]
+    },
+    {
+      "id": "retirement_transition",
+      "trigger": "at_retirement_age_employed",
+      "title": "从工作转向退休生活",
+      "prompt": "你已经达到估算退休年龄。是现在结束全职工作，还是在条件允许时再做一段时间？",
+      "assumptionId": "AL12",
+      "options": [
+        { "id": "retirement_now", "label": "结束全职工作", "autoWeight": 0.72, "retirementAction": "retire_now", "statEffects": { "health": 2, "mood": 1 } },
+        { "id": "retirement_delay_two_years", "label": "再工作两年", "autoWeight": 0.28, "retirementAction": "delay_two_years", "statEffects": { "wealth": 2, "health": -1 } }
+      ]
+    },
+    {
+      "id": "later_life_time",
+      "trigger": "age_range_retired",
+      "minAge": 65,
+      "maxAge": 75,
+      "title": "退休后的固定时间",
+      "prompt": "工作不再占据大部分日子。你想把每周固定的一段时间留给什么？",
+      "assumptionId": "AL12",
+      "options": [
+        { "id": "later_family_time", "label": "陪伴家人与照看晚辈", "autoWeight": 0.37, "laterLifeAction": "family", "socialHoursPerWeek": 12, "exerciseHoursPerWeek": 2, "statEffects": { "relationships": 3, "mood": 2 } },
+        { "id": "later_interest_time", "label": "学习一项一直想做的事", "autoWeight": 0.32, "laterLifeAction": "interest", "socialHoursPerWeek": 5, "exerciseHoursPerWeek": 2, "statEffects": { "ability": 2, "mood": 3 } },
+        { "id": "later_community_time", "label": "参加社区活动", "autoWeight": 0.31, "laterLifeAction": "community", "socialHoursPerWeek": 10, "exerciseHoursPerWeek": 3, "statEffects": { "relationships": 2, "health": 1, "mood": 1 } }
+      ]
+    }
+  ]
+}

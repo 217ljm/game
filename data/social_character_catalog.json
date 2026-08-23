@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "contentStatus": "fictional_character_generation",
+  "rules": {
+    "maximumRecurringPeople": 12,
+    "minimumCloseness": 0,
+    "maximumCloseness": 100,
+    "passiveAnnualDecay": 1,
+    "focusedContactIncrease": 6,
+    "description": "姓名和人物经历均为虚构生成，不指向真实个人。"
+  },
+  "surnamePool": ["王", "李", "张", "刘", "陈", "杨", "赵", "黄", "周", "吴", "徐", "孙"],
+  "givenNamePoolBySex": {
+    "female": ["红梅", "丽华", "晓燕", "秀兰", "芳", "静", "小敏", "慧", "春梅", "玲"],
+    "male": ["建国", "志强", "海军", "伟", "勇", "军", "建华", "国强", "晓东", "明"]
+  },
+  "temperamentPool": ["爱说话，容易先开口", "慢热，熟悉以后话会变多", "好胜，输赢时容易较真", "细心，常注意别人忽略的地方", "大胆，喜欢先试再说", "稳当，答应的事通常会记住"],
+  "roles": {
+    "neighborhood_friend": { "label": "童年玩伴", "initialCloseness": 50, "initialFamiliarity": 44, "initialTrust": 38 },
+    "primary_peer": { "label": "小学同学", "initialCloseness": 48, "initialFamiliarity": 40, "initialTrust": 36 },
+    "primary_teacher": { "label": "小学老师", "initialCloseness": 36, "initialFamiliarity": 38, "initialTrust": 44, "birthYearOffsetMin": -35, "birthYearOffsetMax": -21, "temperamentPool": ["说话直接，重视把步骤讲清", "耐心，但能留给每个孩子的时间有限", "要求严格，也会记得持续来问问题的学生", "善于用身边材料示范抽象内容"] },
+    "junior_peer": { "label": "初中同学", "initialCloseness": 47 },
+    "neighborhood_youth": { "label": "附近认识的同龄人", "initialCloseness": 44 },
+    "senior_peer": { "label": "高中阶段同学", "initialCloseness": 46 },
+    "higher_peer": { "label": "大学同学", "initialCloseness": 46 },
+    "training_peer": { "label": "培训或技能练习伙伴", "initialCloseness": 45 },
+    "work_contact": { "label": "工作中认识的人", "initialCloseness": 43 },
+    "adult_friend": { "label": "成年后认识的朋友", "initialCloseness": 42 }
+  },
+  "focusedContactOperationIds": [
+    "child_play_nearby",
+    "primary_spend_time_with_peers",
+    "not_enrolled_play_with_peers",
+    "teen_keep_friendships",
+    "nonstudent_build_contacts",
+    "youth_keep_social_balance",
+    "youth_expand_job_contacts",
+    "higher_build_relationships",
+    "adult_maintain_relationships",
+    "retired_join_community"
+  ]
+}

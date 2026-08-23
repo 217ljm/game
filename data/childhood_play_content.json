@@ -1,0 +1,684 @@
+{
+  "schemaVersion": 1,
+  "contentStatus": "gameplay_design_grounded_in_existing_household_and_school_facts",
+  "rules": {
+    "minAge": 3,
+    "maxAge": 12,
+    "maximumMemories": 48,
+    "actualHoursMinimumShare": 0.68,
+    "actualHoursMaximumShare": 1.04,
+    "description": "活动可用性由年龄、是否入学、年级、城乡居住和已经形成的成长经历共同决定；成长点是游戏反馈，不替代现实教育、健康或家庭事实。"
+  },
+  "growthPaths": {
+    "interest_exploration": { "label": "兴趣与探索", "description": "主动观察、提问、阅读、表达和持续追究一件事。" },
+    "peer_bond": { "label": "同伴与朋友", "description": "加入游戏、合作、处理分歧并形成可持续的同伴关系。" },
+    "family_participation": { "label": "家庭参与", "description": "在符合年龄的范围内参与家务、照护与家庭日常。" },
+    "school_confidence": { "label": "学校适应", "description": "理解课堂节奏、练习方法、求助方式以及与师生相处。" },
+    "healthy_rhythm": { "label": "活动与休息", "description": "跑动、游戏、睡眠和恢复逐渐形成可维持的节律。" },
+    "practical_independence": { "label": "动手与独立", "description": "从模仿开始，逐步完成制作、整理、修补和实际事务。" }
+  },
+  "milestones": [
+    { "id": "exploration_first_question", "pathId": "interest_exploration", "threshold": 4, "title": "一个问题被你追了下去", "description": "你不只看了一眼，还会记住问题、再问一次或换个办法继续观察。", "unlockHint": "开始出现需要持续观察或表达的活动。" },
+    { "id": "exploration_personal_interest", "pathId": "interest_exploration", "threshold": 12, "title": "有些东西会反复吸引你", "description": "过去的阅读、观察和表达开始连成一条线，你能说出自己为什么还想继续。", "unlockHint": "可以完成自己的小作品或长期观察。" },
+    { "id": "exploration_self_project", "pathId": "interest_exploration", "threshold": 24, "title": "你做完了第一个小课题", "description": "你把几次零散接触整理成一个能讲给别人听的结果。", "unlockHint": "更复杂的阅读、记录和分享活动变得可执行。" },
+    { "id": "peer_known_face", "pathId": "peer_bond", "threshold": 4, "title": "附近有了会喊你名字的人", "description": "你们不再只是偶然碰见，下一次会主动招呼彼此。", "unlockHint": "同伴活动会由临时相遇转向持续来往。" },
+    { "id": "peer_shared_rules", "pathId": "peer_bond", "threshold": 12, "title": "你们有了共同的玩法", "description": "你和熟悉的同伴形成了规则、玩笑和解决争执的办法。", "unlockHint": "可以组织合作游戏、交换物品或共同完成事情。" },
+    { "id": "peer_reliable_friend", "pathId": "peer_bond", "threshold": 24, "title": "一个同伴成为可靠的朋友", "description": "相处不再只有玩耍，也包括求助、守约和分歧后的修复。", "unlockHint": "朋友会在学习、兴趣和关键事件里继续出现。" },
+    { "id": "family_small_task", "pathId": "family_participation", "threshold": 4, "title": "家里开始把一件小事交给你", "description": "大人仍承担主要责任，但你已经能在提醒下完成一项符合年龄的事务。", "unlockHint": "可以承担稳定而有限的家庭任务。" },
+    { "id": "family_regular_role", "pathId": "family_participation", "threshold": 12, "title": "你在家庭日常里有了固定位置", "description": "家里人知道哪些事情可以请你参与，你也逐渐会判断什么时候需要搭把手。", "unlockHint": "家庭回应会反映信任，也可能出现时间冲突。" },
+    { "id": "family_negotiated_duty", "pathId": "family_participation", "threshold": 24, "title": "你开始和家人商量责任", "description": "你能说明功课、休息和家里事务的冲突，并尝试一起重新安排。", "unlockHint": "可以协商任务，而不只是服从或逃开。" },
+    { "id": "school_found_rhythm", "pathId": "school_confidence", "threshold": 4, "title": "你摸到了上学的节奏", "description": "什么时候听、什么时候问、放学后先做什么，开始变得没有那么陌生。", "unlockHint": "课堂练习和向老师求助更容易产生效果。" },
+    { "id": "school_own_method", "pathId": "school_confidence", "threshold": 12, "title": "你找到了自己的练习办法", "description": "你能把不会的地方留下来，之后再问、再算或和同学核对。", "unlockHint": "可进行错题整理、同伴互助和持续练习。" },
+    { "id": "school_help_others", "pathId": "school_confidence", "threshold": 24, "title": "你能把学会的东西讲给别人", "description": "解释一道题或一段课文，让你第一次感到学习不只是完成要求。", "unlockHint": "可参与小组互助和更主动的学习项目。" },
+    { "id": "health_enjoy_movement", "pathId": "healthy_rhythm", "threshold": 4, "title": "你发现跑动也有自己的乐趣", "description": "活动不只是被大人催促，你开始愿意重复一种让身体舒展的玩法。", "unlockHint": "可以稳定练习一种运动或户外游戏。" },
+    { "id": "health_knows_rest", "pathId": "healthy_rhythm", "threshold": 12, "title": "你开始知道什么时候该停下来", "description": "累、疼、睡不够不再只是忍着，你会调整节奏或告诉身边的人。", "unlockHint": "恢复、睡眠和规律活动会共同影响执行结果。" },
+    { "id": "health_regular_habit", "pathId": "healthy_rhythm", "threshold": 24, "title": "一种活动变成了长期习惯", "description": "即使没有临时邀请，你也会给身体活动和恢复留出位置。", "unlockHint": "健康节律会在后续学习和生活压力中产生保护作用。" },
+    { "id": "practical_copy_action", "pathId": "practical_independence", "threshold": 4, "title": "你不再只是站在旁边看", "description": "在大人看护下，你能模仿完成一个很小的步骤。", "unlockHint": "可以尝试整理、制作和安全的简单工具使用。" },
+    { "id": "practical_finish_object", "pathId": "practical_independence", "threshold": 12, "title": "你做成了一件能留下来的东西", "description": "它不一定精致，但从材料到完成都能看出你的办法。", "unlockHint": "可以修补、改造或为真实需要制作物件。" },
+    { "id": "practical_solve_problem", "pathId": "practical_independence", "threshold": 24, "title": "家里有人开始问你的办法", "description": "面对整理、修补或制作问题，你已经能提出并验证一个可行做法。", "unlockHint": "动手经验会影响后续技能选择与家庭信任。" }
+  ],
+  "activityPools": [
+    {
+      "id": "preschool_self_directed",
+      "stages": ["childhood"],
+      "minAge": 3,
+      "maxAge": 5,
+      "options": [
+        {
+          "id": "child_imagination_world",
+          "label": "用普通物件编一段自己的游戏",
+          "description": "石子、树枝、旧盒子或家里的普通物件，会在你的讲述里变成角色和地方。",
+          "category": "entertainment",
+          "hoursPerWeek": 3,
+          "interestTags": ["storytelling_media", "visual_art"],
+          "growthChanges": { "interest_exploration": 2 },
+          "statChanges": { "mood": 1, "ability": 1 },
+          "experience": { "actorRole": "self", "settingByResidence": { "urban": "家门口、院子或楼道边", "rural": "院子、屋前空地或田埂边" }, "process": ["先挑出几个能拿动的普通物件", "给它们安排角色和规则", "把同一个情节改着玩了几遍"], "responses": ["家里人经过时听见了你的自言自语，没有替你决定故事。", "附近的人看了一会儿，问你这些东西分别是什么。"], "outcomes": ["你记住了一个自己发明的角色。", "下一次玩时，你把今天的结尾接了下去。"] }
+        },
+        {
+          "id": "child_ask_for_story",
+          "label": "缠着熟悉的大人讲一段故事",
+          "description": "故事可能来自亲身经历、民间讲法、收音机内容或记得不完整的书。",
+          "category": "learning",
+          "hoursPerWeek": 3,
+          "interestTags": ["reading_language", "storytelling_media"],
+          "growthChanges": { "interest_exploration": 2, "family_participation": 1 },
+          "statChanges": { "ability": 1, "relationships": 1 },
+          "experience": { "actorRole": "caregiver", "setting": "晚饭后、做家务的间隙或临睡前", "process": ["先问一个你一直记着的问题", "听到不明白的地方就打断追问", "后来试着用自己的话讲回去"], "responses": ["对方一边忙手里的事，一边把故事接着讲完。", "对方记不清全部细节，便告诉你哪些是亲历、哪些只是听来的。"], "outcomes": ["你开始分得出故事里的先后顺序。", "其中一个词或地方让你之后还想再问。"] }
+        },
+        {
+          "id": "child_marks_and_pictures",
+          "label": "画下看见的人、动物或房子",
+          "description": "使用实际能拿到的纸片、粉笔、炭条或泥地，不假定家里拥有成套画具。",
+          "category": "entertainment",
+          "hoursPerWeek": 3,
+          "interestTags": ["visual_art"],
+          "growthChanges": { "interest_exploration": 2, "practical_independence": 1 },
+          "statChanges": { "ability": 1, "mood": 1 },
+          "experience": { "actorRole": "caregiver", "setting": "能留下痕迹的一小块地方", "process": ["找到不会影响家里使用的材料", "先画最熟悉的轮廓", "擦掉或盖住不满意的地方再来一次"], "responses": ["对方没有立刻看懂，但认真问了你画的是谁。", "家里人提醒你别画到需要保留的物件上，并给你留了一小块地方。"], "outcomes": ["你第一次让别人认出了画里的东西。", "你发现同一个东西可以用不同线条表示。"] }
+        },
+        {
+          "id": "child_collect_and_compare",
+          "label": "收集叶子、石子或瓶盖并比较",
+          "description": "把身边安全、允许拿走的小东西按大小、颜色或形状排在一起。",
+          "category": "exploration",
+          "hoursPerWeek": 3,
+          "interestTags": ["nature_observation", "numbers_logic"],
+          "growthChanges": { "interest_exploration": 2, "practical_independence": 1 },
+          "statChanges": { "ability": 1 },
+          "experience": { "actorRole": "self", "settingByResidence": { "urban": "院子、路边和家中废旧物旁", "rural": "屋前、田边和树下" }, "process": ["只拿走安全且允许带回的东西", "按一个自己能说清的特点排开", "换一种标准后重新排列"], "responses": ["家里人让你把不干净的东西留在门外。", "有人问你为什么把这几个放在一起。"], "outcomes": ["你发现大小和数量不是同一回事。", "你给其中几样东西起了只有自己懂的名称。"] }
+        },
+        {
+          "id": "child_running_game",
+          "label": "反复玩一种需要跑跳的游戏",
+          "description": "追逐、跳格、踢小物件或其他当时当地能进行的身体游戏。",
+          "category": "health",
+          "hoursPerWeek": 5,
+          "interestTags": ["sports_movement"],
+          "growthChanges": { "healthy_rhythm": 2, "peer_bond": 1 },
+          "statChanges": { "health": 1, "mood": 1 },
+          "experience": { "actorRole": "friend", "setting": "住处附近允许孩子活动的空地", "process": ["先跟着别人看懂大致规则", "跑过几轮后自己提出一次变化", "累了就退到旁边看一会儿再加入"], "responses": ["熟悉的孩子给你留了位置，也会在你弄错规则时喊停。", "你们为一次输赢争了几句，后来重新说好怎么算。"], "outcomes": ["你记住了什么时候发力、什么时候停。", "下一次有人开始这个游戏时，会先来叫你。"] }
+        },
+        {
+          "id": "child_small_household_task",
+          "label": "主动接下一件自己能做的小事",
+          "description": "递东西、整理自己的物件、看住一会儿门口或完成其他符合年龄的小任务。",
+          "category": "family",
+          "hoursPerWeek": 3,
+          "interestTags": ["practical_work"],
+          "growthChanges": { "family_participation": 2, "practical_independence": 1 },
+          "statChanges": { "relationships": 1, "ability": 1 },
+          "experience": { "actorRole": "caregiver", "setting": "家中或家门附近", "process": ["先听清楚哪些能动、哪些不能动", "中途忘了一次，又回来接着做", "完成后让大人看了一遍"], "responses": ["对方仍然检查了结果，但下一次少提醒了一遍。", "大人发现事情对你太难，便只留下其中一个步骤。"], "outcomes": ["一件小事开始固定由你参与。", "你知道了帮忙不等于可以随便碰所有东西。"] }
+        },
+        {
+          "id": "child_build_from_scraps",
+          "label": "把废旧小物拼成一个能玩的东西",
+          "description": "只使用安全、被允许拿取的材料，在大人能看见的地方尝试。",
+          "category": "exploration",
+          "hoursPerWeek": 4,
+          "interestTags": ["making_repair", "visual_art"],
+          "growthChanges": { "practical_independence": 2, "interest_exploration": 1 },
+          "statChanges": { "ability": 2 },
+          "experience": { "actorRole": "caregiver", "setting": "家里存放废旧物的一角", "process": ["先问清哪些材料可以拿", "试着让两样东西固定在一起", "发现不牢后换了一种连接办法"], "responses": ["大人替你拿走了锋利或不安全的部分，剩下的让你继续。", "对方看懂你的想法后，只示范了最难的一个动作。"], "outcomes": ["你做出的东西真的能被拿起来玩。", "虽然成品很粗糙，你已经知道下次要先处理哪一步。"] }
+        },
+        {
+          "id": "child_make_longer_story",
+          "label": "把熟悉的游戏编成一个完整故事",
+          "description": "只有持续探索和表达后才出现；你会给故事安排开头、变化和结尾。",
+          "category": "entertainment",
+          "hoursPerWeek": 4,
+          "interestTags": ["storytelling_media", "reading_language"],
+          "requiresGrowth": { "interest_exploration": 4 },
+          "growthChanges": { "interest_exploration": 3 },
+          "statChanges": { "ability": 2, "mood": 1 },
+          "experience": { "actorRole": "friend", "setting": "你们经常玩耍的地方", "process": ["先把每个人要扮演什么说清楚", "玩到一半时接受同伴改掉一段情节", "最后把故事从头到尾讲了一遍"], "responses": ["同伴记住了你安排的角色，但坚持给自己加一个新办法。", "有人中途不想继续，你们缩短故事后把结尾完成了。"], "outcomes": ["这段故事在之后几次见面时又被接着玩。", "你第一次意识到别人加入后，故事会变得不一样。"] }
+        }
+      ]
+    },
+    {
+      "id": "school_entry_transition",
+      "stages": ["childhood"],
+      "minAge": 6,
+      "maxAge": 6,
+      "options": [
+        {
+          "id": "child_walk_school_route",
+          "label": "跟家人走一遍可能的上学路线",
+          "description": "确认路程、路口、天气变化和谁可能同行，不提前假定已经入学。",
+          "category": "exploration",
+          "hoursPerWeek": 2,
+          "interestTags": ["nature_observation"],
+          "growthChanges": { "school_confidence": 2, "practical_independence": 1 },
+          "statChanges": { "ability": 1, "relationships": 1 },
+          "experience": { "actorRole": "caregiver", "setting": "住处到附近学校或教学点之间", "process": ["记住几个不会轻易变化的路标", "在需要停下观察的地方由家人示范", "回程时试着自己指出方向"], "responses": ["家人说明了哪些路段不能独自走。", "对方发现路程比想象中长，开始重新考虑接送或同行安排。"], "outcomes": ["学校从一个名字变成了有距离和路线的地方。", "你记住了路上最容易走错的一个位置。"] }
+        },
+        {
+          "id": "child_practice_name_numbers",
+          "label": "练习写名字、认常用字和数数",
+          "description": "利用实际能接触到的纸张、招牌、包装和生活物件练习。",
+          "category": "learning",
+          "hoursPerWeek": 5,
+          "interestTags": ["reading_language", "numbers_logic"],
+          "growthChanges": { "school_confidence": 2, "interest_exploration": 1 },
+          "statChanges": { "ability": 2 },
+          "experience": { "actorRole": "caregiver", "setting": "家中能安静坐一会儿的地方", "process": ["先认出自己最常见的几个字", "用豆子、石子或日常物件练习数量", "把不会的地方留到下一次再问"], "responses": ["对方能教多少取决于自己掌握的程度，但会纠正你的名字。", "家里人没有成套材料，便用身边物件给你出题。"], "outcomes": ["你能认出或写出名字中的一部分。", "数数开始和真实物件对应起来。"] }
+        },
+        {
+          "id": "child_meet_future_schoolmate",
+          "label": "找可能一起上学的孩子说话",
+          "description": "问问对方从哪里走、认识谁、对学校听说过什么。",
+          "category": "social",
+          "hoursPerWeek": 4,
+          "interestTags": ["social_organizing"],
+          "growthChanges": { "peer_bond": 2, "school_confidence": 1 },
+          "statChanges": { "mood": 1, "relationships": 1 },
+          "experience": { "actorRole": "friend", "setting": "住处附近或上学路线旁", "process": ["先确认对方是否也在准备入学", "互相说了各自听来的学校情况", "约好下一次一起走到某个路口"], "responses": ["对方也有点不确定，但愿意和你同行。", "对方已经认识学校里的孩子，告诉了你一些具体规矩。"], "outcomes": ["想到开学时，你脑中开始出现一个熟悉的人。", "你们约定的同行安排仍要经过各自家庭确认。"] }
+        },
+        {
+          "id": "child_prepare_daily_belongings",
+          "label": "学习自己整理每天要带的东西",
+          "description": "从衣物、简单文具或水具开始，不假定拥有超出家庭实际条件的物品。",
+          "category": "family",
+          "hoursPerWeek": 3,
+          "interestTags": ["practical_work"],
+          "growthChanges": { "practical_independence": 2, "school_confidence": 1, "family_participation": 1 },
+          "statChanges": { "ability": 1, "relationships": 1 },
+          "experience": { "actorRole": "caregiver", "setting": "家中固定放置日常物件的地方", "process": ["先认清属于自己的几样东西", "按第二天要用的顺序摆放", "早上再检查一次有没有遗漏"], "responses": ["家人最后仍会检查，但让你先自己来。", "家里能提供的东西有限，你们把最必要的几样先准备好。"], "outcomes": ["你少忘了一次东西。", "固定摆放的位置开始真正有用。"] }
+        },
+        {
+          "id": "child_balance_play_and_preparation",
+          "label": "给准备上学和玩耍都留时间",
+          "description": "没有把整个童年都写成训练；每天练一小段，也继续和同伴活动。",
+          "category": "health",
+          "hoursPerWeek": 5,
+          "interestTags": ["sports_movement", "reading_language"],
+          "growthChanges": { "healthy_rhythm": 2, "school_confidence": 1 },
+          "statChanges": { "health": 1, "mood": 1 },
+          "experience": { "actorRole": "caregiver", "setting": "家中和住处附近", "process": ["把短时间练习安排在较固定的时段", "完成后照常出去活动", "太累或家里临时有事时缩短练习"], "responses": ["家人看到你能按约定回来，减少了一些催促。", "有几天安排没有执行，但没有因此把整季都判作失败。"], "outcomes": ["上学准备没有完全挤掉玩耍。", "你开始理解固定安排也可以留有变化。"] }
+        },
+        {
+          "id": "child_make_learning_card",
+          "label": "做一套自己的认字或数数小卡片",
+          "description": "在已经积累观察和动手经验后，用废纸或可重复使用的材料制作。",
+          "category": "learning",
+          "hoursPerWeek": 4,
+          "interestTags": ["reading_language", "making_repair"],
+          "requiresGrowth": { "interest_exploration": 4, "practical_independence": 4 },
+          "growthChanges": { "school_confidence": 2, "practical_independence": 2 },
+          "statChanges": { "ability": 2 },
+          "experience": { "actorRole": "caregiver", "setting": "家中桌面或平整的一角", "process": ["先挑出最想记住的几个字或数量", "把纸片裁成能保存的小块，危险步骤由大人处理", "打乱顺序后自己重新认了一遍"], "responses": ["家人补上了你不会写的部分，其余让你自己画。", "对方发现其中一张容易弄混，和你一起改了标记。"], "outcomes": ["这些卡片在之后几周仍能继续使用。", "你第一次自己做出了学习材料。"] }
+        }
+      ]
+    },
+    {
+      "id": "primary_not_enrolled_child_life",
+      "stages": ["primary"],
+      "minAge": 7,
+      "maxAge": 12,
+      "when": { "educationStatusIn": ["not_enrolled"] },
+      "options": [
+        {
+          "id": "child_not_enrolled_shared_reading",
+          "label": "找识字的人一起读生活中的文字",
+          "description": "使用招牌、通知、包装、借来的课本或其他真实可接触材料。",
+          "category": "learning",
+          "hoursPerWeek": 5,
+          "interestTags": ["reading_language"],
+          "growthChanges": { "interest_exploration": 2, "school_confidence": 1 },
+          "statChanges": { "ability": 2 },
+          "experience": { "actorRole": "caregiver", "setting": "家中、亲友处或公共文字附近", "process": ["先挑出每天都会看见的字", "请对方读一遍后自己重复", "隔几天再去找同一个字"], "responses": ["对方没有按学校课程教，只帮你读懂眼前内容。", "亲友找来一页旧课本，让你从已经认识的地方开始。"], "outcomes": ["你能在另一个地方认出同一个字。", "识字开始帮助你理解真实生活信息。"] }
+        },
+        {
+          "id": "child_not_enrolled_practical_counting",
+          "label": "在买卖、分配或家务中练习算数",
+          "description": "围绕实际数量和简单加减，不虚构正式课堂。",
+          "category": "learning",
+          "hoursPerWeek": 4,
+          "interestTags": ["numbers_logic", "practical_work"],
+          "growthChanges": { "interest_exploration": 1, "practical_independence": 2 },
+          "statChanges": { "ability": 2 },
+          "experience": { "actorRole": "caregiver", "setting": "家庭日常分配、采买或劳动现场旁", "process": ["先数清一组真实物件", "改变数量后重新计算", "让大人核对你的结果"], "responses": ["家人只让你处理不会造成损失的小数量。", "对方指出你漏算的一样，让你从头再来。"], "outcomes": ["数字和家里的真实事务联系起来。", "你开始会估计结果是否明显不对。"] }
+        },
+        {
+          "id": "child_not_enrolled_peer_project",
+          "label": "和附近孩子共同做一件东西",
+          "description": "搭一个游戏场地、制作简单玩具或整理共同使用的物件。",
+          "category": "social",
+          "hoursPerWeek": 6,
+          "interestTags": ["making_repair", "social_organizing"],
+          "growthChanges": { "peer_bond": 2, "practical_independence": 2 },
+          "statChanges": { "ability": 1, "relationships": 1, "mood": 1 },
+          "experience": { "actorRole": "friend", "setting": "住处附近允许活动的地方", "process": ["先说好每个人去找什么材料", "因为做法不同停下来争论了一次", "留下能继续使用的部分并收拾现场"], "responses": ["熟悉的孩子接受了你的一个办法，也坚持保留自己的部分。", "你们请大人确认了材料是否安全。"], "outcomes": ["成品成了之后几次见面的共同话题。", "你们发现分工会比各做各的更快。"] }
+        },
+        {
+          "id": "child_not_enrolled_ask_entry_details",
+          "label": "把下一次入学需要的条件问清楚",
+          "description": "询问年龄、时间、距离、费用或材料，记录信息但不保证一定入学。",
+          "category": "exploration",
+          "hoursPerWeek": 3,
+          "interestTags": ["social_organizing"],
+          "growthChanges": { "school_confidence": 2, "family_participation": 1 },
+          "statChanges": { "ability": 1, "relationships": 1 },
+          "experience": { "actorRole": "caregiver", "setting": "家中、亲友或学校相关人员能说明情况的地方", "process": ["先列出上次没有解决的问题", "请大人确认消息来自哪里", "把能做的准备和暂时做不到的事分开"], "responses": ["家人说明了当前最实际的阻碍，没有把结果提前说死。", "不同人给出的说法不完全一样，你们决定再核实一项。"], "outcomes": ["下一次尝试入学不再只是模糊等待。", "你知道了哪些条件来自家庭，哪些来自学校供给。"] }
+        },
+        {
+          "id": "child_not_enrolled_family_responsibility",
+          "label": "承担一项固定但有限的家庭事务",
+          "description": "照看物件、整理、跑腿或协助生产；仍不写成正式就业。",
+          "category": "family",
+          "hoursPerWeek": 7,
+          "interestTags": ["practical_work"],
+          "growthChanges": { "family_participation": 2, "practical_independence": 2 },
+          "statChanges": { "relationships": 1, "ability": 1 },
+          "experience": { "actorRole": "caregiver", "setting": "家庭实际需要发生的地方", "process": ["先确认这周固定要完成什么", "遇到超出能力的部分及时叫大人", "做完后把结果交代清楚"], "responses": ["家人开始依赖你完成这件事，也必须承担监督责任。", "任务占用过多时，家人同意减少其中一部分。"], "outcomes": ["你获得了真实责任，也失去了一部分自由时间。", "你开始能说明这项事务需要多久。"] }
+        },
+        {
+          "id": "child_not_enrolled_protect_free_time",
+          "label": "保留跑动、玩耍和休息时间",
+          "description": "未入学不等于时间可以被家庭劳动全部占满。",
+          "category": "health",
+          "hoursPerWeek": 6,
+          "interestTags": ["sports_movement"],
+          "growthChanges": { "healthy_rhythm": 2, "peer_bond": 1 },
+          "statChanges": { "health": 1, "mood": 1 },
+          "experience": { "actorRole": "friend", "setting": "住处附近的日常活动范围", "process": ["先完成当天必须做的事", "和同伴约定一段能共同活动的时间", "天气或身体不适时改成轻松玩法"], "responses": ["同伴知道你什么时候能出来，不再每次都白等。", "家人看到事情完成后，没有临时把所有空闲都占走。"], "outcomes": ["生活没有只剩等待和帮忙。", "稳定活动让你更容易觉察疲劳。"] }
+        }
+      ]
+    },
+    {
+      "id": "primary_lower_grades",
+      "stages": ["primary"],
+      "minAge": 7,
+      "maxAge": 12,
+      "when": { "educationStatusIn": ["enrolled_primary"], "gradeMax": 2 },
+      "options": [
+        {
+          "id": "primary_read_aloud_daily",
+          "label": "每天读一小段课文或能找到的文字",
+          "description": "把课堂内容带回真实生活，读错时留下记号再问。",
+          "category": "learning",
+          "hoursPerWeek": 5,
+          "interestTags": ["reading_language"],
+          "growthChanges": { "school_confidence": 2, "interest_exploration": 1 },
+          "statChanges": { "ability": 1 },
+          "experience": { "actorRole": "teacher", "setting": "课堂、家中或放学后的安静角落", "process": ["选一小段而不是一次读完所有内容", "不会的字先圈出来", "第二天向老师或同学核对"], "responses": ["老师指出了一个反复读错的地方，并让你再试一遍。", "同学听见后把自己记字的办法告诉了你。"], "outcomes": ["你能更顺地读完其中一段。", "一个原本只在课本里的词，被你在生活中认了出来。"] }
+        },
+        {
+          "id": "primary_number_games",
+          "label": "用生活物件做加减和比较游戏",
+          "description": "把算术变成可以摆放、分组和核对的实际过程。",
+          "category": "learning",
+          "hoursPerWeek": 4,
+          "interestTags": ["numbers_logic"],
+          "growthChanges": { "school_confidence": 2, "interest_exploration": 1 },
+          "statChanges": { "ability": 2 },
+          "experience": { "actorRole": "peer", "setting": "课间、放学后或家中桌面", "process": ["先用真实物件摆出题目", "各自说出怎么算", "结果不同时重新数一遍"], "responses": ["同学用了和你不同的算法，但得到了同一个结果。", "老师路过时提醒你们把过程说清楚。"], "outcomes": ["你发现答案相同不代表办法只有一种。", "摆出来的数量帮助你纠正了一次想当然。"] }
+        },
+        {
+          "id": "primary_recess_group_game",
+          "label": "在课间加入固定的一组游戏",
+          "description": "认识同学、学习轮流和处理输赢，也让身体真正活动起来。",
+          "category": "social",
+          "hoursPerWeek": 5,
+          "interestTags": ["sports_movement", "social_organizing"],
+          "growthChanges": { "peer_bond": 2, "healthy_rhythm": 1 },
+          "statChanges": { "mood": 1, "relationships": 1, "health": 1 },
+          "experience": { "actorRole": "peer", "setting": "学校允许活动的课间场地", "process": ["先等正在进行的一轮结束", "弄清轮流和输赢规则", "发生碰撞或争执后重新开始"], "responses": ["同学给你留了下一轮的位置。", "有人不服结果，你们请另一个同学复述规则。"], "outcomes": ["你开始知道哪些人愿意和你长期一起玩。", "课间不再只是站在旁边看。"] }
+        },
+        {
+          "id": "primary_draw_or_sing",
+          "label": "把画画、唱歌或表演继续到课外",
+          "description": "材料和场地取决于学校与家庭实际条件，活动本身可以很简单。",
+          "category": "entertainment",
+          "hoursPerWeek": 4,
+          "interestTags": ["visual_art", "music_performance"],
+          "growthChanges": { "interest_exploration": 2, "school_confidence": 1 },
+          "statChanges": { "mood": 1, "ability": 1 },
+          "experience": { "actorRole": "peer", "setting": "教室、家中或同伴聚在一起的地方", "process": ["挑一段课堂上最想继续的内容", "自己练习后让同伴看或听", "根据回应改动一处"], "responses": ["同学跟着唱了一遍，结果把节奏改得更快。", "同伴看懂了画面，但对其中一个人物有不同理解。"], "outcomes": ["课堂要求之外，你仍愿意再做一次。", "你开始有了偏爱的表达方式。"] }
+        },
+        {
+          "id": "primary_ask_teacher_once",
+          "label": "把一个真正不会的问题问清楚",
+          "description": "不是笼统地“努力学习”，而是选出一个卡住你的具体地方。",
+          "category": "exploration",
+          "hoursPerWeek": 2,
+          "interestTags": ["reading_language", "numbers_logic"],
+          "growthChanges": { "school_confidence": 2 },
+          "statChanges": { "ability": 1 },
+          "experience": { "actorRole": "teacher", "setting": "课堂提问、课后片刻或老师巡看时", "process": ["先指出自己从哪一步开始不懂", "听完解释后当场再做一次", "把这次办法记在原来的题旁"], "responses": ["老师没有替你完成，而是让你从最后做对的地方继续。", "老师时间有限，只纠正了最关键的一步。"], "outcomes": ["一个具体问题被解决了。", "你发现开口求助并不会自动暴露所有不足。"] }
+        },
+        {
+          "id": "primary_help_home_routine",
+          "label": "固定完成一项放学后的家务",
+          "description": "让家里知道你什么时候做，也保留功课和休息时间。",
+          "category": "family",
+          "hoursPerWeek": 5,
+          "interestTags": ["practical_work"],
+          "growthChanges": { "family_participation": 2, "practical_independence": 1 },
+          "statChanges": { "relationships": 1, "ability": 1 },
+          "experience": { "actorRole": "caregiver", "setting": "放学后的家庭日常", "process": ["先把任务放在相对固定的时段", "遇到作业或天气变化时提前说明", "完成后把物件放回原处"], "responses": ["家里人看到你能记住时间，减少了催促。", "有一天任务突然变多，你和家人只保留了必须完成的部分。"], "outcomes": ["家务开始有边界，而不是随时打断所有安排。", "你能更准确地估计一件事需要多久。"] }
+        },
+        {
+          "id": "primary_walk_and_observe",
+          "label": "在上学路上留意环境怎样变化",
+          "description": "观察季节、道路、摊点、单位或农事变化，并把问题带回去。",
+          "category": "exploration",
+          "hoursPerWeek": 3,
+          "interestTags": ["nature_observation"],
+          "growthChanges": { "interest_exploration": 2, "practical_independence": 1 },
+          "statChanges": { "ability": 1 },
+          "experience": { "actorRole": "peer", "setting": "每天实际经过的上学路线", "process": ["连续几天留意同一个位置", "和同行同学比较各自看到的变化", "回家后向大人确认一个原因"], "responses": ["同学指出了一个你每天经过却没注意的细节。", "家里人解释了其中一部分，也承认有些变化自己并不清楚。"], "outcomes": ["一条熟路开始有了时间变化。", "你记住了一个想继续观察的位置。"] }
+        },
+        {
+          "id": "primary_regular_sleep",
+          "label": "尽量按固定时间收尾和睡觉",
+          "description": "作业、家务和玩耍没有完成时也需要调整，不把熬夜写成努力的默认代价。",
+          "category": "health",
+          "hoursPerWeek": 3,
+          "interestTags": ["sports_movement"],
+          "growthChanges": { "healthy_rhythm": 2, "school_confidence": 1 },
+          "statChanges": { "health": 1, "mood": 1 },
+          "experience": { "actorRole": "caregiver", "setting": "每天晚间的家庭作息", "process": ["先确定最晚停止其他事情的时间", "没有做完时说明原因并留下次序", "早上观察自己是否更容易清醒"], "responses": ["家人配合调整了其中一段家务时间。", "有几晚家庭事务仍然打乱计划，但你们没有因此放弃整季安排。"], "outcomes": ["你开始能比较睡够和没睡够时的差别。", "早晨准备变得少慌乱了一点。"] }
+        },
+        {
+          "id": "primary_shared_story_game",
+          "label": "和熟悉同学轮流续讲一个故事",
+          "description": "需要先形成稳定同伴来往；每个人都要接住前一个人的情节。",
+          "category": "social",
+          "hoursPerWeek": 4,
+          "interestTags": ["storytelling_media", "social_organizing"],
+          "requiresGrowth": { "peer_bond": 4 },
+          "growthChanges": { "peer_bond": 2, "interest_exploration": 2 },
+          "statChanges": { "mood": 1, "ability": 1, "relationships": 1 },
+          "experience": { "actorRole": "peer", "setting": "课间、放学路上或共同玩耍时", "process": ["约定每个人一次只能讲一小段", "接受前面已经发生的情节", "把没讲完的部分留到下一次见面"], "responses": ["同学把你安排的难题用一个意外办法解决了。", "有人忘了上次讲到哪里，你们一起把记得的部分拼了回来。"], "outcomes": ["这个故事跨过了不止一次见面。", "你开始期待别人会怎样改变你的想法。"] }
+        }
+      ]
+    },
+    {
+      "id": "primary_middle_grades",
+      "stages": ["primary"],
+      "minAge": 8,
+      "maxAge": 12,
+      "when": { "educationStatusIn": ["enrolled_primary"], "gradeMin": 3, "gradeMax": 4 },
+      "options": [
+        {
+          "id": "primary_keep_question_notebook",
+          "label": "把不会的问题集中记在一处",
+          "description": "旧本背面或能保存的纸张也可以；重点是之后真的回来处理。",
+          "category": "learning",
+          "hoursPerWeek": 5,
+          "interestTags": ["reading_language", "numbers_logic"],
+          "growthChanges": { "school_confidence": 2, "interest_exploration": 1 },
+          "statChanges": { "ability": 2 },
+          "experience": { "actorRole": "teacher", "setting": "课堂、课后和家中练习之间", "process": ["遇到卡住的地方先留下页码或简单记号", "每周挑其中一两个去问", "听懂后写下自己能看懂的办法"], "responses": ["老师看到你带着具体问题来，更快找到了卡住的位置。", "同学认领了其中一道题，和你互相核对过程。"], "outcomes": ["至少一个过去跳过的问题被补上。", "你有了能回头查看的学习痕迹。"] }
+        },
+        {
+          "id": "primary_read_borrowed_material",
+          "label": "借来一本课外读物反复看",
+          "description": "来源可能是同学、亲友、学校角落或旧书摊，不默认属于你。",
+          "category": "entertainment",
+          "hoursPerWeek": 5,
+          "interestTags": ["reading_language", "storytelling_media"],
+          "growthChanges": { "interest_exploration": 2 },
+          "statChanges": { "ability": 1, "mood": 1 },
+          "experience": { "actorRole": "peer", "setting": "借到材料后能安静阅读的地方", "process": ["先说好什么时候归还", "看不懂的地方结合图画或上下文猜", "归还前把最喜欢的一段讲给出借人"], "responses": ["同学提醒你别折坏书页，也问你看到了哪里。", "出借人发现你真的看完了，又提起另一本可能借到的书。"], "outcomes": ["一个故事在归还后仍留在你脑中。", "借阅关系让你更在意守时和保存物品。"] }
+        },
+        {
+          "id": "primary_cooperative_game",
+          "label": "组织一次需要合作的同伴游戏",
+          "description": "分队、轮流、计分和解决争执都由参与者共同完成。",
+          "category": "social",
+          "hoursPerWeek": 6,
+          "interestTags": ["sports_movement", "social_organizing"],
+          "growthChanges": { "peer_bond": 2, "healthy_rhythm": 1 },
+          "statChanges": { "health": 1, "relationships": 1, "mood": 1 },
+          "experience": { "actorRole": "peer", "setting": "学校或住处附近允许活动的地方", "process": ["先凑齐愿意参加的人", "把规则说到大家都能复述", "争执时暂停并重新确定一次结果"], "responses": ["熟悉同学愿意帮你解释规则，但不完全听你的安排。", "输的一方不服，你们换了更容易核对的计分方式。"], "outcomes": ["游戏能在没有大人主持的情况下继续。", "你体会到组织别人和命令别人不是一回事。"] }
+        },
+        {
+          "id": "primary_make_useful_item",
+          "label": "为真实需要制作或改造一件小物",
+          "description": "可能是收纳、玩具、学习用具或家中小物；危险工具仍由大人控制。",
+          "category": "work",
+          "hoursPerWeek": 5,
+          "interestTags": ["making_repair", "practical_work"],
+          "growthChanges": { "practical_independence": 2, "family_participation": 1 },
+          "statChanges": { "ability": 2, "relationships": 1 },
+          "experience": { "actorRole": "caregiver", "setting": "家中或能够安全操作的地方", "process": ["先说明这件东西要解决什么问题", "测量或比对现有物件", "做完后真的使用几天再调整"], "responses": ["家里人负责危险步骤，但让你决定大部分形状。", "实际使用后，对方指出了一个不方便的地方。"], "outcomes": ["成品不是只为展示，而是进入了日常使用。", "你第一次根据使用反馈改了自己的作品。"] }
+        },
+        {
+          "id": "primary_share_household_load",
+          "label": "和家人重新分配忙时任务",
+          "description": "在农忙、照护或家庭事务增加时，说明自己的上课和练习时间。",
+          "category": "family",
+          "hoursPerWeek": 6,
+          "interestTags": ["practical_work", "social_organizing"],
+          "growthChanges": { "family_participation": 2, "school_confidence": 1 },
+          "statChanges": { "relationships": 1, "ability": 1 },
+          "experience": { "actorRole": "caregiver", "setting": "家庭任务最集中的一段时间", "process": ["先说清学校不能缺少的时间", "挑出自己能稳定完成的任务", "临时变化时和家人再次调整"], "responses": ["家人没有免去所有任务，但同意避开最重要的上课时段。", "家里人说明了为什么这段时间确实缺人手，你们保留了一个补课安排。"], "outcomes": ["冲突没有完全消失，但安排变得可说清。", "你第一次参与决定自己承担什么。"] }
+        },
+        {
+          "id": "primary_neighborhood_observation_log",
+          "label": "连续记录附近一件正在变化的事",
+          "description": "观察植物、天气、建设、市场或生产变化，只记录实际看见的部分。",
+          "category": "exploration",
+          "hoursPerWeek": 4,
+          "interestTags": ["nature_observation", "numbers_logic"],
+          "growthChanges": { "interest_exploration": 3 },
+          "statChanges": { "ability": 2 },
+          "experience": { "actorRole": "peer", "setting": "每天或每周能重复经过的观察点", "process": ["先确定每次都看同一个位置", "用日期、图画或简单数量留下痕迹", "和同伴比较两次记录的不同"], "responses": ["同学注意到的细节与你不同，你们都保留了各自记录。", "大人提醒你不要进入施工、生产或危险区域。"], "outcomes": ["变化不再只靠模糊印象。", "你积累了第一组跨越多周的观察记录。"] }
+        },
+        {
+          "id": "primary_regular_sport",
+          "label": "稳定练习一种跑跳、球类或体能游戏",
+          "description": "选择当时当地能接触的活动，不凭空提供器材和场地。",
+          "category": "health",
+          "hoursPerWeek": 5,
+          "interestTags": ["sports_movement"],
+          "growthChanges": { "healthy_rhythm": 2, "peer_bond": 1 },
+          "statChanges": { "health": 1, "mood": 1 },
+          "experience": { "actorRole": "peer", "setting": "学校或住处附近可安全活动的地方", "process": ["每周重复同一种基本动作", "和同伴约定不过度冒险的规则", "身体不适或天气恶劣时减少强度"], "responses": ["同学会提醒你上次做到哪里，也会和你比较进步。", "一次轻微不适让你们把热身和休息加了进去。"], "outcomes": ["你能感到某个动作比开始时更熟练。", "活动开始从临时玩耍变成稳定习惯。"] }
+        },
+        {
+          "id": "primary_help_peer_learning",
+          "label": "和同学互相讲一道题或一段课文",
+          "description": "需要已经形成学习方法；讲不清的地方会暴露出来。",
+          "category": "social",
+          "hoursPerWeek": 4,
+          "interestTags": ["reading_language", "social_organizing"],
+          "requiresGrowth": { "school_confidence": 12, "peer_bond": 4 },
+          "growthChanges": { "school_confidence": 3, "peer_bond": 2 },
+          "statChanges": { "ability": 2, "relationships": 1 },
+          "experience": { "actorRole": "peer", "setting": "课间、放学后或结伴回家途中", "process": ["各自挑一个已经做过的问题", "不直接报答案，而是说明中间步骤", "发现都不会的部分第二天再去问老师"], "responses": ["同学在你讲到一半时指出了一个跳过的步骤。", "对方终于听懂后，也把自己擅长的部分讲给你。"], "outcomes": ["把会做变成会讲，让你的方法更清楚。", "你们形成了遇到问题先互相核对的习惯。"] }
+        }
+      ]
+    },
+    {
+      "id": "primary_upper_grades",
+      "stages": ["primary"],
+      "minAge": 9,
+      "maxAge": 12,
+      "when": { "educationStatusIn": ["enrolled_primary"], "gradeMin": 5 },
+      "options": [
+        {
+          "id": "primary_upper_plan_study",
+          "label": "把一周功课拆成几段完成",
+          "description": "根据真实作业、家庭事务和薄弱处安排，不把所有时间都堆到最后。",
+          "category": "learning",
+          "hoursPerWeek": 7,
+          "interestTags": ["reading_language", "numbers_logic"],
+          "growthChanges": { "school_confidence": 2, "healthy_rhythm": 1 },
+          "statChanges": { "ability": 2 },
+          "experience": { "actorRole": "teacher", "setting": "课堂要求与家庭课余时间之间", "process": ["先分清必须完成和需要额外练习的部分", "把最难的一项放在还有精力的时段", "每周末核对哪些安排总是落空"], "responses": ["老师看到你能指出薄弱处，给了更具体的练习建议。", "家里人知道你的固定时段后，减少了其中几次临时打断。"], "outcomes": ["至少一次没有把所有任务拖到最后。", "你开始根据执行结果修改计划。"] }
+        },
+        {
+          "id": "primary_upper_read_and_discuss",
+          "label": "读完一份材料并和别人讨论",
+          "description": "材料可以是课外书、报刊、连环画或当时能接触的其他文字内容。",
+          "category": "entertainment",
+          "hoursPerWeek": 5,
+          "interestTags": ["reading_language", "storytelling_media"],
+          "growthChanges": { "interest_exploration": 2, "peer_bond": 1 },
+          "statChanges": { "ability": 1, "mood": 1 },
+          "experience": { "actorRole": "peer", "setting": "借阅来源、学校或住处附近", "process": ["先把材料从头到尾看完", "挑出一个赞同或不赞同的地方", "听完对方理解后再回看原文"], "responses": ["同学对同一个人物作出了完全不同的判断。", "出借人补充了材料的来源，也提醒你别把故事当成真实报道。"], "outcomes": ["阅读第一次引出了真正的分歧。", "你学会回到材料里找支持自己说法的地方。"] }
+        },
+        {
+          "id": "primary_upper_small_project",
+          "label": "完成一个跨几周的小项目",
+          "description": "围绕观察、阅读、制作或记录形成一个能展示过程的结果。",
+          "category": "exploration",
+          "hoursPerWeek": 6,
+          "interestTags": ["nature_observation", "making_repair"],
+          "requiresGrowth": { "interest_exploration": 12 },
+          "growthChanges": { "interest_exploration": 3, "practical_independence": 1 },
+          "statChanges": { "ability": 2, "mood": 1 },
+          "experience": { "actorRole": "teacher", "setting": "学校与家庭都能继续推进的范围", "process": ["先把问题缩小到几周能完成", "保留每次观察或制作的痕迹", "最后说明哪些结论有证据、哪些只是猜测"], "responses": ["老师让你删掉一个太大的目标，保留真正能完成的部分。", "同学对你的结果提出了一个没有想到的问题。"], "outcomes": ["零散兴趣第一次变成了完整项目。", "你留下了从开始到修改再到完成的过程。"] }
+        },
+        {
+          "id": "primary_upper_friend_commitment",
+          "label": "和朋友约定共同完成一件事",
+          "description": "可能是游戏、学习、制作或帮忙；重点是守约和处理临时变化。",
+          "category": "social",
+          "hoursPerWeek": 5,
+          "interestTags": ["social_organizing"],
+          "growthChanges": { "peer_bond": 3 },
+          "statChanges": { "relationships": 2, "mood": 1 },
+          "experience": { "actorRole": "peer", "setting": "学校、住处附近或约定的共同地点", "process": ["先把各自要做的部分说清", "有人临时来不了时重新约定", "结束后确认物品和责任都已交还"], "responses": ["朋友有一次迟到，但提前托人说明了原因。", "你没完成自己答应的部分，对方不高兴，你们重新定了期限。"], "outcomes": ["关系里开始出现信任，而不只有一起玩。", "一次没有完全顺利的合作仍被修复了。"] }
+        },
+        {
+          "id": "primary_upper_family_negotiation",
+          "label": "和家人商量功课、家务与休息冲突",
+          "description": "提出具体时间和替代办法，也听家人说明真实需要。",
+          "category": "family",
+          "hoursPerWeek": 4,
+          "interestTags": ["social_organizing", "practical_work"],
+          "requiresGrowth": { "family_participation": 12 },
+          "growthChanges": { "family_participation": 3, "school_confidence": 1 },
+          "statChanges": { "relationships": 2, "ability": 1 },
+          "experience": { "actorRole": "caregiver", "setting": "家庭安排出现冲突的具体一周", "process": ["先说明哪项学校任务有固定期限", "听家人解释哪些事务无法推迟", "提出换时间、分步骤或与手足分担的办法"], "responses": ["家人没有完全同意，但接受了一个替代时间。", "对方第一次认真问你完成学校任务需要多久。"], "outcomes": ["你不再只能沉默承受或直接拒绝。", "一次协商留下了以后可以沿用的规则。"] }
+        },
+        {
+          "id": "primary_upper_repair_and_improve",
+          "label": "修补或改进一件正在使用的物品",
+          "description": "在安全边界内观察损坏原因、尝试办法并验证是否真正好用。",
+          "category": "work",
+          "hoursPerWeek": 5,
+          "interestTags": ["making_repair", "practical_work"],
+          "requiresGrowth": { "practical_independence": 12 },
+          "growthChanges": { "practical_independence": 3, "family_participation": 1 },
+          "statChanges": { "ability": 2, "relationships": 1 },
+          "experience": { "actorRole": "caregiver", "setting": "家中或熟悉大人能监督的操作地点", "process": ["先判断问题发生在哪里", "危险步骤交给大人，自己完成安全部分", "实际使用后再看修补是否维持"], "responses": ["家里人原本准备放弃这件物品，愿意让你先试一个办法。", "第一次修补没有坚持多久，大人和你一起找了原因。"], "outcomes": ["物品重新使用了一段时间。", "失败的第一次尝试也变成了下一次改法的依据。"] }
+        },
+        {
+          "id": "primary_upper_regular_activity",
+          "label": "维持一项稳定的身体活动",
+          "description": "在学习和家庭事务增加时，仍给跑动、运动和恢复留出位置。",
+          "category": "health",
+          "hoursPerWeek": 5,
+          "interestTags": ["sports_movement"],
+          "growthChanges": { "healthy_rhythm": 3 },
+          "statChanges": { "health": 1, "mood": 1 },
+          "experience": { "actorRole": "peer", "setting": "学校或附近可持续使用的活动空间", "process": ["确定每周能做到的最低次数", "忙碌时缩短而不是完全取消", "活动后给身体留下恢复时间"], "responses": ["朋友知道你仍会出现，形成了相对固定的同行。", "有一周学习任务过重，你们只做了较短的活动。"], "outcomes": ["身体活动没有在压力增加时完全消失。", "你更清楚怎样的强度第二天不会过度疲劳。"] }
+        },
+        {
+          "id": "primary_upper_peer_tutoring",
+          "label": "参与一次持续的同伴互助",
+          "description": "需要已经形成学习方法和可靠朋友；彼此负责不同的薄弱处。",
+          "category": "social",
+          "hoursPerWeek": 5,
+          "interestTags": ["reading_language", "social_organizing"],
+          "requiresGrowth": { "school_confidence": 12, "peer_bond": 12 },
+          "growthChanges": { "school_confidence": 3, "peer_bond": 3 },
+          "statChanges": { "ability": 2, "relationships": 2 },
+          "experience": { "actorRole": "peer", "setting": "课间、放学后或共同上学途中", "process": ["先各自说出最需要帮助的一项", "每周核对一次有没有真的完成", "共同不会的问题带回课堂求助"], "responses": ["朋友记得提醒你原先答应练习的地方。", "你们一次都没有准备好，之后把目标缩小到真正能完成。"], "outcomes": ["互助跨过了不止一次临时讨论。", "朋友的进度开始影响你是否守约。"] }
+        },
+        {
+          "id": "primary_upper_share_project",
+          "label": "把自己的观察或作品讲给别人",
+          "description": "需要已经完成持续探索；讲述过程包括证据、失败和修改。",
+          "category": "learning",
+          "hoursPerWeek": 4,
+          "interestTags": ["reading_language", "storytelling_media"],
+          "requiresGrowth": { "interest_exploration": 24, "school_confidence": 12 },
+          "growthChanges": { "interest_exploration": 2, "school_confidence": 3 },
+          "statChanges": { "ability": 2, "mood": 1 },
+          "experience": { "actorRole": "teacher", "setting": "课堂、小组或熟悉同伴面前", "process": ["先按开始、过程和结果整理内容", "说明一次失败或改动", "回答听者提出的一个问题"], "responses": ["老师没有只评价结果，而是追问你怎样发现原办法不行。", "同学对你最满意的部分反而没多问，却对一个小细节很感兴趣。"], "outcomes": ["一个只属于自己的经历成为了可交流的内容。", "你发现讲给别人听会暴露过程中的空白。"] }
+        }
+      ]
+    },
+    {
+      "id": "age_twelve_transition",
+      "stages": ["adolescence"],
+      "minAge": 12,
+      "maxAge": 12,
+      "options": [
+        {
+          "id": "age12_continue_personal_interest",
+          "label": "给已经喜欢的事情保留固定时间",
+          "description": "进入新的学习或劳动阶段时，不让过去形成的兴趣突然从生活里消失。",
+          "category": "entertainment",
+          "hoursPerWeek": 5,
+          "interestTags": ["reading_language", "storytelling_media"],
+          "growthChanges": { "interest_exploration": 2, "healthy_rhythm": 1 },
+          "statChanges": { "mood": 1, "ability": 1 },
+          "experience": { "actorRole": "self", "setting": "新阶段安排之外能保留的一小段时间", "process": ["先找出过去一年最想继续的一件事", "把目标缩小到每周能做到", "月底回看是否真的持续"], "responses": ["身边人开始知道这不是一次临时兴起。", "有几周被新安排打断，你把频率降低后重新开始。"], "outcomes": ["过去的兴趣跨过了阶段变化。", "你第一次主动保护一段属于自己的时间。"] }
+        },
+        {
+          "id": "age12_keep_close_friend",
+          "label": "主动维持一段已经形成的朋友关系",
+          "description": "升学、分班或生活路线变化后，约定可执行的见面和联系办法。",
+          "category": "social",
+          "hoursPerWeek": 5,
+          "interestTags": ["social_organizing"],
+          "growthChanges": { "peer_bond": 3 },
+          "statChanges": { "relationships": 2, "mood": 1 },
+          "experience": { "actorRole": "peer", "setting": "学校、住处附近或彼此仍能到达的路线上", "process": ["先承认原来的见面频率可能做不到", "约定一个双方都能做到的时间", "临时失约时说明原因并重约"], "responses": ["朋友也担心关系变淡，愿意一起调整。", "对方的新同伴变多了，但仍为你保留了一次约定。"], "outcomes": ["关系没有因为环境变化自动消失。", "你们开始用守约而不是天天见面衡量亲近。"] }
+        },
+        {
+          "id": "age12_understand_new_rules",
+          "label": "把新学校或新生活的规则问清楚",
+          "description": "围绕课程、作息、任务和评价方式问具体问题，而不是只接受一句“长大了”。",
+          "category": "exploration",
+          "hoursPerWeek": 4,
+          "interestTags": ["reading_language", "social_organizing"],
+          "growthChanges": { "school_confidence": 3, "practical_independence": 1 },
+          "statChanges": { "ability": 2 },
+          "experience": { "actorRole": "teacher", "setting": "新阶段的课堂、说明场合或能求助的时间", "process": ["先写下最容易弄错的三项要求", "分别确认谁负责说明", "执行一周后补问仍不清楚的地方"], "responses": ["老师把其中一项规则解释成了具体例子。", "不同人的说法有差异，你依据正式安排重新核对。"], "outcomes": ["新阶段减少了一部分只能靠猜的地方。", "你知道遇到变化时该去问谁。"] }
+        },
+        {
+          "id": "age12_take_family_role",
+          "label": "和家人重新商量自己能承担的事务",
+          "description": "年龄增长带来更多责任，但仍需要和学习、休息及身体条件一起安排。",
+          "category": "family",
+          "hoursPerWeek": 7,
+          "interestTags": ["practical_work", "social_organizing"],
+          "growthChanges": { "family_participation": 3, "practical_independence": 2 },
+          "statChanges": { "relationships": 2, "ability": 1 },
+          "experience": { "actorRole": "caregiver", "setting": "家庭准备调整分工的一段时间", "process": ["先列出自己已经能独立完成的事务", "说明新阶段固定占用的时间", "和家人确定一项新增责任及其边界"], "responses": ["家人认可你已经长大一些，也保留了必要监督。", "对方提出的任务过多，你们把它拆成了忙时和普通时两套安排。"], "outcomes": ["责任增加，但不再只是模糊地“多帮忙”。", "家庭分工留下了可以重新协商的边界。"] }
+        },
+        {
+          "id": "age12_regular_movement",
+          "label": "在新节奏中维持运动和睡眠",
+          "description": "学习、劳动和同伴变化增加时，主动保留身体活动与恢复。",
+          "category": "health",
+          "hoursPerWeek": 6,
+          "interestTags": ["sports_movement"],
+          "growthChanges": { "healthy_rhythm": 3 },
+          "statChanges": { "health": 2, "mood": 1 },
+          "experience": { "actorRole": "peer", "setting": "学校或住处附近能够持续使用的活动空间", "process": ["先确定一项不依赖昂贵器材的活动", "忙碌周减少时长但保留频率", "睡眠不足或不适时降低强度"], "responses": ["同伴愿意按相近时间一起活动。", "一次疲劳让你们取消较激烈的比赛，改成轻松练习。"], "outcomes": ["新阶段没有完全打断身体习惯。", "你更早察觉过度疲劳的信号。"] }
+        },
+        {
+          "id": "age12_complete_independent_task",
+          "label": "独立完成一件跨几周的实际事务",
+          "description": "可以是制作、整理、照料或信息收集；结果必须真的被使用或核对。",
+          "category": "work",
+          "hoursPerWeek": 6,
+          "interestTags": ["making_repair", "practical_work"],
+          "requiresGrowth": { "practical_independence": 12 },
+          "growthChanges": { "practical_independence": 3, "family_participation": 1 },
+          "statChanges": { "ability": 2, "relationships": 1 },
+          "experience": { "actorRole": "caregiver", "setting": "家庭或学校真实需要发生的地方", "process": ["先确认结果由谁使用、怎样算完成", "分几周推进并自己记录问题", "交付后根据使用者反馈修改一次"], "responses": ["大人只在安全和关键节点检查，没有接手整个过程。", "实际使用者指出了一处遗漏，你负责把它补上。"], "outcomes": ["这件事留下了可验证的结果。", "你第一次完整承担了计划、执行和返工。"] }
+        }
+      ]
+    }
+  ]
+}

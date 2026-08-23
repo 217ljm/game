@@ -1,0 +1,696 @@
+{
+  "schemaVersion": 1,
+  "rules": {
+    "weeksPerQuarter": 13,
+    "unallocatedTimeMeaning": "未分配时间用于休息、发呆、临时玩耍和无法逐项建模的普通生活，不会消失。",
+    "randomEventChanceByAge": [
+      { "minAge": 0, "maxAge": 2, "chance": 0 },
+      { "minAge": 3, "maxAge": 11, "chance": 0.13 },
+      { "minAge": 12, "maxAge": 17, "chance": 0.17 },
+      { "minAge": 18, "maxAge": 59, "chance": 0.14 },
+      { "minAge": 60, "maxAge": 120, "chance": 0.11 }
+    ]
+  },
+  "categories": {
+    "learning": "学习与求知",
+    "entertainment": "玩耍与娱乐",
+    "social": "朋友与交往",
+    "exploration": "观察与探索",
+    "family": "家庭生活",
+    "health": "活动与休息",
+    "recovery": "休息与恢复",
+    "work": "技能与工作",
+    "finance": "消费与储蓄"
+  },
+  "interestDomains": {
+    "reading_language": "阅读与文字",
+    "numbers_logic": "数字与推理",
+    "visual_art": "绘画与视觉表达",
+    "music_performance": "音乐与表演",
+    "sports_movement": "运动与身体活动",
+    "nature_observation": "自然观察",
+    "making_repair": "制作与修理",
+    "storytelling_media": "故事与影像",
+    "social_organizing": "交往与组织",
+    "practical_work": "实作与职业技能"
+  },
+  "infantExperiences": {
+    "0": [
+      "你主要在喂养、睡眠、啼哭和被抱起之间度过这个季度。",
+      "你逐渐能分辨经常照看你的声音和脚步。",
+      "家人的劳动与家务决定了谁在什么时间陪在你身边。",
+      "你在光线、声音和触碰中慢慢熟悉周围的生活。"
+    ],
+    "1": [
+      "你开始扶着身边的东西移动，也会反复摆弄拿得到的物件。",
+      "你能对熟悉的人做出更明确的声音和动作回应。",
+      "大人忙碌时，你在安全范围内观察他们和家里的物件。",
+      "你开始听懂少量日常词语，但还不能决定家庭怎样安排生活。"
+    ],
+    "2": [
+      "你已经能在附近走动，用动作和少量词语表达想要什么。",
+      "你反复模仿大人的动作，也开始注意其他孩子在玩什么。",
+      "你对熟悉物件有了自己的偏好，并会要求重复某些游戏。",
+      "家庭仍决定主要照护条件，但你已经能选择眼前想接近的事物。"
+    ]
+  },
+  "infantReactions": {
+    "1": [
+      {
+        "id": "toddler_turn_to_familiar_voice",
+        "label": "顺着熟悉的声音转过头去",
+        "description": "你停下手里的动作，寻找经常照看你的那个人。",
+        "category": "social",
+        "hoursPerWeek": 2,
+        "interestTags": ["social_organizing"],
+        "statChanges": { "relationships": 1 }
+      },
+      {
+        "id": "toddler_keep_handling_object",
+        "label": "继续摆弄手里的物件",
+        "description": "你一次次尝试转动、敲击或堆起它，观察会发生什么。",
+        "category": "exploration",
+        "hoursPerWeek": 2,
+        "interestTags": ["making_repair"],
+        "statChanges": { "ability": 1 }
+      },
+      {
+        "id": "toddler_move_toward_light",
+        "label": "扶着东西走向有光的地方",
+        "description": "你试着移动身体，看看窗边或门外正在发生什么。",
+        "category": "exploration",
+        "hoursPerWeek": 2,
+        "interestTags": ["nature_observation", "sports_movement"],
+        "statChanges": { "health": 1, "ability": 1 }
+      },
+      {
+        "id": "toddler_copy_a_sound",
+        "label": "模仿刚刚听见的一个声音",
+        "description": "你试着重复称呼、语气或简单声响，并等待熟悉的人回应。",
+        "category": "learning",
+        "hoursPerWeek": 2,
+        "interestTags": ["reading_language", "music_performance"],
+        "statChanges": { "ability": 1, "relationships": 1 }
+      },
+      {
+        "id": "toddler_follow_a_rhythm",
+        "label": "跟着拍手或敲击声晃动身体",
+        "description": "你会停下来听节奏，再用拍手、摇晃或敲击作出回应。",
+        "category": "entertainment",
+        "hoursPerWeek": 2,
+        "interestTags": ["music_performance", "sports_movement"],
+        "statChanges": { "mood": 1, "health": 1 }
+      },
+      {
+        "id": "toddler_offer_an_object",
+        "label": "把手里的东西递给熟悉的人",
+        "description": "你观察对方是否接住，也逐渐理解递出、拿回和轮流。",
+        "category": "social",
+        "hoursPerWeek": 2,
+        "interestTags": ["social_organizing"],
+        "statChanges": { "relationships": 2, "mood": 1 }
+      }
+    ],
+    "2": [
+      {
+        "id": "toddler_repeat_new_word",
+        "label": "跟着大人反复说一个新词",
+        "description": "你喜欢声音被别人听懂的感觉，于是把它说了很多遍。",
+        "category": "learning",
+        "hoursPerWeek": 2,
+        "interestTags": ["reading_language"],
+        "statChanges": { "ability": 1, "relationships": 1 }
+      },
+      {
+        "id": "toddler_stack_everyday_objects",
+        "label": "把身边的物件摆成一排",
+        "description": "你按自己的办法排列、堆起又推倒它们。",
+        "category": "exploration",
+        "hoursPerWeek": 3,
+        "interestTags": ["numbers_logic", "making_repair"],
+        "statChanges": { "ability": 1 }
+      },
+      {
+        "id": "toddler_approach_other_children",
+        "label": "走到附近的孩子旁边",
+        "description": "你看着他们的游戏，并试着用动作加入。",
+        "category": "social",
+        "hoursPerWeek": 3,
+        "interestTags": ["social_organizing", "sports_movement"],
+        "statChanges": { "mood": 1, "relationships": 1 }
+      },
+      {
+        "id": "toddler_draw_marks",
+        "label": "用能找到的东西留下线条",
+        "description": "你在泥地、纸片或其他表面上反复画出痕迹。",
+        "category": "entertainment",
+        "hoursPerWeek": 2,
+        "interestTags": ["visual_art"],
+        "statChanges": { "ability": 1, "mood": 1 }
+      },
+      {
+        "id": "toddler_match_lids_and_containers",
+        "label": "给盒子和容器反复找盖子",
+        "description": "你比较大小和形状，试错后把能合上的东西重新打开再来一次。",
+        "category": "exploration",
+        "hoursPerWeek": 2,
+        "interestTags": ["numbers_logic", "making_repair"],
+        "statChanges": { "ability": 2 }
+      },
+      {
+        "id": "toddler_carry_a_small_task",
+        "label": "替家里拿一件轻小的东西",
+        "description": "大人只交给你安全的一小步，你把东西送到指定的人或地方。",
+        "category": "family",
+        "hoursPerWeek": 2,
+        "interestTags": ["practical_work", "social_organizing"],
+        "statChanges": { "ability": 1, "relationships": 1 }
+      },
+      {
+        "id": "toddler_repeat_a_movement_game",
+        "label": "反复练一种刚学会的走跳动作",
+        "description": "你在安全范围内走过矮坎、追一小段路或重复蹲起，并在累时停下。",
+        "category": "health",
+        "hoursPerWeek": 3,
+        "interestTags": ["sports_movement"],
+        "statChanges": { "health": 2, "mood": 1 }
+      }
+    ]
+  },
+  "eraLeisure": [
+    {
+      "id": "leisure_early_child_imagination",
+      "minYear": 1978,
+      "maxYear": 2100,
+      "minAge": 3,
+      "maxAge": 5,
+      "label": "用身边的东西编一个游戏",
+      "description": "石子、树枝、旧盒子或家里的普通物件，都可以在游戏里变成别的东西。",
+      "category": "entertainment",
+      "hoursPerWeek": 3,
+      "interestTags": ["storytelling_media", "visual_art"],
+      "statChanges": { "mood": 1, "ability": 1 }
+    },
+    {
+      "id": "leisure_1978_1985_radio_picturebooks",
+      "minYear": 1978,
+      "maxYear": 1985,
+      "minAge": 6,
+      "maxAge": 120,
+      "label": "听收音机、翻连环画或看露天电影",
+      "description": "选择家里或附近实际能够接触到的一种消遣，不假定每样东西都属于你。",
+      "category": "entertainment",
+      "hoursPerWeek": 3,
+      "interestTags": ["reading_language", "music_performance", "storytelling_media"],
+      "statChanges": { "mood": 1 }
+    },
+    {
+      "id": "leisure_1986_1995_tv_tapes_magazines",
+      "minYear": 1986,
+      "maxYear": 1995,
+      "minAge": 6,
+      "maxAge": 120,
+      "label": "看电视、听磁带或翻杂志",
+      "description": "利用家里、同伴家或公共场所能够接触到的文化娱乐。",
+      "category": "entertainment",
+      "hoursPerWeek": 4,
+      "interestTags": ["music_performance", "storytelling_media", "reading_language"],
+      "statChanges": { "mood": 1 }
+    },
+    {
+      "id": "leisure_1996_2005_music_video_games",
+      "minYear": 1996,
+      "maxYear": 2005,
+      "minAge": 6,
+      "maxAge": 120,
+      "label": "看影视、听音乐或玩当时能接触到的游戏",
+      "description": "娱乐方式变多，但仍受家庭物品、零花钱、年龄和附近场所限制。",
+      "category": "entertainment",
+      "hoursPerWeek": 4,
+      "interestTags": ["music_performance", "storytelling_media"],
+      "statChanges": { "mood": 1 }
+    },
+    {
+      "id": "leisure_2006_2014_online_media",
+      "minYear": 2006,
+      "maxYear": 2014,
+      "minAge": 6,
+      "maxAge": 120,
+      "label": "上网、看影视、听音乐或玩游戏",
+      "description": "在实际拥有设备或能够进入相应场所时，把一部分自由时间用于数字娱乐。",
+      "category": "entertainment",
+      "hoursPerWeek": 4,
+      "interestTags": ["storytelling_media", "music_performance"],
+      "statChanges": { "mood": 1 }
+    },
+    {
+      "id": "leisure_2015_plus_mobile_media",
+      "minYear": 2015,
+      "maxYear": 2100,
+      "minAge": 6,
+      "maxAge": 120,
+      "label": "看视频、听音乐、阅读或玩游戏",
+      "description": "把移动互联网时代的娱乐当作真实时间支出，而不是没有成本的背景。",
+      "category": "entertainment",
+      "hoursPerWeek": 4,
+      "interestTags": ["storytelling_media", "music_performance", "reading_language"],
+      "statChanges": { "mood": 1 }
+    },
+    {
+      "id": "leisure_senior_wellness_and_leisure",
+      "minYear": 1978,
+      "maxYear": 2100,
+      "minAge": 50,
+      "maxAge": 120,
+      "label": "公园散步、下棋、养生或广场文体",
+      "description": "步入中老年后，把更多自由时间用于维持身体节律、邻里走动和日常修养。",
+      "category": "health",
+      "hoursPerWeek": 4,
+      "interestTags": ["sports_movement", "nature_observation"],
+      "statChanges": { "health": 1, "mood": 1 }
+    },
+    {
+      "id": "leisure_digital_skill_adaptation",
+      "minYear": 2012,
+      "maxYear": 2100,
+      "minAge": 45,
+      "maxAge": 120,
+      "label": "学习智能手机与日常数字工具",
+      "description": "主动熟悉移动支付、健康码、掌上办事和线上通讯，跟上社会数字化变化。",
+      "category": "learning",
+      "hoursPerWeek": 3,
+      "interestTags": ["practical_work", "reading_language"],
+      "statChanges": { "ability": 1, "mood": 1 }
+    }
+  ],
+  "randomEvents": [
+    {
+      "id": "found_small_creature",
+      "title": "墙角有东西在动",
+      "scene": "你在附近活动时，看见一小群蚂蚁、甲虫或其他叫不出名字的小东西。",
+      "stages": ["childhood", "primary"],
+      "minAge": 3,
+      "maxAge": 10,
+      "weight": 1.1,
+      "cooldownYears": 6,
+      "options": [
+        { "id": "creature_watch_quietly", "label": "蹲下来安静观察", "description": "看看它们从哪里来、往哪里去。", "statChanges": { "ability": 1 }, "interestChanges": { "nature_observation": 6 } },
+        { "id": "creature_call_friend", "label": "叫附近的孩子一起看", "description": "你们围在一起猜测它正在做什么。", "statChanges": { "mood": 1, "relationships": 1 }, "interestChanges": { "nature_observation": 3, "social_organizing": 3 } },
+        { "id": "creature_move_on", "label": "看一眼就继续原来的事", "description": "这次偶遇没有改变你原来的安排。", "statChanges": {} }
+      ]
+    },
+    {
+      "id": "borrowed_picture_or_story_book",
+      "title": "一本不属于你的书",
+      "scene": "亲友、同学或邻居手里有一本连环画、故事书或旧杂志，愿意暂时借给你。",
+      "stages": ["childhood", "primary", "adolescence"],
+      "minAge": 4,
+      "maxAge": 15,
+      "weight": 1,
+      "cooldownYears": 5,
+      "options": [
+        { "id": "book_read_repeatedly", "label": "借来反复看几遍", "description": "有些字还不认识，但画面和故事让你想继续。", "statChanges": { "ability": 1, "mood": 1 }, "interestChanges": { "reading_language": 7, "storytelling_media": 4 } },
+        { "id": "book_read_with_someone", "label": "请别人和你一起看", "description": "你一边听，一边追问不明白的地方。", "statChanges": { "ability": 1, "relationships": 1 }, "interestChanges": { "reading_language": 5 } },
+        { "id": "book_decline", "label": "没有借走", "description": "你当时更想继续做手头的事情。", "statChanges": {} }
+      ]
+    },
+    {
+      "id": "neighborhood_game_invitation",
+      "title": "有人喊你出去玩",
+      "scene": "附近的孩子临时缺一个人，站在外面喊你的名字。",
+      "stages": ["childhood", "primary"],
+      "minAge": 3,
+      "maxAge": 12,
+      "weight": 1.2,
+      "cooldownYears": 3,
+      "options": [
+        { "id": "game_join_now", "label": "马上跑出去加入", "description": "你很快弄懂规则，也可能因为输赢发生争执。", "statChanges": { "health": 1, "mood": 1, "relationships": 1 }, "interestChanges": { "sports_movement": 5, "social_organizing": 3 } },
+        { "id": "game_finish_task_first", "label": "先把眼前的事做完再去", "description": "你迟到了一会儿，但没有把原来的责任扔下。", "statChanges": { "ability": 1, "relationships": 1 }, "interestChanges": { "sports_movement": 2 } },
+        { "id": "game_stay_home", "label": "留在原地不去", "description": "这一次你没有加入他们。", "statChanges": { "mood": -1 } }
+      ]
+    },
+    {
+      "id": "rainy_day_inside",
+      "title": "一场雨打乱了安排",
+      "scene": "雨下了很久，原本要在外面做的事暂时做不了。",
+      "stages": ["childhood", "primary", "adolescence"],
+      "minAge": 3,
+      "maxAge": 17,
+      "weight": 0.8,
+      "cooldownYears": 4,
+      "interruption": { "severity": "minor", "reason": "持续降雨让部分户外行动暂停", "affectedCategories": ["health", "social", "exploration"] },
+      "options": [
+        { "id": "rain_make_game", "label": "用屋里的东西编个游戏", "description": "你把普通物件想成角色、房子或工具。", "statChanges": { "mood": 1, "ability": 1 }, "interestChanges": { "storytelling_media": 5, "visual_art": 3 }, "planImpact": { "executionRate": 0.92 } },
+        { "id": "rain_listen_adults", "label": "坐在旁边听大人聊天", "description": "很多话听不懂，但你记住了一些人和事情。", "statChanges": { "relationships": 1, "ability": 1 }, "interestChanges": { "storytelling_media": 2 }, "planImpact": { "executionRate": 0.88 } },
+        { "id": "rain_rest", "label": "好好睡一觉", "description": "这场雨让你得到了一段没有安排的休息。", "statChanges": { "health": 1 }, "planImpact": { "executionRate": 0.8, "energyDelta": 1, "fatigueDelta": -4 } }
+      ]
+    },
+    {
+      "id": "minor_play_injury",
+      "title": "玩耍时摔了一下",
+      "scene": "你在跑动或攀爬时摔倒，擦伤不重，但疼痛很明显。",
+      "stages": ["childhood", "primary", "adolescence"],
+      "minAge": 3,
+      "maxAge": 17,
+      "weight": 0.7,
+      "when": { "selectedCategoryIn": ["entertainment", "health", "social"] },
+      "cooldownYears": 5,
+      "interruption": { "severity": "minor", "reason": "擦伤让跑动和外出暂时减少", "affectedCategories": ["entertainment", "health", "social"] },
+      "options": [
+        { "id": "injury_tell_adult", "label": "告诉身边可信任的大人", "description": "伤口得到简单处理，你也暂停了剧烈活动。", "statChanges": { "health": -1, "relationships": 1 }, "planImpact": { "executionRate": 0.9, "fatigueDelta": 2 } },
+        { "id": "injury_clean_myself", "label": "自己找水清理一下", "description": "你试着处理伤口，并记住下次要更小心。", "statChanges": { "health": -1, "ability": 1 }, "planImpact": { "executionRate": 0.93, "fatigueDelta": 3 } },
+        { "id": "injury_hide_it", "label": "怕挨说，先把伤藏起来", "description": "你继续活动，疼痛拖得更久。", "statChanges": { "health": -2, "mood": -1 }, "planImpact": { "executionRate": 0.98, "fatigueDelta": 8, "stressDelta": 3 } }
+      ]
+    },
+    {
+      "id": "radio_song_attention",
+      "title": "一段旋律留在脑子里",
+      "scene": "收音机、广播喇叭、电视或磁带里的一段旋律，让你停下手里的事。",
+      "stages": ["childhood", "primary", "adolescence", "youth", "adult"],
+      "minAge": 5,
+      "maxAge": 30,
+      "calendarYearMax": 1998,
+      "weight": 0.9,
+      "cooldownYears": 8,
+      "options": [
+        { "id": "song_try_repeat", "label": "试着把旋律哼出来", "description": "你记不全，却愿意一遍遍尝试。", "statChanges": { "mood": 1 }, "interestChanges": { "music_performance": 7 } },
+        { "id": "song_ask_name", "label": "问问这是什么歌", "description": "你想知道它从哪里来，也记住了相关的人。", "statChanges": { "relationships": 1 }, "interestChanges": { "music_performance": 5 } },
+        { "id": "song_keep_working", "label": "听过以后继续原来的事", "description": "旋律很快被日常声音盖过去。", "statChanges": {} }
+      ]
+    },
+    {
+      "id": "teacher_notices_effort",
+      "title": "老师注意到了你的做法",
+      "scene": "老师在一次作业、实训或课堂活动后，单独提到了你完成事情的方式。",
+      "stages": ["primary", "adolescence", "youth"],
+      "minAge": 6,
+      "maxAge": 24,
+      "weight": 0.9,
+      "when": { "educationStatusIn": ["enrolled_primary", "enrolled", "enrolled_junior"] },
+      "cooldownYears": 4,
+      "options": [
+        { "id": "teacher_ask_how_improve", "label": "追问还有哪里可以改进", "description": "你得到了一条更具体的建议。", "statChanges": { "ability": 1 }, "interestChanges": { "reading_language": 3, "practical_work": 3 } },
+        { "id": "teacher_feel_encouraged", "label": "把这句话记在心里", "description": "被看见让你更愿意继续投入。", "statChanges": { "mood": 1, "ability": 1 } },
+        { "id": "teacher_feel_awkward", "label": "有些不自在，不再回应", "description": "你没有让这次注意继续发展。", "statChanges": { "mood": -1 } }
+      ]
+    },
+    {
+      "id": "peer_disagreement",
+      "title": "你和同伴争了起来",
+      "scene": "一件小事因为语气、输赢或误会变得僵硬，你们都觉得自己有道理。",
+      "stages": ["primary", "adolescence", "youth"],
+      "minAge": 7,
+      "maxAge": 24,
+      "weight": 1,
+      "cooldownYears": 3,
+      "options": [
+        { "id": "peer_explain_after_calm", "label": "等冷静下来再说明白", "description": "你们不一定完全同意，但知道对方为什么生气。", "statChanges": { "relationships": 1, "ability": 1 }, "interestChanges": { "social_organizing": 3 } },
+        { "id": "peer_insist_win", "label": "一定要争到对方认输", "description": "你保住了面子，关系却变得更远。", "statChanges": { "mood": 1, "relationships": -2 } },
+        { "id": "peer_avoid", "label": "之后暂时避开对方", "description": "冲突没有继续，但也没有真正解决。", "statChanges": { "relationships": -1 } }
+      ]
+    },
+    {
+      "id": "household_object_broken",
+      "title": "家里有件东西坏了",
+      "scene": "一个每天都会用到的小物件松动、断裂或不能正常工作，家人正商量怎么办。",
+      "stages": ["primary", "adolescence", "youth", "adult"],
+      "minAge": 7,
+      "maxAge": 70,
+      "weight": 0.8,
+      "cooldownYears": 5,
+      "options": [
+        { "id": "object_watch_repair", "label": "在旁边看别人怎样修", "description": "你记住了拆开、判断和重新装好的顺序。", "statChanges": { "ability": 1 }, "interestChanges": { "making_repair": 6 } },
+        { "id": "object_try_repair", "label": "找工具试着修一修", "description": "结果未必完美，但你真正动手处理了问题。", "statChanges": { "ability": 2, "mood": 1 }, "interestChanges": { "making_repair": 8, "practical_work": 3 } },
+        { "id": "object_leave_others", "label": "交给更熟悉的人处理", "description": "你没有把时间投入这件事。", "statChanges": {} }
+      ]
+    },
+    {
+      "id": "game_hall_invitation",
+      "title": "同伴提到一个新鲜去处",
+      "scene": "有人邀请你去游戏厅、录像厅或类似的娱乐场所看看。",
+      "stages": ["adolescence", "youth"],
+      "minAge": 12,
+      "maxAge": 24,
+      "calendarYearMin": 1990,
+      "calendarYearMax": 2006,
+      "weight": 0.7,
+      "cooldownYears": 6,
+      "options": [
+        { "id": "hall_go_once", "label": "和他们去一次", "description": "你接触到新的声音、画面和同伴规则，也花掉了一点钱和时间。", "statChanges": { "mood": 2, "wealth": -1, "relationships": 1 }, "interestChanges": { "storytelling_media": 6 } },
+        { "id": "hall_watch_no_spend", "label": "只在旁边看看", "description": "你满足了好奇心，没有把太多钱花进去。", "statChanges": { "mood": 1 }, "interestChanges": { "storytelling_media": 3 } },
+        { "id": "hall_decline", "label": "这次不去", "description": "你把时间和钱留给原来的安排。", "statChanges": {} }
+      ]
+    },
+    {
+      "id": "internet_cafe_invitation",
+      "title": "第一次认真接触网络",
+      "scene": "同学、朋友或同事愿意带你去能上网的地方，并告诉你基本操作。",
+      "stages": ["adolescence", "youth", "adult"],
+      "minAge": 13,
+      "maxAge": 35,
+      "calendarYearMin": 1998,
+      "calendarYearMax": 2014,
+      "weight": 0.7,
+      "cooldownYears": 10,
+      "options": [
+        { "id": "internet_learn_search", "label": "先学怎样查找信息", "description": "你把网络当成寻找资料和解决问题的工具。", "statChanges": { "ability": 2 }, "interestChanges": { "reading_language": 4, "numbers_logic": 3 } },
+        { "id": "internet_chat_game", "label": "先试试聊天或游戏", "description": "新鲜感很强，你也认识到线上交往的另一套规则。", "statChanges": { "mood": 1, "relationships": 1 }, "interestChanges": { "storytelling_media": 5, "social_organizing": 2 } },
+        { "id": "internet_not_now", "label": "暂时不去", "description": "设备、费用或兴趣让你没有在这时开始。", "statChanges": {} }
+      ]
+    },
+    {
+      "id": "unexpected_fever",
+      "title": "身体突然不舒服",
+      "scene": "你开始发热、乏力或出现不能确定诊断的症状，原来的季度安排不得不暂停几天。",
+      "stages": ["primary", "adolescence", "youth", "adult"],
+      "minAge": 6,
+      "maxAge": 90,
+      "weight": 0.65,
+      "cooldownYears": 4,
+      "interruption": { "severity": "major", "reason": "发热和乏力迫使日常安排降速", "affectedCategories": ["*"] },
+      "options": [
+        { "id": "fever_rest_observe", "label": "停下来休息并观察变化", "description": "你减少活动，必要时向家人或医疗服务求助。", "statChanges": { "health": -1, "mood": -1 }, "planImpact": { "executionRate": 0.7, "energyDelta": -2, "fatigueDelta": -2 } },
+        { "id": "fever_seek_care", "label": "尽量去获得医疗帮助", "description": "会产生时间和现金成本，但降低拖延的风险。", "statChanges": { "health": 0, "wealth": -1 }, "planImpact": { "executionRate": 0.8, "energyDelta": -1, "fatigueDelta": 1, "stressDelta": 1 } },
+        { "id": "fever_push_through", "label": "继续原来的学习或工作", "description": "眼前安排没有停，但身体恢复得更慢。", "statChanges": { "health": -2, "ability": 1 }, "planImpact": { "executionRate": 1, "energyDelta": -2, "fatigueDelta": 12, "stressDelta": 5 } }
+      ]
+    },
+    {
+      "id": "unexpected_job_lead",
+      "title": "有人带来一条工作消息",
+      "scene": "熟人提到一个正在招人的具体去处，但信息并不完整，也不保证真的录用。",
+      "stages": ["youth", "adult"],
+      "minAge": 16,
+      "maxAge": 64,
+      "weight": 0.8,
+      "when": { "employmentStatusIn": ["unemployed_searching", "not_started", "family_economic_activity"] },
+      "cooldownYears": 3,
+      "options": [
+        { "id": "job_lead_verify", "label": "先问清工时、报酬和地点", "description": "你不把模糊消息直接当成工作事实。", "statChanges": { "ability": 1 }, "interestChanges": { "practical_work": 3 } },
+        { "id": "job_lead_visit", "label": "亲自去看看", "description": "你付出往返时间，获得了更具体的岗位信息。", "statChanges": { "ability": 1, "wealth": -1 }, "interestChanges": { "practical_work": 4 } },
+        { "id": "job_lead_decline", "label": "不改变现在的安排", "description": "这条消息没有进入你的职业轨迹。", "statChanges": {} }
+      ]
+    },
+    {
+      "id": "coworker_after_work_invitation",
+      "title": "下班后有人叫住你",
+      "scene": "同事临时邀请你一起吃点东西、聊天或参加一项小活动。",
+      "stages": ["adult"],
+      "minAge": 18,
+      "maxAge": 64,
+      "weight": 0.9,
+      "when": { "employmentStatusIn": ["employed"] },
+      "cooldownYears": 2,
+      "options": [
+        { "id": "coworker_join", "label": "一起去坐一会儿", "description": "你听到一些工作之外的经历，也让关系不只停在岗位上。", "statChanges": { "mood": 1, "relationships": 1 }, "interestChanges": { "social_organizing": 3 } },
+        { "id": "coworker_short_chat", "label": "聊几句后回家", "description": "你保持了联系，也保留了自己的时间。", "statChanges": { "relationships": 1 } },
+        { "id": "coworker_decline", "label": "今天直接回去", "description": "家庭、疲劳或个人安排更重要。", "statChanges": { "health": 1 } }
+      ]
+    },
+    {
+      "id": "unexpected_household_expense",
+      "title": "一笔没有计划的支出",
+      "scene": "家用物品损坏、往来事务或其他具体生活需要，让本季度突然多出一笔开销。",
+      "stages": ["adult"],
+      "minAge": 20,
+      "maxAge": 90,
+      "weight": 0.75,
+      "cooldownYears": 3,
+      "options": [
+        { "id": "expense_pay_from_savings", "label": "从已有现金中处理", "description": "问题及时解决，但缓冲资金减少。", "statChanges": { "wealth": -1, "mood": -1 } },
+        { "id": "expense_delay", "label": "先延后不紧急的部分", "description": "你保住现金，但生活不便会持续一阵。", "statChanges": { "mood": -1 } },
+        { "id": "expense_ask_family", "label": "和家人商量怎样分担", "description": "支出不再由一个人独自承担，关系也会受到实际协商影响。", "statChanges": { "relationships": 1, "wealth": -1 } }
+      ]
+    },
+    {
+      "id": "child_wants_shared_activity",
+      "title": "孩子拿着东西来找你",
+      "scene": "孩子想让你一起玩、一起看，或者听他讲刚刚发生的事。",
+      "stages": ["adult"],
+      "minAge": 20,
+      "maxAge": 70,
+      "weight": 0.9,
+      "when": { "hasChild": true },
+      "cooldownYears": 2,
+      "options": [
+        { "id": "child_join_activity", "label": "停下手里的事陪一会儿", "description": "你进入孩子正在经历的具体世界。", "statChanges": { "mood": 1, "relationships": 2 }, "interestChanges": { "storytelling_media": 2, "social_organizing": 2 } },
+        { "id": "child_set_later_time", "label": "约好晚一点专门陪他", "description": "你没有立刻答应，但给出了可以兑现的时间。", "statChanges": { "relationships": 1 } },
+        { "id": "child_too_busy", "label": "让孩子自己去玩", "description": "眼前事务继续完成，孩子这次没有得到回应。", "statChanges": { "relationships": -1 } }
+      ]
+    },
+    {
+      "id": "older_parent_calls",
+      "title": "家里的老人想和你说说话",
+      "scene": "年长父母或家中长辈因为一件生活小事联系你，事情不一定严重，但他们需要回应。",
+      "stages": ["adult"],
+      "minAge": 35,
+      "maxAge": 80,
+      "weight": 0.8,
+      "when": { "minimumOlderParentCount": 1 },
+      "cooldownYears": 2,
+      "options": [
+        { "id": "parent_visit_or_help", "label": "抽时间过去看看", "description": "你实际花时间处理事情，也看到他们生活中的变化。", "statChanges": { "relationships": 2, "health": -1 } },
+        { "id": "parent_call_and_arrange", "label": "先仔细问清，再安排帮助", "description": "你尽量把照护变成可以执行的分工。", "statChanges": { "relationships": 1, "ability": 1 } },
+        { "id": "parent_delay_response", "label": "等忙完再说", "description": "当前事务没有中断，但对方的等待会留在关系里。", "statChanges": { "relationships": -1 } }
+      ]
+    },
+    {
+      "id": "community_activity_notice",
+      "title": "附近出现一项可以参加的活动",
+      "scene": "社区、单位、学校或熟人圈里有人组织运动、文艺、志愿或兴趣活动。",
+      "stages": ["adolescence", "youth", "adult"],
+      "minAge": 12,
+      "maxAge": 100,
+      "weight": 0.7,
+      "cooldownYears": 4,
+      "options": [
+        { "id": "community_try_activity", "label": "去参加一次", "description": "你接触到一种平时不会主动开始的活动。", "statChanges": { "mood": 1, "relationships": 1 }, "interestChanges": { "social_organizing": 4, "sports_movement": 2, "music_performance": 2 } },
+        { "id": "community_watch_first", "label": "先去看看别人怎样参加", "description": "你保留选择，也获得了真实信息。", "statChanges": { "ability": 1 }, "interestChanges": { "social_organizing": 2 } },
+        { "id": "community_skip", "label": "不改变原来的生活", "description": "这项活动没有进入你的日常。", "statChanges": {} }
+      ]
+    },
+    {
+      "id": "adolescent_body_changes_notice",
+      "title": "身体的变化突然变得明显",
+      "scene": "最近一阵，你发现身高、声音、皮肤、体力或情绪和以前不太一样。变化不一定是疾病，却让你开始在意自己的身体。",
+      "stages": ["adolescence", "youth"],
+      "minAge": 12,
+      "maxAge": 17,
+      "weight": 0.75,
+      "cooldownYears": 5,
+      "options": [
+        { "id": "body_change_ask_trusted_person", "label": "找一个信任的大人或同伴问清楚", "description": "你得到一些具体解释，也知道哪些变化正常、哪些情况需要求助。", "statChanges": { "ability": 1, "relationships": 1, "mood": 1 }, "interestChanges": { "sports_movement": 2, "social_organizing": 2 } },
+        { "id": "body_change_adjust_routine", "label": "先调整清洁、睡眠和运动", "description": "你从能控制的日常开始适应身体变化。", "statChanges": { "health": 1, "mood": 1 }, "interestChanges": { "sports_movement": 3 } },
+        { "id": "body_change_hide_worry", "label": "装作没有在意", "description": "你没有向别人提起，担心暂时留在自己心里。", "statChanges": { "mood": -1 } }
+      ]
+    },
+    {
+      "id": "friend_may_move_away",
+      "title": "一个熟悉的朋友可能要离开",
+      "scene": "朋友说家里可能搬走、转学或去别的地方生活。事情还没有完全确定，但你们能经常见面的日子可能要变少。",
+      "stages": ["primary", "adolescence", "youth"],
+      "minAge": 10,
+      "maxAge": 24,
+      "weight": 0.72,
+      "cooldownYears": 5,
+      "options": [
+        { "id": "moving_friend_make_memory", "label": "在离开前一起做件记得住的事", "description": "你们没有假装什么都不会变，而是共同留下一段具体经历。", "statChanges": { "relationships": 2, "mood": 1 }, "interestChanges": { "social_organizing": 3, "storytelling_media": 2 } },
+        { "id": "moving_friend_plan_contact", "label": "认真商量以后怎样联系", "description": "你们约定写信、通话或在可能的时候见面，但关系仍需要以后实际维持。", "statChanges": { "relationships": 1, "ability": 1 }, "interestChanges": { "social_organizing": 3 } },
+        { "id": "moving_friend_avoid_goodbye", "label": "不谈这件事，照旧相处", "description": "眼前没有尴尬，但没有说出口的话留在了这段关系里。", "statChanges": { "mood": -1 } }
+      ]
+    },
+    {
+      "id": "work_family_same_evening",
+      "title": "加班和孩子的重要事情撞在了一起",
+      "scene": "单位临时希望你多留一会儿，同一时间，孩子早已等着你参加一件对他很重要的事。两边都不能假装不存在。",
+      "stages": ["adult"],
+      "minAge": 25,
+      "maxAge": 59,
+      "weight": 0.7,
+      "when": { "employmentStatusIn": ["employed"], "hasChild": true },
+      "cooldownYears": 4,
+      "options": [
+        { "id": "work_family_keep_child_commitment", "label": "按原约定去陪孩子", "description": "你向单位说明情况，承担可能失去额外工作机会的代价。", "statChanges": { "relationships": 2, "wealth": -1, "mood": 1 }, "interestChanges": { "social_organizing": 2 } },
+        { "id": "work_family_negotiate_both", "label": "马上协调时间和替代安排", "description": "你分别说明情况，努力找到能兑现的折中，而不是让任何一方一直等。", "statChanges": { "ability": 1, "relationships": 1, "mood": -1 } },
+        { "id": "work_family_stay_overtime", "label": "留下完成单位的事情", "description": "工作没有耽误，孩子这次等到的却是缺席。", "statChanges": { "wealth": 1, "relationships": -2, "mood": -1 } }
+      ]
+    },
+    {
+      "id": "workplace_orders_slow_down",
+      "title": "单位里的工作量突然少了",
+      "scene": "最近订单、项目或客流有所减少，同事之间开始议论以后会不会减班。现在还没有正式失业事实，但收入和岗位的不确定感已经出现。",
+      "stages": ["adult"],
+      "minAge": 25,
+      "maxAge": 59,
+      "weight": 0.62,
+      "when": { "employmentStatusIn": ["employed"] },
+      "cooldownYears": 5,
+      "options": [
+        { "id": "slow_work_verify_information", "label": "先向可靠的人问清实际情况", "description": "你把传言和已经发生的工作安排分开，避免凭空认定自己会失业。", "statChanges": { "ability": 1, "mood": -1 }, "interestChanges": { "practical_work": 2 } },
+        { "id": "slow_work_prepare_backup", "label": "悄悄整理技能和其他岗位信息", "description": "当前工作仍在继续，但你开始为可能的变化准备现实退路。", "statChanges": { "ability": 1, "wealth": -1 }, "interestChanges": { "practical_work": 4, "numbers_logic": 2 } },
+        { "id": "slow_work_wait_and_see", "label": "先维持原来的节奏", "description": "你没有额外行动，压力暂时留在日常里。", "statChanges": { "mood": -1 } }
+      ]
+    },
+    {
+      "id": "parents_and_child_need_help_together",
+      "title": "父母和孩子在同一周都需要你",
+      "scene": "年长父母有一件生活事务需要处理，孩子也遇到了不能一直拖着的问题。不是谁更重要，而是你的时间真的不够同时到场。",
+      "stages": ["adult"],
+      "minAge": 35,
+      "maxAge": 59,
+      "weight": 0.66,
+      "when": { "hasChild": true, "minimumOlderParentCount": 1 },
+      "cooldownYears": 4,
+      "options": [
+        { "id": "two_generation_make_division", "label": "把事情拆开，找家人共同分工", "description": "你说明两边的实际需要，联系能帮忙的人并承担自己能兑现的部分。", "statChanges": { "ability": 1, "relationships": 2, "mood": -1 }, "interestChanges": { "social_organizing": 3 } },
+        { "id": "two_generation_handle_parent_first", "label": "先处理父母这边的急事", "description": "长辈得到实际帮助，孩子的事情需要另约时间补上。", "statChanges": { "relationships": 1, "health": -1, "mood": -1 } },
+        { "id": "two_generation_handle_child_first", "label": "先回应孩子眼前的问题", "description": "孩子得到支持，父母那边则需要电话协调或等待。", "statChanges": { "relationships": 1, "health": -1, "mood": -1 } }
+      ]
+    },
+    {
+      "id": "partner_asks_for_real_time",
+      "title": "伴侣说你们很久没有真正相处",
+      "scene": "伴侣没有只抱怨忙，而是指出你们最近的对话几乎都在处理工作、孩子和家务，希望留一段不为办事的时间。",
+      "stages": ["adult"],
+      "minAge": 22,
+      "maxAge": 70,
+      "weight": 0.72,
+      "when": { "relationshipStatusIn": ["partnered"] },
+      "cooldownYears": 4,
+      "options": [
+        { "id": "partner_set_real_time", "label": "一起定下能兑现的相处时间", "description": "你们把一段具体时间从其他安排里留出来，也接受需要放下一些事情。", "statChanges": { "relationships": 2, "mood": 1, "wealth": -1 }, "interestChanges": { "social_organizing": 3 } },
+        { "id": "partner_talk_about_pressure", "label": "先把各自最近的压力说清楚", "description": "这次没有立刻解决所有安排，但彼此终于知道对方在承受什么。", "statChanges": { "relationships": 1, "ability": 1, "mood": 1 } },
+        { "id": "partner_say_later_again", "label": "还是等忙完这一阵再说", "description": "眼前任务继续推进，这段关系再次被排到了以后。", "statChanges": { "relationships": -1, "mood": -1 } }
+      ]
+    },
+    {
+      "id": "senior_health_checkup_advice",
+      "title": "一次体检提示了身体变化",
+      "scene": "年度体检或一次就诊中，医生指出了几项需要留意的指标，并建议调整生活习惯。",
+      "stages": ["adult"],
+      "minAge": 50,
+      "maxAge": 95,
+      "weight": 0.8,
+      "cooldownYears": 3,
+      "options": [
+        { "id": "checkup_follow_advice", "label": "认真调整饮食与作息", "description": "你按建议减少油盐、按时休息，身体感受逐步平稳。", "statChanges": { "health": 1, "ability": 1 }, "interestChanges": { "sports_movement": 3 } },
+        { "id": "checkup_take_regular_meds", "label": "按医嘱配药并定期复查", "description": "产生了一笔规律的医疗支出，但有效控制了慢性风险。", "statChanges": { "health": 1, "wealth": -1 } },
+        { "id": "checkup_brush_aside", "label": "觉得没大碍，依然照旧", "description": "生活没有被打乱，但隐患慢慢累积。", "statChanges": { "health": -1 } }
+      ]
+    },
+    {
+      "id": "family_memoir_and_photo_album",
+      "title": "翻开泛黄的旧相册",
+      "scene": "整理房间时，你翻出了一叠老照片、书信和过去留下的票据，勾起一段具体的回忆。",
+      "stages": ["adult"],
+      "minAge": 45,
+      "maxAge": 100,
+      "weight": 0.75,
+      "cooldownYears": 5,
+      "options": [
+        { "id": "memoir_organize_and_write", "label": "把背后的故事记录下来", "description": "你写下时间、地点和人物，让家庭记忆有了着落。", "statChanges": { "mood": 1, "ability": 1 }, "interestChanges": { "reading_language": 5, "storytelling_media": 5 } },
+        { "id": "memoir_share_with_family", "label": "拿给家人或后辈一起看", "description": "大家围坐在一起，听你讲过去的年代和日子。", "statChanges": { "relationships": 2, "mood": 1 }, "interestChanges": { "storytelling_media": 3 } },
+        { "id": "memoir_put_away", "label": "看了一阵后小心收回盒子里", "description": "回忆重归平静，你继续当下的生活。", "statChanges": {} }
+      ]
+    }
+  ]
+}

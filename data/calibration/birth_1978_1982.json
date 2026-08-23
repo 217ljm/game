@@ -1,0 +1,327 @@
+{
+  "schemaVersion": 1,
+  "scope": {
+    "country": "中国大陆",
+    "birthYearMin": 1978,
+    "birthYearMax": 1982,
+    "currency": "CNY",
+    "priceBasis": "各年名义价格"
+  },
+  "rules": [
+    "observations 是公开统计观测；assumptions 是首版生成器假设，两者不得混用。",
+    "群体均值只用于校准随机分布，不直接赋给具体家庭。",
+    "城镇居民人均可支配收入与农村居民人均纯收入属于不同历史统计口径。",
+    "省份、住房面积、父母学历和出生健康信息在取得可用校准数据前不生成。"
+  ],
+  "sources": [
+    {
+      "id": "nbs_population_1978_2000",
+      "publisher": "国家统计局",
+      "title": "中国统计年鉴2001：人口数及构成",
+      "url": "https://www.stats.gov.cn/sj/ndsj/2001c/d0401c.htm"
+    },
+    {
+      "id": "nbs_vital_rates_1978_1985",
+      "publisher": "国家统计局",
+      "title": "中国统计年鉴2001：人口出生率、死亡率、自然增长率",
+      "url": "https://www.stats.gov.cn/sj/ndsj/2001c/d0402c.htm"
+    },
+    {
+      "id": "nbs_income_engel_1978_2000",
+      "publisher": "国家统计局",
+      "title": "中国统计年鉴2001：城乡居民家庭人均收入及恩格尔系数",
+      "url": "https://www.stats.gov.cn/sj/ndsj/2001c/j1003c.htm"
+    },
+    {
+      "id": "nbs_census_1982",
+      "publisher": "国家统计局",
+      "title": "第三次全国人口普查公报",
+      "url": "https://www.stats.gov.cn/sj/tjgb/rkpcgb/qgrkpcgb/202302/t20230206_1901988.html"
+    },
+    {
+      "id": "nbs_sample_1987",
+      "publisher": "国家统计局",
+      "title": "1987年全国1%人口抽样调查公报",
+      "url": "https://www.stats.gov.cn/sj/tjgb/rkpcgb/qgrkpcgb/202302/t20230206_1901989.html"
+    },
+    {
+      "id": "nhc_birth_sex_ratio_1982",
+      "publisher": "国家卫生健康委员会",
+      "title": "我国出生人口性别比实现‘六连降’",
+      "url": "https://www.nhc.gov.cn/jtfzs/s3578/201502/ab0ea18da9c34d7789b5957464da51c3.shtml"
+    },
+    {
+      "id": "nbs_employment_40",
+      "publisher": "国家统计局",
+      "title": "就业总量持续增长 就业结构调整优化",
+      "url": "https://www.stats.gov.cn/zt_18555/ztfx/ggkf40n/202302/t20230209_1902594.html"
+    },
+    {
+      "id": "nbs_living_40",
+      "publisher": "国家统计局",
+      "title": "居民生活水平不断提高 消费质量明显改善",
+      "url": "https://www.stats.gov.cn/zt_18555/ztfx/ggkf40n/202302/t20230209_1902584.html"
+    },
+    {
+      "id": "nbs_rural_reform",
+      "publisher": "国家统计局",
+      "title": "农业和农村经济发展迈上新台阶",
+      "url": "https://www.stats.gov.cn/zt_18555/ztfx/yjsld/202303/t20230301_1920331.html"
+    },
+    {
+      "id": "nbs_population_quality_30",
+      "publisher": "国家统计局",
+      "title": "改革开放30年报告之六：人口素质全面提高就业人员成倍增加",
+      "url": "https://www.stats.gov.cn/zt_18555/ztfx/jnggkf30n/202303/t20230301_1920465.html"
+    }
+  ],
+  "observations": {
+    "yearly": [
+      {
+        "year": 1978,
+        "population": 962590000,
+        "urbanPopulationShare": 0.1792,
+        "malePopulationShare": 0.5149,
+        "birthRatePerThousand": 18.25,
+        "urbanBirthRatePerThousand": 13.56,
+        "ruralBirthRatePerThousand": 18.91,
+        "urbanIncomePerPersonYuan": 343.4,
+        "ruralIncomePerPersonYuan": 133.6,
+        "urbanEngelCoefficient": 0.575,
+        "ruralEngelCoefficient": 0.677,
+        "sourceIds": [
+          "nbs_population_1978_2000",
+          "nbs_vital_rates_1978_1985",
+          "nbs_income_engel_1978_2000"
+        ]
+      },
+      {
+        "year": 1979,
+        "population": 975420000,
+        "urbanPopulationShare": 0.1896,
+        "malePopulationShare": 0.5146,
+        "birthRatePerThousand": 17.82,
+        "urbanBirthRatePerThousand": 13.67,
+        "ruralBirthRatePerThousand": 18.43,
+        "urbanIncomePerPersonYuan": 387.0,
+        "ruralIncomePerPersonYuan": 160.2,
+        "urbanEngelCoefficient": 0.572,
+        "ruralEngelCoefficient": 0.640,
+        "sourceIds": [
+          "nbs_population_1978_2000",
+          "nbs_vital_rates_1978_1985",
+          "nbs_income_engel_1978_2000"
+        ]
+      },
+      {
+        "year": 1980,
+        "population": 987050000,
+        "urbanPopulationShare": 0.1939,
+        "malePopulationShare": 0.5145,
+        "birthRatePerThousand": 18.21,
+        "urbanBirthRatePerThousand": 14.17,
+        "ruralBirthRatePerThousand": 18.82,
+        "urbanIncomePerPersonYuan": 477.6,
+        "ruralIncomePerPersonYuan": 191.3,
+        "urbanEngelCoefficient": 0.569,
+        "ruralEngelCoefficient": 0.618,
+        "sourceIds": [
+          "nbs_population_1978_2000",
+          "nbs_vital_rates_1978_1985",
+          "nbs_income_engel_1978_2000"
+        ]
+      },
+      {
+        "year": 1981,
+        "population": 1000720000,
+        "urbanPopulationShare": 0.2016,
+        "malePopulationShare": 0.5148,
+        "birthRatePerThousand": 20.91,
+        "urbanBirthRatePerThousand": 16.45,
+        "ruralBirthRatePerThousand": 21.55,
+        "urbanIncomePerPersonYuan": 491.9,
+        "ruralIncomePerPersonYuan": 223.4,
+        "urbanEngelCoefficient": 0.567,
+        "ruralEngelCoefficient": 0.599,
+        "sourceIds": [
+          "nbs_population_1978_2000",
+          "nbs_vital_rates_1978_1985",
+          "nbs_income_engel_1978_2000",
+          "nbs_census_1982"
+        ]
+      },
+      {
+        "year": 1982,
+        "population": 1016540000,
+        "urbanPopulationShare": 0.2113,
+        "malePopulationShare": 0.5150,
+        "birthRatePerThousand": 22.28,
+        "urbanBirthRatePerThousand": null,
+        "ruralBirthRatePerThousand": null,
+        "urbanIncomePerPersonYuan": 526.6,
+        "ruralIncomePerPersonYuan": 270.1,
+        "urbanEngelCoefficient": 0.587,
+        "ruralEngelCoefficient": 0.607,
+        "sourceIds": [
+          "nbs_population_1978_2000",
+          "nbs_vital_rates_1978_1985",
+          "nbs_income_engel_1978_2000",
+          "nbs_census_1982"
+        ]
+      }
+    ],
+    "householdMeanSize1982": {
+      "value": 4.4,
+      "unit": "persons_per_household",
+      "sourceId": "nbs_sample_1987",
+      "note": "1987年公报称当年4.2人，比1982年人口普查的4.4人减少0.2人。"
+    },
+    "birthSexRatio1982": {
+      "value": 108.47,
+      "unit": "male_births_per_100_female_births",
+      "sourceId": "nhc_birth_sex_ratio_1982"
+    },
+    "infantMortality1981": {
+      "probability": 0.0376,
+      "unit": "deaths_before_age_1_per_live_birth",
+      "sourceId": "nbs_population_quality_30",
+      "note": "用于校准出生期健康储备分布与婴儿期总体风险，不直接赋给每个新生儿。"
+    },
+    "employmentSectorAnchors": [
+      {
+        "year": 1978,
+        "primary": 0.705,
+        "secondary": 0.173,
+        "tertiary": 0.122,
+        "sourceId": "nbs_employment_40"
+      },
+      {
+        "year": 1985,
+        "primary": 0.624,
+        "secondary": 0.209,
+        "tertiary": 0.167,
+        "sourceId": "nbs_employment_40"
+      }
+    ],
+    "urbanPublicOrCollectiveEmploymentShare1978": {
+      "value": 0.998,
+      "sourceId": "nbs_employment_40"
+    },
+    "urbanHousing1984": {
+      "publicRentalShare": 0.882,
+      "ownerOccupiedShare": 0.094,
+      "otherShare": 0.024,
+      "sourceId": "nbs_living_40"
+    },
+    "ruralHouseholdResponsibility1983": {
+      "share": 0.945,
+      "sourceId": "nbs_rural_reform",
+      "note": "全国已有1.75亿农户实行大包干联产承包责任制。"
+    }
+  },
+  "assumptions": {
+    "birthSexRatioProxy": {
+      "id": "A01",
+      "description": "1978至1982暂共用1982年出生人口性别比；取得逐年数据后替换。"
+    },
+    "birthResidence1982": {
+      "id": "A02",
+      "description": "1982年城乡出生率缺项，保持1981年城镇与农村出生率之比，再缩放到1982年全国出生率。"
+    },
+    "householdSizeDistribution": {
+      "id": "A03",
+      "description": "用离散分布逼近1982年4.4人的家庭户均规模；新生儿家庭并非全部家庭的同口径子样本。",
+      "values": {
+        "3": 0.27,
+        "4": 0.30,
+        "5": 0.25,
+        "6": 0.13,
+        "7": 0.05
+      }
+    },
+    "parentAges": {
+      "id": "A04",
+      "description": "母亲20至35岁、父亲通常与母亲相差-1至+7岁；尚未按年份和城乡校准。"
+    },
+    "incomeDistribution": {
+      "id": "A05",
+      "description": "用均值为官方人均收入的对数正态分布生成家庭人均收入；变异系数为首版假设。",
+      "urbanCoefficientOfVariation": 0.35,
+      "ruralCoefficientOfVariation": 0.45
+    },
+    "parentSectorByResidence": {
+      "id": "A06",
+      "description": "农村行业结构为假设曲线，城镇行业结构按全体人口城乡权重反解，使合成结果接近全国就业行业统计；出生家庭因城乡生育率不同，不会机械复刻该边际分布。",
+      "rural1978": {
+        "primary": 0.84,
+        "secondary": 0.09,
+        "tertiary": 0.07
+      },
+      "rural1982": {
+        "primary": 0.80,
+        "secondary": 0.12,
+        "tertiary": 0.08
+      }
+    },
+    "jobDetails": {
+      "id": "A07",
+      "description": "行业内职业、父母同业相关性、劳动月份和城镇国有/集体单位拆分均为首版可替换假设。"
+    },
+    "ruralResponsibilityAdoption": {
+      "id": "A08",
+      "description": "采用扩散曲线连接改革起点与1983年94.5%的观测锚点，不表示各地区同步。",
+      "sharesByYear": {
+        "1978": 0.01,
+        "1979": 0.04,
+        "1980": 0.14,
+        "1981": 0.38,
+        "1982": 0.72
+      }
+    },
+    "housing": {
+      "id": "A09",
+      "description": "1978至1982城镇住房暂用1984年产权结构作为近邻代理；农村住房结构暂无全国同口径观测。",
+      "ruralFamilyHousingShare": 0.97
+    },
+    "householdComposition": {
+      "id": "A10",
+      "description": "家庭额外成员由年长兄姐和祖辈构成，城乡概率暂为建模假设。"
+    },
+    "initialVisibleStats": {
+      "id": "A11",
+      "description": "财富按同年同城乡收入相对值映射；健康使用出生期健康储备模型；心情与关系在没有个人经历前使用中性起点，能力从0开始积累。"
+    },
+    "birthDateWithinYear": {
+      "id": "A12",
+      "description": "出生月份和当月日期暂按均匀分布生成，尚未校准出生季节性。"
+    },
+    "birthHealthReserve": {
+      "id": "A13",
+      "description": "公开锚点只能校准群体婴儿死亡率，不能还原个人出生体重、孕周或诊断。首版把新生儿分为三种潜在健康储备，使风险倍数加权均值为1，再映射为较高但有差异的游戏健康值；它不是临床评分。",
+      "calibrationObservationId": "infantMortality1981",
+      "categories": [
+        {
+          "id": "robust_start",
+          "share": 0.58,
+          "scoreMin": 82,
+          "scoreMax": 94,
+          "infantMortalityRiskMultiplier": 0.35
+        },
+        {
+          "id": "ordinary_start",
+          "share": 0.32,
+          "scoreMin": 70,
+          "scoreMax": 82,
+          "infantMortalityRiskMultiplier": 1.10
+        },
+        {
+          "id": "vulnerable_start",
+          "share": 0.10,
+          "scoreMin": 52,
+          "scoreMax": 68,
+          "infantMortalityRiskMultiplier": 4.45
+        }
+      ]
+    }
+  }
+}

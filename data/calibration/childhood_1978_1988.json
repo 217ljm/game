@@ -1,0 +1,182 @@
+{
+  "schemaVersion": 1,
+  "scope": {
+    "country": "中国大陆",
+    "startYear": 1978,
+    "endYear": 1988,
+    "startAge": 0,
+    "endAge": 6,
+    "currency": "CNY",
+    "priceBasis": "各年名义价格"
+  },
+  "rules": [
+    "observations保存公开统计观测，assumptions保存可替换的首版建模参数。",
+    "群体死亡率、生育率、入学率和接种目标不得写成具体家庭的必然结果。",
+    "城镇可支配收入与农村纯收入沿用历史统计口径，不把二者伪装成同一指标。",
+    "疾病、接种接触、弟妹出生和劳动变化一旦抽中，必须写为带年份的具体事实。"
+  ],
+  "sources": [
+    {
+      "id": "nbs_income_engel_1978_2000",
+      "publisher": "国家统计局",
+      "title": "中国统计年鉴2001：城乡居民家庭人均收入及恩格尔系数",
+      "url": "https://www.stats.gov.cn/sj/ndsj/2001c/j1003c.htm"
+    },
+    {
+      "id": "nbs_population_quality_30",
+      "publisher": "国家统计局",
+      "title": "改革开放30年报告之六：人口素质全面提高就业人员成倍增加",
+      "url": "https://www.stats.gov.cn/zt_18555/ztfx/jnggkf30n/202303/t20230301_1920465.html"
+    },
+    {
+      "id": "nhc_immunization_history",
+      "publisher": "国家卫生健康委员会",
+      "title": "免疫规划工作成就",
+      "url": "https://www.nhc.gov.cn/xcs/c100122/201904/e08a101fda7040ae8cda76a67acda99b.shtml"
+    },
+    {
+      "id": "nhc_immunization_2005",
+      "publisher": "国家卫生健康委员会",
+      "title": "2005年全国儿童预防接种宣传日宣传材料",
+      "url": "https://www.nhc.gov.cn/wjw/zcjd/200504/155ee3b4f583415b832b3b84929b1020.shtml"
+    },
+    {
+      "id": "moe_primary_enrollment",
+      "publisher": "教育部",
+      "title": "小学学龄儿童入学率",
+      "url": "https://www.moe.gov.cn/jyb_sjzl/moe_560/moe_1389/moe_1390/moe_1393/201002/t20100226_20345.html"
+    },
+    {
+      "id": "moe_education_1987",
+      "publisher": "教育部",
+      "title": "国家教委1987年工作要点（含1987年教育事业数据）",
+      "url": "https://www.moe.gov.cn/jyb_sjzl/moe_164/tnull_3450.html"
+    },
+    {
+      "id": "moe_compulsory_education_history",
+      "publisher": "教育部",
+      "title": "九年义务教育开始实施",
+      "url": "https://www.moe.gov.cn/jyb_xwfb/xw_zt/moe_357/s3581/moe_2669/moe_2921/tnull_51639.html"
+    },
+    {
+      "id": "nbs_rural_reform",
+      "publisher": "国家统计局",
+      "title": "农业和农村经济发展迈上新台阶",
+      "url": "https://www.stats.gov.cn/zt_18555/ztfx/yjsld/202303/t20230301_1920331.html"
+    }
+  ],
+  "observations": {
+    "yearlyHouseholdReferences": [
+      { "year": 1978, "urbanIncomePerPersonYuan": 343.4, "ruralIncomePerPersonYuan": 133.6, "urbanEngelCoefficient": 0.575, "ruralEngelCoefficient": 0.677, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1979, "urbanIncomePerPersonYuan": 387.0, "ruralIncomePerPersonYuan": 160.2, "urbanEngelCoefficient": 0.572, "ruralEngelCoefficient": 0.640, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1980, "urbanIncomePerPersonYuan": 477.6, "ruralIncomePerPersonYuan": 191.3, "urbanEngelCoefficient": 0.569, "ruralEngelCoefficient": 0.618, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1981, "urbanIncomePerPersonYuan": 491.9, "ruralIncomePerPersonYuan": 223.4, "urbanEngelCoefficient": 0.567, "ruralEngelCoefficient": 0.599, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1982, "urbanIncomePerPersonYuan": 526.6, "ruralIncomePerPersonYuan": 270.1, "urbanEngelCoefficient": 0.587, "ruralEngelCoefficient": 0.607, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1983, "urbanIncomePerPersonYuan": 564.0, "ruralIncomePerPersonYuan": 309.8, "urbanEngelCoefficient": 0.592, "ruralEngelCoefficient": 0.594, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1984, "urbanIncomePerPersonYuan": 651.2, "ruralIncomePerPersonYuan": 355.3, "urbanEngelCoefficient": 0.580, "ruralEngelCoefficient": 0.592, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1985, "urbanIncomePerPersonYuan": 739.1, "ruralIncomePerPersonYuan": 397.6, "urbanEngelCoefficient": 0.533, "ruralEngelCoefficient": 0.578, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1986, "urbanIncomePerPersonYuan": 899.6, "ruralIncomePerPersonYuan": 423.8, "urbanEngelCoefficient": 0.524, "ruralEngelCoefficient": 0.564, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1987, "urbanIncomePerPersonYuan": 1002.2, "ruralIncomePerPersonYuan": 462.6, "urbanEngelCoefficient": 0.535, "ruralEngelCoefficient": 0.558, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1988, "urbanIncomePerPersonYuan": 1181.4, "ruralIncomePerPersonYuan": 544.9, "urbanEngelCoefficient": 0.514, "ruralEngelCoefficient": 0.540, "sourceId": "nbs_income_engel_1978_2000" }
+    ],
+    "infantMortality1981": {
+      "probability": 0.0376,
+      "unit": "deaths_before_age_1_per_live_birth",
+      "sourceId": "nbs_population_quality_30"
+    },
+    "generalFertility1981": {
+      "probability": 0.0824,
+      "unit": "births_per_woman_age_15_49_per_year",
+      "sourceId": "nbs_population_quality_30"
+    },
+    "immunizationProgram": {
+      "nationalStartYear": 1978,
+      "initialProgram": "4种疫苗预防6种疾病",
+      "provinceLevel85PercentTargetReachedYear": 1988,
+      "sourceIds": ["nhc_immunization_history", "nhc_immunization_2005"]
+    },
+    "primarySchoolEnrollmentAnchors": [
+      { "year": 1980, "rate": 0.930, "ageDefinition": "7至11周岁", "sourceId": "moe_primary_enrollment" },
+      { "year": 1985, "rate": 0.959, "ageDefinition": "7至11周岁", "sourceId": "moe_primary_enrollment" },
+      { "year": 1986, "rate": 0.964, "ageDefinition": "7至11周岁", "sourceId": "moe_education_1987", "note": "1987年97.1%，比上年提高0.7个百分点。" },
+      { "year": 1987, "rate": 0.971, "ageDefinition": "7至11周岁", "sourceId": "moe_education_1987" },
+      { "year": 1990, "rate": 0.978, "ageDefinition": "7至11周岁", "sourceId": "moe_primary_enrollment" }
+    ],
+    "compulsoryEducationLaw": {
+      "passed": "1986-04-12",
+      "effective": "1986-07-01",
+      "ordinaryEntryAge": 6,
+      "deferredEntryAgeWhereConditionsInsufficient": 7,
+      "sourceId": "moe_compulsory_education_history"
+    },
+    "ruralHouseholdResponsibility1983": {
+      "share": 0.945,
+      "sourceId": "nbs_rural_reform"
+    }
+  },
+  "assumptions": {
+    "incomePersistence": {
+      "id": "C01",
+      "description": "家庭出生时相对同年同城乡均值的收入位置会延续，但每年叠加均值为1的随机冲击。",
+      "annualShockSigma": { "urban": 0.12, "rural": 0.18 }
+    },
+    "workMonthVariation": {
+      "id": "C02",
+      "description": "非第一产业每年通常工作11至12个月，第一产业按9至12个月记录；这是年度粒度近似。"
+    },
+    "childIllnessEpisodes": {
+      "id": "C03",
+      "description": "常见发热或呼吸消化道症状按年龄相关泊松过程生成，不冒充具体临床诊断。",
+      "meanEpisodesByAge": { "0": 1.20, "1": 1.10, "2": 1.00, "3": 0.85, "4": 0.75, "5": 0.70, "6": 0.65 },
+      "baseSevereEpisodeProbability": 0.08
+    },
+    "postInfancyMortality": {
+      "id": "C04",
+      "description": "1至6岁年度死亡概率暂设0.003，等待年龄别儿童死亡数据替换。",
+      "annualProbability": 0.003
+    },
+    "infantMortalityProxy": {
+      "id": "C05",
+      "description": "1978至1982出生队列暂共用1981年婴儿死亡率。"
+    },
+    "nutritionShortfall": {
+      "id": "C06",
+      "description": "以家庭实际人均收入相对同年同城乡均值和恩格尔系数生成食品需要未充分满足月份；这是家庭层模拟事实，不是贫困等级。"
+    },
+    "immunizationContact": {
+      "id": "C07",
+      "description": "公开资料只给出计划免疫起点和1988年目标达成层级，个人接种接触概率使用城乡分开的线性扩散代理。",
+      "coverageProxy": {
+        "1978": { "urban": 0.45, "rural": 0.25 },
+        "1988": { "urban": 0.90, "rural": 0.85 }
+      },
+      "eligibleAges": [0, 1, 2],
+      "severeIllnessRiskMultiplierAfterContact": 0.75
+    },
+    "siblingBirth": {
+      "id": "C08",
+      "description": "以1981年一般生育率为锚点，再按母亲年龄、城乡和已有子女数调整弟妹出生概率。",
+      "urbanMultiplier": 0.70,
+      "ruralMultiplier": 1.08,
+      "maximumCoResidents": 7
+    },
+    "siblingSexRatio": {
+      "id": "C09",
+      "description": "新出生弟妹暂使用出生系统中的1982出生人口性别比代理。",
+      "maleBirthsPer100FemaleBirths": 108.47
+    },
+    "ruralResponsibilityDiffusion": {
+      "id": "C10",
+      "description": "1978至1982沿用出生系统扩散假设，1983使用94.5%观测，1984以后接近全面覆盖。",
+      "sharesByYear": { "1978": 0.01, "1979": 0.04, "1980": 0.14, "1981": 0.38, "1982": 0.72, "1983": 0.945, "1984": 0.990, "1985": 0.995, "1986": 0.995, "1987": 0.995, "1988": 0.995 }
+    },
+    "visibleStatEvolution": {
+      "id": "C11",
+      "description": "财富由当年相对收入重算；健康、心情、能力和人际只因已记录的健康、家庭或选择事实变化。"
+    },
+    "caregiverWorkLoss": {
+      "id": "C12",
+      "description": "幼儿病中照护天数由症状持续天数派生，并优先分配给母亲；只影响成员收入分配权重，不单独重复扣减已实现家庭收入。"
+    }
+  }
+}

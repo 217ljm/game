@@ -1,0 +1,289 @@
+{
+  "schemaVersion": 1,
+  "scope": {
+    "country": "中国大陆",
+    "historicalStartYear": 1992,
+    "historicalDataThrough": 2025,
+    "projectionStartsAfter": 2025,
+    "maximumAge": 105,
+    "currency": "CNY",
+    "historicalPriceBasis": "各年名义价格"
+  },
+  "rules": [
+    "2025年及以前的公开数据标记为observation；2026年及以后只使用scenario，不标成历史事实。",
+    "城镇单位平均工资只作为可比岗位的工资增长与量级参照，不直接赋给个人。",
+    "居民人均可支配收入只用于生活费和经营收入量级参照，不等于人物家庭收入。",
+    "2024年全国人均预期寿命只校验群体结果，不直接决定个人死亡年龄。",
+    "婚恋、生育、迁移、住房、个体失业、晋升和疾病概率缺少统一微观口径时必须列为假设。",
+    "人物的工作、伴侣、住房、债务、孩子和死亡均保存具体事实；界面不存储阶层、负担或稳定性标签。"
+  ],
+  "sources": [
+    {
+      "id": "nbs_income_engel_1978_2010",
+      "publisher": "国家统计局",
+      "title": "中国统计年鉴2011：城乡居民家庭人均收入及恩格尔系数",
+      "url": "https://www.stats.gov.cn/sj/ndsj/2011/html/J1002C.HTM"
+    },
+    {
+      "id": "nbs_livelihood_2013_2019",
+      "publisher": "国家统计局",
+      "title": "居民生活：2013—2019年居民人均可支配收入与消费支出",
+      "url": "https://www.stats.gov.cn/zt_18555/ztsj/jzgj/jz2020/202302/P020230309331339376667.pdf"
+    },
+    {
+      "id": "nbs_income_2025",
+      "publisher": "国家统计局",
+      "title": "2025年居民收入和消费支出情况",
+      "url": "https://www.stats.gov.cn/sj/zxfbhjd/202601/t20260119_1962321.html"
+    },
+    {
+      "id": "nbs_income_2015",
+      "publisher": "国家统计局",
+      "title": "2015年国民经济和社会发展统计公报",
+      "url": "https://www.stats.gov.cn/sj/zxfb/202302/t20230203_1899041.html"
+    },
+    {
+      "id": "nbs_income_2020",
+      "publisher": "国家统计局",
+      "title": "2020年居民收入和消费支出情况",
+      "url": "https://www.stats.gov.cn/sj/zxfb/202302/t20230203_1900970.html"
+    },
+    {
+      "id": "nbs_staff_wage_1978_2006",
+      "publisher": "国家统计局",
+      "title": "中国统计年鉴2007：职工平均工资及指数",
+      "url": "https://www.stats.gov.cn/sj/ndsj/2007/html/E0522C.HTM"
+    },
+    {
+      "id": "nbs_wage_2010_nonprivate",
+      "publisher": "国家统计局",
+      "title": "2010年城镇非私营单位在岗职工年平均工资主要情况",
+      "url": "https://www.stats.gov.cn/sj/zxfb/202303/t20230301_1919259.html"
+    },
+    {
+      "id": "nbs_wage_2010_private",
+      "publisher": "国家统计局",
+      "title": "2010年城镇私营单位就业人员年平均工资主要情况",
+      "url": "https://www.stats.gov.cn/sj/zxfb/202303/t20230301_1919260.html"
+    },
+    {
+      "id": "nbs_wage_2015_nonprivate",
+      "publisher": "国家统计局",
+      "title": "2015年城镇非私营单位就业人员年平均工资",
+      "url": "https://www.stats.gov.cn/sj/zxfb/202302/t20230203_1899114.html"
+    },
+    {
+      "id": "nbs_wage_2015_private",
+      "publisher": "国家统计局",
+      "title": "2015年城镇私营单位就业人员年平均工资",
+      "url": "https://www.stats.gov.cn/sj/zxfb/202302/t20230203_1899115.html"
+    },
+    {
+      "id": "nbs_wage_2020",
+      "publisher": "国家统计局",
+      "title": "2020年城镇单位就业人员平均工资数据解读",
+      "url": "https://www.stats.gov.cn/sj/sjjd/202302/t20230202_1896493.html"
+    },
+    {
+      "id": "nbs_wage_2025",
+      "publisher": "国家统计局",
+      "title": "2025年城镇单位就业人员年平均工资情况",
+      "url": "https://www.stats.gov.cn/sj/zxfb/202605/t20260515_1963707.html"
+    },
+    {
+      "id": "nbs_employment_reform_40",
+      "publisher": "国家统计局",
+      "title": "就业总量持续增长 就业结构调整优化——改革开放40年报告",
+      "url": "https://www.stats.gov.cn/zt_18555/ztfx/ggkf40n/202302/t20230209_1902594.html"
+    },
+    {
+      "id": "nbs_urbanization_2025",
+      "publisher": "国家统计局",
+      "title": "新型城镇化建设深入推进 城市高质量发展成效显著",
+      "url": "https://www.stats.gov.cn/sj/sjjd/202606/t20260603_1963868.html"
+    },
+    {
+      "id": "nhc_life_expectancy_2024",
+      "publisher": "国家卫生健康委员会",
+      "title": "2024年我国人均预期寿命达79岁",
+      "url": "https://www.nhc.gov.cn/wjw/mtbd/202503/3bfb889a16c6499dba0e6c0eb2b70887.shtml"
+    },
+    {
+      "id": "npc_gradual_retirement_2025",
+      "publisher": "全国人民代表大会常务委员会",
+      "title": "关于实施渐进式延迟法定退休年龄的决定",
+      "url": "https://www.npc.gov.cn/npc/c2/c30834/202409/t20240914_439634.html"
+    },
+    {
+      "id": "state_council_housing_1998",
+      "publisher": "国务院",
+      "title": "关于进一步深化城镇住房制度改革加快住房建设的通知",
+      "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/qtwj/201309/t20130924_776668.html"
+    },
+    {
+      "id": "housing_fund_1999",
+      "publisher": "国务院",
+      "title": "住房公积金管理条例",
+      "url": "https://www.ggj.gov.cn/zcfg/flfg/202201/t20220126_34474.htm"
+    },
+    {
+      "id": "npc_labor_contract_2008",
+      "publisher": "全国人民代表大会",
+      "title": "劳动合同法热点问题解答",
+      "url": "https://www.npc.gov.cn/zgrdw/npc/zt/2008-04/03/content_1423202.htm"
+    },
+    {
+      "id": "moe_education_1999",
+      "publisher": "教育部",
+      "title": "1999年全国教育事业发展统计公报",
+      "url": "https://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/tnull_841.html"
+    }
+  ],
+  "observations": {
+    "residentIncomeReferenceAnchors": [
+      { "year": 1992, "urban": 2026.6, "rural": 784.0, "national": null, "metric": "legacy_urban_disposable_and_rural_net_income", "sourceId": "nbs_income_engel_1978_2010" },
+      { "year": 1995, "urban": 4283.0, "rural": 1577.7, "national": null, "metric": "legacy_urban_disposable_and_rural_net_income", "sourceId": "nbs_income_engel_1978_2010" },
+      { "year": 2000, "urban": 6280.0, "rural": 2253.4, "national": null, "metric": "legacy_urban_disposable_and_rural_net_income", "sourceId": "nbs_income_engel_1978_2010" },
+      { "year": 2005, "urban": 10493.0, "rural": 3254.9, "national": null, "metric": "legacy_urban_disposable_and_rural_net_income", "sourceId": "nbs_income_engel_1978_2010" },
+      { "year": 2010, "urban": 19109.4, "rural": 5919.0, "national": null, "metric": "legacy_urban_disposable_and_rural_net_income", "sourceId": "nbs_income_engel_1978_2010" },
+      { "year": 2013, "urban": 26467, "rural": 9430, "national": 18311, "metric": "resident_disposable_income_unified_household_survey", "sourceId": "nbs_livelihood_2013_2019" },
+      { "year": 2015, "urban": 31195, "rural": 11422, "national": 21966, "metric": "resident_disposable_income_unified_household_survey", "sourceId": "nbs_income_2015" },
+      { "year": 2020, "urban": 43834, "rural": 17131, "national": 32189, "metric": "resident_disposable_income_unified_household_survey", "sourceId": "nbs_income_2020" },
+      { "year": 2025, "urban": 56502, "rural": 24456, "national": 43377, "metric": "resident_disposable_income_unified_household_survey", "sourceId": "nbs_income_2025" }
+    ],
+    "urbanUnitWageAnchors": [
+      { "year": 1992, "nonPrivate": 2711, "private": null, "metric": "all_staff_average_wage_legacy_scope", "sourceId": "nbs_staff_wage_1978_2006" },
+      { "year": 1995, "nonPrivate": 5500, "private": null, "metric": "all_staff_average_wage_legacy_scope", "sourceId": "nbs_staff_wage_1978_2006" },
+      { "year": 2000, "nonPrivate": 9371, "private": null, "metric": "all_staff_average_wage_legacy_scope", "sourceId": "nbs_staff_wage_1978_2006" },
+      { "year": 2006, "nonPrivate": 21001, "private": null, "metric": "all_staff_average_wage_legacy_scope", "sourceId": "nbs_staff_wage_1978_2006" },
+      { "year": 2010, "nonPrivate": 37147, "private": 20759, "metric": "urban_unit_average_wage", "sourceIds": ["nbs_wage_2010_nonprivate", "nbs_wage_2010_private"] },
+      { "year": 2015, "nonPrivate": 62029, "private": 39589, "metric": "urban_unit_average_wage", "sourceIds": ["nbs_wage_2015_nonprivate", "nbs_wage_2015_private"] },
+      { "year": 2020, "nonPrivate": 97379, "private": 57727, "metric": "urban_unit_average_wage", "sourceId": "nbs_wage_2020" },
+      { "year": 2025, "nonPrivate": 129441, "private": 71590, "metric": "urban_unit_average_wage", "sourceId": "nbs_wage_2025" }
+    ],
+    "employmentSectorAnchors": [
+      { "year": 1991, "primary": 0.597, "secondary": 0.214, "tertiary": 0.189, "sourceId": "nbs_employment_reform_40" },
+      { "year": 2017, "primary": 0.270, "secondary": 0.281, "tertiary": 0.449, "sourceId": "nbs_employment_reform_40" }
+    ],
+    "urbanPopulationShareAnchors": [
+      { "year": 1978, "rate": 0.1792, "sourceId": "nbs_employment_reform_40" },
+      { "year": 2007, "rate": 0.4494, "sourceId": "nbs_employment_reform_40" },
+      { "year": 2020, "rate": 0.6389, "sourceId": "nbs_urbanization_2025" },
+      { "year": 2025, "rate": 0.6789, "sourceId": "nbs_urbanization_2025" }
+    ],
+    "lifeExpectancyAtBirth": {
+      "year": 2024,
+      "years": 79.0,
+      "population": "national_total_population",
+      "sourceId": "nhc_life_expectancy_2024"
+    },
+    "policyMilestones": [
+      { "year": 1998, "id": "urban_housing_monetization", "sourceId": "state_council_housing_1998" },
+      { "year": 1999, "id": "housing_provident_fund_regulation", "sourceId": "housing_fund_1999" },
+      { "year": 1999, "id": "higher_education_expansion", "sourceId": "moe_education_1999" },
+      { "year": 2008, "id": "labor_contract_law_effective", "sourceId": "npc_labor_contract_2008" },
+      { "year": 2025, "id": "gradual_retirement_reform_effective", "sourceId": "npc_gradual_retirement_2025" }
+    ]
+  },
+  "scenarios": {
+    "baselineAfter2025": {
+      "id": "SCENARIO_BASELINE_2026_PLUS",
+      "description": "2026年以后只用于让1978—1982年出生人物走完一生的中性情景，不是预测。",
+      "annualNominalIncomeGrowth": 0.035,
+      "annualNominalWageGrowth": 0.035,
+      "employmentSectorSharesBy2045": { "primary": 0.15, "secondary": 0.27, "tertiary": 0.58 },
+      "urbanPopulationShareBy2045": 0.76,
+      "maximumProjectionYear": 2087
+    }
+  },
+  "assumptions": {
+    "higherEducation": {
+      "id": "AL01",
+      "description": "普通高等教育按三年专科或四年本科模拟；层次、专业方向、费用和毕业概率为游戏假设，不伪造学校。",
+      "undergraduateShare": 0.58,
+      "undergraduateYears": 4,
+      "shortCycleYears": 3,
+      "annualCompletionProbabilityFinalYear": 0.92,
+      "annualExitBase": 0.018
+    },
+    "career": {
+      "id": "AL02",
+      "description": "个体工资增长、失业、晋升、合同与再就业根据工作事实和时代节点生成，概率为显式假设。",
+      "baseAnnualSeparationProbability": 0.035,
+      "baseAnnualPromotionProbability": 0.055,
+      "annualIndividualIncomeShockSigma": 0.07,
+      "jobSearchBaseHiringProbability": 0.68
+    },
+    "historicalCareerShocks": {
+      "id": "AL03",
+      "description": "1998—2002年国企岗位、2008年部分市场岗位和2020年接触型服务岗位增加离职或停工概率，具体个体结果为假设。",
+      "stateUnit1998To2002SeparationMultiplier": 3.2,
+      "market2008SeparationMultiplier": 1.7,
+      "contactService2020SeparationMultiplier": 2.8
+    },
+    "adultFinance": {
+      "id": "AL04",
+      "description": "个人或小家庭收入、消费、住房、教育和医疗逐项结算；消费比例为游戏假设。",
+      "baseLivingExpenseShare": 0.55,
+      "minimumExpenseShareOfResidentReference": 0.72,
+      "childExpenseShareOfResidentReference": 0.38,
+      "retiredExpenseShare": 0.72
+    },
+    "housing": {
+      "id": "AL05",
+      "description": "缺少具体城市和面积时，用收入倍数生成租住、农村家庭住房或商品房现金流；地址和市场成交价保持为空。",
+      "annualRentShareOfIncome": 0.18,
+      "purchasePriceMultipleOfAnnualHouseholdIncome": 5.8,
+      "downPaymentShare": 0.28,
+      "mortgageAnnualRate": 0.055,
+      "mortgageYears": 20
+    },
+    "relationshipFormation": {
+      "id": "AL06",
+      "description": "认识伴侣、关系维持和是否共同生活由年龄、投入时间和玩家选择生成；全国婚姻率不直接分配给人物。",
+      "partnerAgeDifferenceRange": [-3, 5],
+      "annualRelationshipStrainBase": 0.025
+    },
+    "partnerEconomics": {
+      "id": "AL07",
+      "description": "伴侣的教育、职业和收入按人物年代与职业目录生成，单位和地点未知。"
+    },
+    "fertilityAndChild": {
+      "id": "AL08",
+      "description": "首版最多模拟一个孩子；怀孕、出生与养育概率为游戏假设，不重建地区计划生育审批。",
+      "birthProbabilityAfterDecision": 0.86,
+      "postpartumHealthRiskProbability": 0.04
+    },
+    "familyCare": {
+      "id": "AL09",
+      "description": "对父母和孩子的照护以小时和现金记录，不保存家庭负担等级。"
+    },
+    "healthAndMortality": {
+      "id": "AL10",
+      "description": "成人症状、慢性健康事件和死亡按年龄、五项健康值与既有经历逐年结算；不伪造诊断。",
+      "minorEpisodeMean": 1.45,
+      "chronicEventBaseAtAge45": 0.018,
+      "mortalityBaseAtAge30": 0.00028,
+      "mortalityDoublingYears": 9.7,
+      "typicalHealthyReserveScore": 78.5
+    },
+    "retirement": {
+      "id": "AL11",
+      "description": "受雇者依据2025渐进式退休决定和出生年份估算退休年龄；缺少出生月与女性岗位类别时保存估算口径。",
+      "selfEmploymentRetirementAge": 65,
+      "pensionReplacementShare": 0.48
+    },
+    "adultChoices": {
+      "id": "AL12",
+      "description": "成年事件自动权重只用于批量模拟，手动游戏完全由玩家选择；所有未选项保存。"
+    },
+    "futureScenarioUse": {
+      "id": "AL13",
+      "description": "2026年后的工资、居民收入、产业结构和城镇化只来自SCENARIO_BASELINE_2026_PLUS。"
+    },
+    "visibleStats": {
+      "id": "AL14",
+      "description": "五项属性只引用年度事实变化；财富由净资产和同年收入参照重算。"
+    }
+  }
+}

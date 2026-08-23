@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title description">
+  <title id="title">1978—一生</title>
+  <desc id="description">太阳从一条延伸的人生道路上升起</desc>
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#55c9c3"/>
+      <stop offset="0.55" stop-color="#79d7b7"/>
+      <stop offset="1" stop-color="#ffd166"/>
+    </linearGradient>
+    <linearGradient id="road" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0" stop-color="#fff9e7"/>
+      <stop offset="1" stop-color="#fff"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="#24304a"/>
+  <rect x="28" y="28" width="456" height="456" rx="92" fill="url(#sky)"/>
+  <circle cx="256" cy="176" r="76" fill="#ff7f66" opacity="0.96"/>
+  <path d="M48 332c84-56 137-63 208-63s124 7 208 63v132H48Z" fill="#218c7e" opacity="0.88"/>
+  <path d="M222 266h68c0 54 13 96 49 198H173c36-102 49-144 49-198Z" fill="url(#road)"/>
+  <path d="M256 287v154" fill="none" stroke="#ffb84c" stroke-width="13" stroke-linecap="round" stroke-dasharray="26 24"/>
+  <circle cx="256" cy="263" r="20" fill="#24304a" stroke="#fff" stroke-width="9"/>
+  <path d="M92 111h95" stroke="#fff" stroke-width="12" stroke-linecap="round" opacity="0.82"/>
+  <path d="M92 140h61" stroke="#fff" stroke-width="12" stroke-linecap="round" opacity="0.62"/>
+</svg>

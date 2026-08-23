@@ -1,0 +1,14 @@
+node_modules/
+dist/
+output/
+.playwright-cli/
+server.stdout.log
+server.stderr.log
+*.log
+%SystemDrive%/
+
+# Local operating-system and editor files
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

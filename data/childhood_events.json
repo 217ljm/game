@@ -1,0 +1,99 @@
+{
+  "schemaVersion": 1,
+  "stage": "early_childhood_0_6",
+  "events": [
+    {
+      "id": "age_3_adults_are_busy",
+      "age": 3,
+      "title": "大人忙着的时候",
+      "prompt": "家里人各自忙着劳动和家务，你已经能够自己在附近活动。你常把时间花在哪里？",
+      "contentStatus": "design_assumption",
+      "assumptionId": "E01",
+      "options": [
+        {
+          "id": "stay_near_caregiver",
+          "label": "待在照看你的人身边",
+          "autoWeight": 0.36,
+          "facts": { "caregiverConversationHoursPerWeek": 3, "peerPlayHoursPerWeek": 0 },
+          "statEffects": { "relationships": 2, "ability": 1 }
+        },
+        {
+          "id": "play_with_nearby_children",
+          "label": "找附近的孩子一起玩",
+          "autoWeight": 0.36,
+          "facts": { "caregiverConversationHoursPerWeek": 0, "peerPlayHoursPerWeek": 4 },
+          "statEffects": { "mood": 2, "relationships": 2 }
+        },
+        {
+          "id": "follow_and_observe_work",
+          "label": "跟着大人看他们干活",
+          "autoWeight": 0.28,
+          "facts": { "adultWorkObservationHoursPerWeek": 4, "peerPlayHoursPerWeek": 0 },
+          "statEffects": { "ability": 2, "health": -1 }
+        }
+      ]
+    },
+    {
+      "id": "age_5_encounter_symbols",
+      "age": 5,
+      "title": "看不懂的字和数字",
+      "prompt": "你开始留意票证、招牌、包装或纸张上的字和数字。遇到看不懂的东西时，你通常怎么做？",
+      "contentStatus": "design_assumption",
+      "assumptionId": "E02",
+      "options": [
+        {
+          "id": "ask_someone",
+          "label": "拿去问身边的大人",
+          "autoWeight": 0.34,
+          "facts": { "questionsAskedPerWeek": 3, "selfPracticeHoursPerWeek": 0 },
+          "statEffects": { "ability": 2, "relationships": 1 }
+        },
+        {
+          "id": "copy_and_guess",
+          "label": "照着样子自己比画",
+          "autoWeight": 0.34,
+          "facts": { "questionsAskedPerWeek": 0, "selfPracticeHoursPerWeek": 3 },
+          "statEffects": { "ability": 3 }
+        },
+        {
+          "id": "return_to_play",
+          "label": "先放下，继续玩耍",
+          "autoWeight": 0.32,
+          "facts": { "questionsAskedPerWeek": 0, "selfPracticeHoursPerWeek": 0, "peerPlayHoursPerWeek": 2 },
+          "statEffects": { "mood": 2, "relationships": 1 }
+        }
+      ]
+    },
+    {
+      "id": "age_6_school_preparation",
+      "age": 6,
+      "title": "入学前的准备",
+      "prompt": "家里开始谈论上学。真正入学还要看当地学校、年龄规定和家庭安排，你想先做哪种准备？",
+      "contentStatus": "design_assumption",
+      "assumptionId": "E03",
+      "options": [
+        {
+          "id": "practice_symbols",
+          "label": "多认一些字和数字",
+          "autoWeight": 0.34,
+          "facts": { "schoolPreparationHoursPerWeek": 4, "householdSkillPracticeHoursPerWeek": 0, "peerPlayHoursPerWeek": 0 },
+          "statEffects": { "ability": 3 }
+        },
+        {
+          "id": "learn_household_tasks",
+          "label": "先把家里的活学会",
+          "autoWeight": 0.33,
+          "facts": { "schoolPreparationHoursPerWeek": 0, "householdSkillPracticeHoursPerWeek": 4, "peerPlayHoursPerWeek": 0 },
+          "statEffects": { "ability": 2, "relationships": 1 }
+        },
+        {
+          "id": "meet_future_classmates",
+          "label": "去认识可能一起上学的孩子",
+          "autoWeight": 0.33,
+          "facts": { "schoolPreparationHoursPerWeek": 1, "householdSkillPracticeHoursPerWeek": 0, "peerPlayHoursPerWeek": 4 },
+          "statEffects": { "mood": 1, "relationships": 2 }
+        }
+      ]
+    }
+  ]
+}

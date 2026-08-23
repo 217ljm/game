@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "stage": "primary_education",
+  "events": [
+    {
+      "id": "primary_entry_time_arrangement",
+      "trigger": "on_primary_entry",
+      "title": "放学后的时间",
+      "prompt": "真正入学后，每天能用的时间有限。你准备怎样安排放学后的大部分空闲？",
+      "contentStatus": "design_assumption",
+      "assumptionId": "PE01",
+      "options": [
+        {
+          "id": "entry_regular_practice",
+          "label": "每天固定练习功课",
+          "autoWeight": 0.34,
+          "routineChanges": { "studyHoursPerWeek": 6, "householdLaborHoursPerWeek": 3, "peerHoursPerWeek": 3 },
+          "immediateStatEffects": { "ability": 1 }
+        },
+        {
+          "id": "entry_help_household_first",
+          "label": "先完成家里的事情",
+          "autoWeight": 0.33,
+          "routineChanges": { "studyHoursPerWeek": 3, "householdLaborHoursPerWeek": 8, "peerHoursPerWeek": 2 },
+          "immediateStatEffects": { "relationships": 1, "ability": 1 }
+        },
+        {
+          "id": "entry_follow_peers",
+          "label": "多和同学一起活动",
+          "autoWeight": 0.33,
+          "routineChanges": { "studyHoursPerWeek": 3, "householdLaborHoursPerWeek": 3, "peerHoursPerWeek": 7 },
+          "immediateStatEffects": { "mood": 1, "relationships": 1 }
+        }
+      ]
+    },
+    {
+      "id": "primary_grade3_busy_season",
+      "trigger": "before_grade",
+      "grade": 3,
+      "title": "家里最忙的一段时间",
+      "prompt": "家里在一段时间里需要更多人手，学校也没有停课。你准备怎样处理？",
+      "contentStatus": "design_assumption",
+      "assumptionId": "PE02",
+      "options": [
+        {
+          "id": "grade3_help_and_study_late",
+          "label": "帮完忙后再补功课",
+          "autoWeight": 0.34,
+          "routineChanges": { "studyHoursPerWeek": 5, "householdLaborHoursPerWeek": 10, "peerHoursPerWeek": 2 },
+          "annualFacts": { "lateStudyNightsThisYear": 42 },
+          "immediateStatEffects": { "ability": 1, "health": -1, "relationships": 1 }
+        },
+        {
+          "id": "grade3_protect_attendance",
+          "label": "尽量保证上课和练习",
+          "autoWeight": 0.33,
+          "routineChanges": { "studyHoursPerWeek": 7, "householdLaborHoursPerWeek": 4, "peerHoursPerWeek": 2 },
+          "annualFacts": { "familyRequestsDeclinedThisYear": 18 },
+          "immediateStatEffects": { "ability": 2, "relationships": -1 }
+        },
+        {
+          "id": "grade3_share_with_siblings",
+          "label": "和兄弟姐妹分着做",
+          "autoWeight": 0.33,
+          "routineChanges": { "studyHoursPerWeek": 5, "householdLaborHoursPerWeek": 6, "peerHoursPerWeek": 3 },
+          "annualFacts": { "sharedHouseholdTasksThisYear": 30 },
+          "immediateStatEffects": { "relationships": 2, "ability": 1 }
+        }
+      ]
+    },
+    {
+      "id": "primary_final_year_direction",
+      "trigger": "before_final_grade",
+      "title": "小学之后",
+      "prompt": "毕业年快到了。小学之后并不是所有人都会进入初中，你准备把课外时间放在哪里？",
+      "contentStatus": "design_assumption",
+      "assumptionId": "PE03",
+      "options": [
+        {
+          "id": "final_prepare_junior",
+          "label": "集中准备升入初中",
+          "autoWeight": 0.36,
+          "routineChanges": { "studyHoursPerWeek": 9, "householdLaborHoursPerWeek": 3, "peerHoursPerWeek": 2 },
+          "transitionPreparationHours": 120,
+          "immediateStatEffects": { "ability": 2 }
+        },
+        {
+          "id": "final_balance_family_and_school",
+          "label": "功课和家里的事兼顾",
+          "autoWeight": 0.36,
+          "routineChanges": { "studyHoursPerWeek": 6, "householdLaborHoursPerWeek": 7, "peerHoursPerWeek": 2 },
+          "transitionPreparationHours": 72,
+          "immediateStatEffects": { "ability": 1, "relationships": 1 }
+        },
+        {
+          "id": "final_learn_practical_tasks",
+          "label": "多学一些能帮家里的技能",
+          "autoWeight": 0.28,
+          "routineChanges": { "studyHoursPerWeek": 3, "householdLaborHoursPerWeek": 10, "peerHoursPerWeek": 2 },
+          "transitionPreparationHours": 24,
+          "immediateStatEffects": { "ability": 1, "relationships": 2 }
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1357 @@
+{
+  "schemaVersion": 2,
+  "rules": {
+    "quartersPerYear": 4,
+    "weeksPerQuarter": 13,
+    "description": "每个自然年分为四个季度。行动表示固定义务之外的时间重心，并按季度实际持续约13周；0岁只记录经历，1至2岁只回应眼前事物，3岁以后逐步组合具体生活活动。",
+    "interactionCadence": {
+      "age0": [],
+      "age1": [3],
+      "age2To11": [1, 3],
+      "age12To59": [1, 2, 3, 4],
+      "age60Plus": [1, 3]
+    },
+    "automationModes": ["continue", "keep_year", "notify_only"],
+    "duplicateAgeRule": "6岁在童年与小学模型中各有年度记录，但年度行动只在童年记录中执行一次。",
+    "contentStatus": "design_assumption"
+  },
+  "longTermEchoRules": [
+    {
+      "id": "sustained_learning_habit",
+      "domain": "learning",
+      "title": "学习成为一种习惯",
+      "description": "多年的主动练习不只影响一次考试，也改变了理解新事物的速度。",
+      "thresholds": [3, 6, 10],
+      "operationIds": ["child_practice_symbols", "primary_focus_study", "teen_strengthen_schoolwork", "teen_practice_practical_skill", "nonstudent_build_skill", "nonstudent_self_study", "youth_focus_curriculum", "youth_focus_practice", "youth_build_job_skill", "youth_continue_self_learning", "higher_focus_coursework", "adult_learn_for_change"],
+      "statChanges": { "ability": 2 },
+      "stateDeltas": { "employment.careerSkillHours": 40 }
+    },
+    {
+      "id": "relationships_kept_over_time",
+      "domain": "relationships",
+      "title": "关系在时间里留下来",
+      "description": "反复把时间留给同伴、亲友和伴侣，让一些关系没有在忙碌中自然消失。",
+      "thresholds": [3, 6, 10],
+      "operationIds": ["child_play_nearby", "primary_spend_time_with_peers", "teen_keep_friendships", "nonstudent_build_contacts", "nonstudent_keep_peer_leisure", "youth_keep_social_balance", "youth_school_talk_future_with_family", "youth_transition_keep_friends_and_fun", "higher_build_relationships", "higher_keep_origin_relationships", "adult_maintain_relationships", "young_adult_keep_peer_circle", "young_adult_try_closer_relationship", "adult_make_weekend_memory", "adult_join_local_activity", "midlife_reconnect_old_friend", "midlife_make_family_tradition", "later_worker_keep_world_contact", "retired_join_community", "retired_reconnect_old_friends"],
+      "statChanges": { "mood": 1, "relationships": 2 }
+    },
+    {
+      "id": "family_responsibility_accumulated",
+      "domain": "family",
+      "title": "你成了家里靠得住的人",
+      "description": "多次承担家庭劳动和照护，让家庭成员逐渐把一些重要事情交给你。",
+      "thresholds": [3, 6, 10],
+      "operationIds": ["child_observe_household_work", "child_observe_neighborhood_work", "primary_help_household", "teen_help_family_more", "nonstudent_family_labor", "youth_support_origin_family", "adult_support_family", "adult_time_with_child", "adult_care_older_parents", "adult_improve_local_family_work", "young_adult_run_own_daily_life", "adult_build_home_routine", "midlife_make_family_tradition", "retired_help_family", "retired_sort_family_memories"],
+      "statChanges": { "ability": 1, "relationships": 2, "health": -1 }
+    },
+    {
+      "id": "health_routine_accumulated",
+      "domain": "health",
+      "title": "身体记住了长期习惯",
+      "description": "规律活动、休息和健康检查的效果在几年后才逐渐显现。",
+      "thresholds": [3, 6, 10],
+      "operationIds": ["primary_keep_balanced_routine", "teen_regular_sport_and_outdoor_time", "nonstudent_protect_rest_and_body", "youth_school_keep_sport", "youth_transition_keep_body_routine", "higher_protect_health", "adult_protect_health", "adult_reduce_load_for_health", "adult_protect_body_in_physical_work", "midlife_review_load_and_recovery", "later_worker_reduce_extra_load", "retired_keep_active", "retired_explore_nearby_life"],
+      "statChanges": { "health": 2, "mood": 1 },
+      "stateDeltas": { "health.protectiveRoutineYears": 1 }
+    },
+    {
+      "id": "career_preparation_accumulated",
+      "domain": "career",
+      "title": "准备开始转化为职业筹码",
+      "description": "技能、工作经验和求职联系经过多年积累，开始影响能够接触的岗位。",
+      "thresholds": [3, 6, 10],
+      "operationIds": ["teen_practice_practical_skill", "nonstudent_build_skill", "nonstudent_build_contacts", "youth_focus_practice", "youth_prepare_next_step", "youth_build_job_skill", "youth_expand_job_contacts", "youth_compare_work_terms", "higher_take_part_time_work", "adult_invest_in_work", "adult_learn_for_change", "adult_compare_urban_commute_jobs", "adult_review_contract_and_benefits", "adult_protect_body_in_physical_work", "midlife_mentor_younger_worker", "later_worker_pass_on_experience"],
+      "statChanges": { "ability": 2, "wealth": 1 },
+      "stateDeltas": { "employment.careerSkillHours": 80, "employment.promotionLogOddsBonus": 0.02 }
+    },
+    {
+      "id": "financial_planning_accumulated",
+      "domain": "finance",
+      "title": "储蓄逐渐变成缓冲",
+      "description": "连续整理支出没有制造一夜暴富，但让失业、住房和晚年多了一点余地。",
+      "thresholds": [3, 6, 10],
+      "operationIds": ["youth_transition_manage_personal_cash", "higher_manage_budget", "adult_save_and_plan", "young_adult_manage_first_income", "adult_review_housing_choices", "later_worker_sort_finance_and_support"],
+      "statChanges": { "wealth": 2 },
+      "stateDeltas": { "finance.savingRateAdjustment": 0.01 }
+    }
+  ],
+  "bands": [
+    {
+      "id": "dependent_experience_0_2",
+      "stages": ["childhood"],
+      "minAge": 0,
+      "maxAge": 2,
+      "weeklyDiscretionaryHours": 12,
+      "title": "我眼前的日常",
+      "prompt": "家庭决定照护条件；这个年龄的我只会感受环境，并对眼前的人和事物作出具体反应。",
+      "options": [
+        {
+          "id": "infant_notice_familiar_voice",
+          "label": "留意熟悉的声音",
+          "description": "听到经常出现的声音时，用目光、动作或声音回应。",
+          "autoWeight": 0.36,
+          "timeUseHoursPerWeek": 2,
+          "effectSummary": "形成对熟悉人物的回应",
+          "statChanges": { "relationships": 1 }
+        },
+        {
+          "id": "infant_handle_nearby_object",
+          "label": "摆弄拿得到的物件",
+          "description": "反复触碰、转动或排列眼前的普通物件。",
+          "autoWeight": 0.36,
+          "timeUseHoursPerWeek": 2,
+          "effectSummary": "在重复尝试中认识物件",
+          "statChanges": { "ability": 1 }
+        },
+        {
+          "id": "infant_move_toward_surroundings",
+          "label": "靠近吸引我的光线或动静",
+          "description": "在能够移动时，试着接近眼前令我好奇的地方。",
+          "autoWeight": 0.28,
+          "timeUseHoursPerWeek": 2,
+          "effectSummary": "身体活动和环境探索增加",
+          "statChanges": { "health": 1, "ability": 1 }
+        }
+      ]
+    },
+    {
+      "id": "early_childhood_3_6",
+      "stages": ["childhood"],
+      "minAge": 3,
+      "maxAge": 6,
+      "weeklyDiscretionaryHours": 14,
+      "title": "这一年常做什么",
+      "prompt": "你能自己活动的时间多了。这一年，你最常把空闲时间放在哪里？",
+      "options": [
+        {
+          "id": "child_play_nearby",
+          "label": "和附近的孩子玩",
+          "description": "在熟悉的地方跑动、做游戏，也学习怎样与同伴相处。",
+          "autoWeight": 0.3,
+          "timeUseHoursPerWeek": 7,
+          "effectSummary": "心情、健康和同伴关系改善",
+          "stateAssignments": { "cumulativeFacts.peerPlayHoursPerWeek": 7 },
+          "statChanges": { "health": 1, "mood": 1, "relationships": 1 }
+        },
+        {
+          "id": "child_talk_with_caregiver",
+          "label": "跟照看你的人说话",
+          "description": "听故事、问问题，或者安静看着大人处理每天的事情。",
+          "autoWeight": 0.26,
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "认知和家庭关系改善",
+          "stateAssignments": { "cumulativeFacts.caregiverConversationHoursPerWeek": 5 },
+          "statChanges": { "ability": 1, "relationships": 1 }
+        },
+        {
+          "id": "child_observe_household_work",
+          "label": "跟着大人看他们干活",
+          "description": "观察家务、经营或生产劳动，逐渐学会一些具体做法。",
+          "autoWeight": 0.24,
+          "when": { "residenceIn": ["rural"] },
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "实践能力增加，但休息略少",
+          "stateAssignments": { "cumulativeFacts.householdSkillPracticeHoursPerWeek": 5 },
+          "statChanges": { "ability": 2, "health": -1 }
+        },
+        {
+          "id": "child_observe_neighborhood_work",
+          "label": "看看家里和附近的人怎样做事",
+          "description": "观察家务、单位生活、摊点或服务劳动，不把观察写成儿童就业。",
+          "autoWeight": 0.24,
+          "when": { "residenceIn": ["urban"] },
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "实践认识增加，但休息略少",
+          "stateAssignments": { "cumulativeFacts.householdSkillPracticeHoursPerWeek": 5 },
+          "statChanges": { "ability": 2, "health": -1 }
+        },
+        {
+          "id": "child_practice_symbols",
+          "label": "认字、数数或照着比画",
+          "description": "利用能接触到的纸张、招牌和物件做简单练习。",
+          "autoWeight": 0.2,
+          "timeUseHoursPerWeek": 4,
+          "effectSummary": "入学前能力积累增加",
+          "stateAssignments": { "cumulativeFacts.selfPracticeHoursPerWeek": 4 },
+          "statChanges": { "ability": 2 }
+        }
+      ]
+    },
+    {
+      "id": "primary_not_enrolled_year",
+      "stages": ["primary"],
+      "minAge": 6,
+      "maxAge": 15,
+      "weeklyDiscretionaryHours": 20,
+      "when": { "educationStatusIn": ["not_enrolled"] },
+      "title": "还没有入学的这一年",
+      "prompt": "这一年没有形成实际入学记录，但你仍会生活、劳动、学习并接触入学信息。你主要做什么？",
+      "stateDefaults": { "routine.studyHoursPerWeek": 2, "routine.householdLaborHoursPerWeek": 6, "routine.peerHoursPerWeek": 3 },
+      "options": [
+        {
+          "id": "not_enrolled_practice_basics",
+          "label": "继续练习认字和算数",
+          "description": "利用身边能找到的材料维持基础练习。",
+          "autoWeight": 0.28,
+          "timeUseHoursPerWeek": 6,
+          "cashCostReferenceShare": 0.01,
+          "cashCostPurpose": "纸笔、练习材料或往返获取材料的支出",
+          "effectSummary": "基础能力和后续入学准备提高",
+          "stateAssignments": { "routine.studyHoursPerWeek": 6, "routine.householdLaborHoursPerWeek": 6, "routine.peerHoursPerWeek": 3 },
+          "stateDeltas": { "transitionPreparationHours": 60 },
+          "statChanges": { "ability": 2 }
+        },
+        {
+          "id": "not_enrolled_help_household",
+          "label": "主要帮助家庭劳动",
+          "description": "承担家务、照看或生产劳动，不把它写成正式就业。",
+          "autoWeight": 0.36,
+          "timeUseHoursPerWeek": 16,
+          "effectSummary": "家庭贡献和实践能力提高",
+          "stateAssignments": { "routine.studyHoursPerWeek": 2, "routine.householdLaborHoursPerWeek": 16, "routine.peerHoursPerWeek": 2 },
+          "statChanges": { "ability": 1, "relationships": 2 }
+        },
+        {
+          "id": "not_enrolled_ask_about_school",
+          "label": "跟家人了解附近学校",
+          "description": "询问入学年龄、费用、距离和下一年的可能安排。",
+          "autoWeight": 0.22,
+          "timeUseHoursPerWeek": 4,
+          "effectSummary": "入学信息和家庭沟通增加",
+          "stateDeltas": { "transitionPreparationHours": 90 },
+          "statChanges": { "ability": 1, "relationships": 1 }
+        },
+        {
+          "id": "not_enrolled_play_with_peers",
+          "label": "和附近同龄孩子活动",
+          "description": "保持同伴接触、跑动和日常玩耍。",
+          "autoWeight": 0.14,
+          "timeUseHoursPerWeek": 8,
+          "effectSummary": "健康、心情和同伴关系改善",
+          "stateAssignments": { "routine.studyHoursPerWeek": 2, "routine.householdLaborHoursPerWeek": 6, "routine.peerHoursPerWeek": 8 },
+          "statChanges": { "health": 1, "mood": 1, "relationships": 1 }
+        }
+      ]
+    },
+    {
+      "id": "primary_year",
+      "stages": ["primary"],
+      "minAge": 6,
+      "maxAge": 15,
+      "weeklyDiscretionaryHours": 18,
+      "when": { "educationStatusIn": ["enrolled_primary"] },
+      "title": "这一年的课余安排",
+      "prompt": "上学、家里的事、同伴和休息都需要时间。这一年，你准备把更多精力放在哪里？",
+      "stateDefaults": { "routine.studyHoursPerWeek": 4, "routine.householdLaborHoursPerWeek": 4, "routine.peerHoursPerWeek": 4 },
+      "options": [
+        {
+          "id": "primary_focus_study",
+          "label": "固定时间练习功课",
+          "description": "每周多留几段稳定时间复习和练习。",
+          "autoWeight": 0.3,
+          "timeUseHoursPerWeek": 7,
+          "cashCostReferenceShare": 0.008,
+          "cashCostPurpose": "功课练习材料支出",
+          "effectSummary": "学习进展提高，玩耍时间减少",
+          "stateAssignments": { "routine.studyHoursPerWeek": 7, "routine.householdLaborHoursPerWeek": 3, "routine.peerHoursPerWeek": 2 },
+          "statChanges": { "ability": 1, "mood": -1 }
+        },
+        {
+          "id": "primary_help_household",
+          "label": "多帮家里做事",
+          "description": "承担更多家务或生产劳动，同时维持基本学习。",
+          "autoWeight": 0.28,
+          "timeUseHoursPerWeek": 9,
+          "effectSummary": "家庭关系和实践能力提高",
+          "stateAssignments": { "routine.studyHoursPerWeek": 3, "routine.householdLaborHoursPerWeek": 9, "routine.peerHoursPerWeek": 2 },
+          "statChanges": { "ability": 1, "relationships": 1 }
+        },
+        {
+          "id": "primary_spend_time_with_peers",
+          "label": "多和同学一起活动",
+          "description": "在课后和同伴玩耍、聊天或一起完成事情。",
+          "autoWeight": 0.24,
+          "timeUseHoursPerWeek": 7,
+          "effectSummary": "心情和同伴关系改善",
+          "stateAssignments": { "routine.studyHoursPerWeek": 3, "routine.householdLaborHoursPerWeek": 3, "routine.peerHoursPerWeek": 7 },
+          "statChanges": { "mood": 1, "relationships": 1 }
+        },
+        {
+          "id": "primary_keep_balanced_routine",
+          "label": "功课、家务和休息都兼顾",
+          "description": "不把时间全部压在一件事上，维持相对均衡的生活。",
+          "autoWeight": 0.18,
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "健康和心情更稳定",
+          "stateAssignments": { "routine.studyHoursPerWeek": 4, "routine.householdLaborHoursPerWeek": 4, "routine.peerHoursPerWeek": 4 },
+          "statChanges": { "health": 1, "mood": 1 }
+        }
+      ]
+    },
+    {
+      "id": "adolescence_student_year",
+      "stages": ["adolescence"],
+      "minAge": 7,
+      "maxAge": 19,
+      "weeklyDiscretionaryHours": 22,
+      "when": { "pathIn": ["junior_student"] },
+      "title": "这一年的生活重心",
+      "prompt": "课程、家庭劳动、技能和朋友开始共同占用时间。这一年你更重视什么？",
+      "stateDefaults": { "routine.studyHoursPerWeek": 6, "routine.householdLaborHoursPerWeek": 4, "routine.peerHoursPerWeek": 3 },
+      "options": [
+        {
+          "id": "teen_strengthen_schoolwork",
+          "label": "加强功课练习",
+          "description": "保持较多学习时间，为毕业和下一阶段做准备。",
+          "autoWeight": 0.32,
+          "timeUseHoursPerWeek": 11,
+          "effectSummary": "学习能力提高，休息减少",
+          "stateAssignments": { "routine.studyHoursPerWeek": 11, "routine.householdLaborHoursPerWeek": 4, "routine.peerHoursPerWeek": 2 },
+          "statChanges": { "ability": 2, "mood": -1 }
+        },
+        {
+          "id": "teen_practice_practical_skill",
+          "label": "练一项实用技能",
+          "description": "在学校和家庭之外积累可以实际使用的技能。",
+          "autoWeight": 0.26,
+          "timeUseHoursPerWeek": 7,
+          "cashCostReferenceShare": 0.015,
+          "cashCostPurpose": "技能练习所需材料或工具支出",
+          "effectSummary": "技能准备和能力提高",
+          "stateDeltas": { "preparation.vocationalHours": 120 },
+          "statChanges": { "ability": 2 }
+        },
+        {
+          "id": "teen_help_family_more",
+          "label": "多承担家庭劳动",
+          "description": "在家里忙碌或收入紧张时承担更多具体事情。",
+          "autoWeight": 0.24,
+          "timeUseHoursPerWeek": 10,
+          "effectSummary": "家庭关系改善，学习时间下降",
+          "stateAssignments": { "routine.studyHoursPerWeek": 6, "routine.householdLaborHoursPerWeek": 10, "routine.peerHoursPerWeek": 2 },
+          "statChanges": { "relationships": 2, "ability": 1 }
+        },
+        {
+          "id": "teen_keep_friendships",
+          "label": "认真维持朋友关系",
+          "description": "给同学和朋友留出稳定相处时间。",
+          "autoWeight": 0.18,
+          "timeUseHoursPerWeek": 7,
+          "effectSummary": "心情和关系改善",
+          "stateAssignments": { "routine.studyHoursPerWeek": 6, "routine.householdLaborHoursPerWeek": 4, "routine.peerHoursPerWeek": 7 },
+          "statChanges": { "mood": 1, "relationships": 2 }
+        },
+        {
+          "id": "teen_regular_sport_and_outdoor_time",
+          "label": "固定去运动或在户外活动",
+          "description": "不把身体活动只当体育课，每周和同伴跑步、打球、骑车或做其他能持续的运动。",
+          "category": "health",
+          "interestTags": ["sports_movement"],
+          "autoWeight": 0.17,
+          "timeUseHoursPerWeek": 6,
+          "effectSummary": "体能、健康和同伴共同经历增加",
+          "stateAssignments": { "routine.studyHoursPerWeek": 6, "routine.householdLaborHoursPerWeek": 4, "routine.peerHoursPerWeek": 5 },
+          "statChanges": { "health": 2, "mood": 1, "relationships": 1 }
+        },
+        {
+          "id": "teen_follow_music_story_or_screen",
+          "label": "追一段喜欢的音乐、故事或影像",
+          "description": "通过当时能接触到的收音机、书刊、录像、电视或其他媒介形成自己的偏好。",
+          "category": "entertainment",
+          "interestTags": ["music_performance", "storytelling_media"],
+          "autoWeight": 0.15,
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "娱乐兴趣和心情增加",
+          "statChanges": { "mood": 2, "ability": 1 }
+        },
+        {
+          "id": "teen_make_something_to_express_self",
+          "label": "写、画或做出一件自己的作品",
+          "description": "把最近在意的事变成一段文字、一幅画、一次表演或一件亲手做的东西。",
+          "category": "entertainment",
+          "interestTags": ["visual_art", "storytelling_media", "making_repair"],
+          "autoWeight": 0.13,
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "表达、兴趣和意志积累增加",
+          "statChanges": { "ability": 1, "mood": 2 }
+        },
+        {
+          "id": "teen_explore_nearby_without_school_task",
+          "label": "不为上课，自己去附近看看",
+          "description": "在现实允许的活动范围内逛市场、书店、公园、车站或田野，观察学校之外的人怎样生活。",
+          "category": "exploration",
+          "interestTags": ["nature_observation", "social_organizing"],
+          "autoWeight": 0.12,
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "生活见闻、独立判断和兴趣增加",
+          "statChanges": { "ability": 1, "mood": 1 }
+        }
+      ]
+    },
+    {
+      "id": "adolescence_nonstudent_year",
+      "stages": ["adolescence"],
+      "minAge": 7,
+      "maxAge": 19,
+      "weeklyDiscretionaryHours": 24,
+      "when": { "pathIn": ["nonstudent"] },
+      "title": "离开学校后的这一年",
+      "prompt": "你还没有进入正式就业年龄，但可以劳动、学习技能并为之后做准备。这一年怎样安排？",
+      "stateDefaults": { "nonstudent.routine.householdLaborHoursPerWeek": 8, "nonstudent.routine.skillPracticeHoursPerWeek": 4, "nonstudent.routine.selfStudyHoursPerWeek": 3 },
+      "options": [
+        {
+          "id": "nonstudent_build_skill",
+          "label": "集中练习一项技能",
+          "description": "通过家庭、熟人或自己练习积累实际技能。",
+          "autoWeight": 0.34,
+          "timeUseHoursPerWeek": 12,
+          "cashCostReferenceShare": 0.02,
+          "cashCostPurpose": "技能练习材料和工具支出",
+          "effectSummary": "技能小时和能力提高",
+          "stateAssignments": { "nonstudent.routine.skillPracticeHoursPerWeek": 12, "nonstudent.routine.selfStudyHoursPerWeek": 3 },
+          "statChanges": { "ability": 2 }
+        },
+        {
+          "id": "nonstudent_self_study",
+          "label": "继续自学基础知识",
+          "description": "保留阅读、算术和继续学习的习惯。",
+          "autoWeight": 0.24,
+          "timeUseHoursPerWeek": 8,
+          "effectSummary": "自学积累增加",
+          "stateAssignments": { "nonstudent.routine.skillPracticeHoursPerWeek": 4, "nonstudent.routine.selfStudyHoursPerWeek": 8 },
+          "statChanges": { "ability": 2, "mood": 1 }
+        },
+        {
+          "id": "nonstudent_family_labor",
+          "label": "主要帮助家庭劳动",
+          "description": "承担更多家务或家庭生产，不虚构正式雇佣关系。",
+          "autoWeight": 0.3,
+          "timeUseHoursPerWeek": 18,
+          "effectSummary": "家庭贡献和关系提高",
+          "stateAssignments": { "nonstudent.routine.householdLaborHoursPerWeek": 18, "nonstudent.routine.skillPracticeHoursPerWeek": 4 },
+          "statChanges": { "relationships": 2, "ability": 1 }
+        },
+        {
+          "id": "nonstudent_build_contacts",
+          "label": "认识能介绍机会的人",
+          "description": "通过亲友和熟人了解培训与未来工作机会。",
+          "autoWeight": 0.12,
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "就业准备增加",
+          "stateDeltas": { "preparation.employmentHours": 100 },
+          "statChanges": { "relationships": 2 }
+        },
+        {
+          "id": "nonstudent_keep_peer_leisure",
+          "label": "和同龄人留出真正玩耍的时间",
+          "description": "离开学校不代表提前变成只会劳动的大人，仍和同龄人运动、聊天或做共同喜欢的事。",
+          "category": "social",
+          "interestTags": ["social_organizing", "sports_movement"],
+          "autoWeight": 0.14,
+          "timeUseHoursPerWeek": 6,
+          "effectSummary": "同伴关系、心情和身体活动增加",
+          "statChanges": { "relationships": 2, "mood": 2, "health": 1 }
+        },
+        {
+          "id": "nonstudent_protect_rest_and_body",
+          "label": "给身体留下休息和恢复时间",
+          "description": "在家务、生产或技能练习之外保留睡眠、吃饭和轻度活动，不长期硬撑。",
+          "category": "health",
+          "interestTags": ["sports_movement"],
+          "autoWeight": 0.15,
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "健康和心情改善，家庭劳动时间减少",
+          "stateAssignments": { "nonstudent.routine.householdLaborHoursPerWeek": 8, "nonstudent.routine.skillPracticeHoursPerWeek": 4 },
+          "statChanges": { "health": 2, "mood": 1 }
+        },
+        {
+          "id": "nonstudent_visit_market_library_or_station",
+          "label": "去市场、文化点或车站看看机会",
+          "description": "在现实活动范围内观察商品、招工、交通和公共信息，也接触工作准备之外的新鲜事物。",
+          "category": "exploration",
+          "interestTags": ["nature_observation", "numbers_logic"],
+          "autoWeight": 0.12,
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "生活见闻、机会信息和判断增加",
+          "stateDeltas": { "preparation.employmentHours": 35 },
+          "statChanges": { "ability": 1, "mood": 1 }
+        },
+        {
+          "id": "nonstudent_make_personal_project",
+          "label": "做一件不是为了交差的个人作品",
+          "description": "用手边材料画、写、修、种或制作一件自己想完成的东西，保留个人兴趣。",
+          "category": "entertainment",
+          "interestTags": ["making_repair", "visual_art", "storytelling_media"],
+          "autoWeight": 0.11,
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "个人兴趣、能力和心情增加",
+          "statChanges": { "ability": 1, "mood": 2 }
+        }
+      ]
+    },
+    {
+      "id": "youth_school_year",
+      "stages": ["youth"],
+      "minAge": 14,
+      "maxAge": 25,
+      "weeklyDiscretionaryHours": 28,
+      "when": { "pathIn": ["academic_senior", "vocational_secondary"] },
+      "title": "这一年的高中阶段安排",
+      "prompt": "学习、实训、家庭和未来准备都在争夺时间。这一年你把重心放在哪里？",
+      "stateDefaults": { "routine.studyHoursPerWeek": 10, "routine.practiceHoursPerWeek": 6, "routine.householdLaborHoursPerWeek": 4, "routine.peerHoursPerWeek": 4 },
+      "options": [
+        {
+          "id": "youth_focus_curriculum",
+          "label": "优先完成课程学习",
+          "description": "把主要精力放在当前课程和毕业要求上。",
+          "autoWeight": 0.32,
+          "timeUseHoursPerWeek": 15,
+          "effectSummary": "学习进展提高",
+          "stateAssignments": { "routine.studyHoursPerWeek": 15, "routine.practiceHoursPerWeek": 5, "routine.householdLaborHoursPerWeek": 4 },
+          "statChanges": { "ability": 2, "mood": -1 }
+        },
+        {
+          "id": "youth_focus_practice",
+          "label": "多做实训和技能练习",
+          "description": "增加实际操作时间，为工作或职业教育做准备。",
+          "autoWeight": 0.28,
+          "timeUseHoursPerWeek": 14,
+          "cashCostReferenceShare": 0.02,
+          "cashCostPurpose": "实训材料和往返支出",
+          "effectSummary": "实践能力和就业准备提高",
+          "stateAssignments": { "routine.studyHoursPerWeek": 8, "routine.practiceHoursPerWeek": 14, "routine.householdLaborHoursPerWeek": 4 },
+          "statChanges": { "ability": 2 }
+        },
+        {
+          "id": "youth_prepare_next_step",
+          "label": "主动了解升学和工作机会",
+          "description": "通过老师、亲友和公开信息了解下一步可能性。",
+          "autoWeight": 0.24,
+          "timeUseHoursPerWeek": 7,
+          "effectSummary": "升学或求职准备增加",
+          "stateDeltas": { "higherEducationPreparationHours": 100, "workReadiness.jobSearchContacts": 3 },
+          "statChanges": { "relationships": 1, "ability": 1 }
+        },
+        {
+          "id": "youth_keep_social_balance",
+          "label": "给朋友和休息留时间",
+          "description": "避免全年都被学习和劳动占满。",
+          "autoWeight": 0.16,
+          "timeUseHoursPerWeek": 7,
+          "effectSummary": "心情、健康和关系改善",
+          "stateAssignments": { "routine.peerHoursPerWeek": 7, "routine.householdLaborHoursPerWeek": 4 },
+          "statChanges": { "health": 1, "mood": 2, "relationships": 1 }
+        },
+        {
+          "id": "youth_school_keep_sport",
+          "label": "和同学固定做一项运动",
+          "description": "在课程或实训以外维持能持续的身体活动，不把健康只留给假期。",
+          "category": "health",
+          "interestTags": ["sports_movement", "social_organizing"],
+          "autoWeight": 0.16,
+          "timeUseHoursPerWeek": 6,
+          "effectSummary": "体能、健康和同学共同经历增加",
+          "stateAssignments": { "routine.peerHoursPerWeek": 6, "routine.householdLaborHoursPerWeek": 4 },
+          "statChanges": { "health": 2, "mood": 1, "relationships": 1 }
+        },
+        {
+          "id": "youth_school_cultural_interest",
+          "label": "认真追一项课外文化兴趣",
+          "description": "从阅读、音乐、电影、绘画、摄影或表演中选一项持续接触，让生活不只剩升学和就业。",
+          "category": "entertainment",
+          "interestTags": ["storytelling_media", "music_performance", "visual_art"],
+          "autoWeight": 0.14,
+          "timeUseHoursPerWeek": 6,
+          "cashCostReferenceShare": 0.008,
+          "cashCostPurpose": "文化娱乐或兴趣材料支出",
+          "effectSummary": "兴趣、表达和心情增加",
+          "statChanges": { "ability": 1, "mood": 2 }
+        },
+        {
+          "id": "youth_school_talk_future_with_family",
+          "label": "把自己的下一步和家人认真谈一次",
+          "description": "不只宣布决定，也听清家庭收入、距离、照护和个人期待怎样彼此影响。",
+          "category": "family",
+          "interestTags": ["social_organizing"],
+          "autoWeight": 0.13,
+          "timeUseHoursPerWeek": 4,
+          "effectSummary": "家庭沟通、现实判断和关系增加",
+          "statChanges": { "relationships": 2, "ability": 1 }
+        },
+        {
+          "id": "youth_school_make_public_work",
+          "label": "把一件作品或成果给别人看",
+          "description": "把写作、制作、表演、实训成果或一次组织活动真正呈现给同学、老师或熟人。",
+          "category": "entertainment",
+          "interestTags": ["making_repair", "storytelling_media", "social_organizing"],
+          "autoWeight": 0.12,
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "表达、技能和面对反馈的经验增加",
+          "statChanges": { "ability": 1, "relationships": 1, "mood": 1 }
+        }
+      ]
+    },
+    {
+      "id": "youth_transition_year",
+      "stages": ["youth"],
+      "minAge": 14,
+      "maxAge": 25,
+      "weeklyDiscretionaryHours": 30,
+      "title": "这一年的立足准备",
+      "prompt": "你正从学校或家庭劳动走向更独立的生活。这一年主要做什么？",
+      "stateDefaults": { "routine.householdLaborHoursPerWeek": 8, "routine.peerHoursPerWeek": 4 },
+      "options": [
+        {
+          "id": "youth_build_job_skill",
+          "label": "集中练习能用于工作的技能",
+          "description": "把时间投入到一项与候选岗位有关的实际技能。",
+          "autoWeight": 0.34,
+          "timeUseHoursPerWeek": 14,
+          "effectSummary": "能力与岗位准备提高",
+          "stateDeltas": { "training.completedHours": 180 },
+          "statChanges": { "ability": 2 }
+        },
+        {
+          "id": "youth_expand_job_contacts",
+          "label": "寻找和比较工作机会",
+          "description": "通过招工信息、亲友介绍或直接询问寻找具体岗位。",
+          "autoWeight": 0.3,
+          "timeUseHoursPerWeek": 10,
+          "cashCostReferenceShare": 0.01,
+          "cashCostPurpose": "寻找岗位信息和往返支出",
+          "effectSummary": "求职联系增加",
+          "stateDeltas": { "workReadiness.jobSearchContacts": 5 },
+          "statChanges": { "relationships": 1, "ability": 1 }
+        },
+        {
+          "id": "youth_support_origin_family",
+          "label": "多承担家庭里的事情",
+          "description": "把较多时间放在家庭劳动、照护或共同经营上。",
+          "autoWeight": 0.24,
+          "timeUseHoursPerWeek": 18,
+          "effectSummary": "家庭关系提高，个人机会减少",
+          "stateAssignments": { "routine.householdLaborHoursPerWeek": 18 },
+          "statChanges": { "relationships": 2, "mood": -1 }
+        },
+        {
+          "id": "youth_continue_self_learning",
+          "label": "保留稳定的自学时间",
+          "description": "在劳动和求职之外继续学习基础知识。",
+          "autoWeight": 0.12,
+          "timeUseHoursPerWeek": 8,
+          "effectSummary": "长期学习能力提高",
+          "stateDeltas": { "higherEducationPreparationHours": 80 },
+          "statChanges": { "ability": 2, "mood": 1 }
+        },
+        {
+          "id": "youth_compare_work_terms",
+          "label": "比较工时、报酬和用工记录",
+          "description": "在普通就业年龄以后，把候选工作的工时、收入、合同或单位记录放在一起比较。",
+          "autoWeight": 0.14,
+          "when": { "calendarYearMin": 1995 },
+          "timeUseHoursPerWeek": 4,
+          "effectSummary": "求职判断和合同意识提高",
+          "stateDeltas": { "workReadiness.jobSearchContacts": 2 },
+          "statChanges": { "ability": 1, "wealth": 1 }
+        },
+        {
+          "id": "youth_transition_keep_friends_and_fun",
+          "label": "和朋友做点不为找工作的事",
+          "description": "在求职、劳动和家庭事务之外保留运动、聊天、看电影或共同兴趣，不让生活只剩准备。",
+          "category": "social",
+          "interestTags": ["social_organizing", "storytelling_media"],
+          "autoWeight": 0.14,
+          "timeUseHoursPerWeek": 6,
+          "effectSummary": "朋友共同记忆、兴趣和心情增加",
+          "statChanges": { "relationships": 2, "mood": 2 }
+        },
+        {
+          "id": "youth_transition_keep_body_routine",
+          "label": "把睡眠、吃饭和运动安排稳定",
+          "description": "面对不稳定的学习或求职节奏，优先守住几项能自己控制的身体日常。",
+          "category": "health",
+          "interestTags": ["sports_movement"],
+          "autoWeight": 0.14,
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "健康、体能和心情稳定性增加",
+          "statChanges": { "health": 2, "mood": 1 }
+        },
+        {
+          "id": "youth_transition_manage_personal_cash",
+          "label": "开始自己管一笔日常用钱",
+          "description": "记录交通、吃饭、通信和娱乐支出，用实际金额理解一份收入能支持怎样的生活。",
+          "category": "finance",
+          "interestTags": ["numbers_logic"],
+          "autoWeight": 0.12,
+          "timeUseHoursPerWeek": 3,
+          "effectSummary": "金钱判断、储蓄倾向和独立生活经验增加",
+          "stateDeltas": { "finance.savingRateAdjustment": 0.006 },
+          "statChanges": { "wealth": 1, "ability": 1 }
+        },
+        {
+          "id": "youth_transition_explore_new_life_circle",
+          "label": "去看看可能生活和工作的地方",
+          "description": "实际走一走附近单位、学校、市场、交通节点或不同街区，把想象中的下一步变成可比较的生活条件。",
+          "category": "exploration",
+          "interestTags": ["nature_observation", "practical_work"],
+          "autoWeight": 0.12,
+          "timeUseHoursPerWeek": 6,
+          "cashCostReferenceShare": 0.008,
+          "cashCostPurpose": "交通与了解生活条件的支出",
+          "effectSummary": "生活圈见闻、求职判断和独立能力增加",
+          "stateDeltas": { "workReadiness.jobSearchContacts": 1 },
+          "statChanges": { "ability": 1, "mood": 1 }
+        }
+      ]
+    },
+    {
+      "id": "adult_higher_education_year",
+      "stages": ["adult"],
+      "minAge": 16,
+      "maxAge": 35,
+      "weeklyDiscretionaryHours": 32,
+      "when": { "educationStatusIn": ["enrolled"] },
+      "title": "这一年的大学生活重心",
+      "prompt": "课程、兼职、关系和身体状态都需要时间。这一年你怎样安排？",
+      "stateDefaults": { "routine.studyHoursPerWeek": 16, "routine.partTimeHoursPerWeek": 2, "routine.socialHoursPerWeek": 4, "routine.exerciseHoursPerWeek": 1, "routine.relationshipHoursPerWeek": 2, "routine.familyCareHoursPerWeek": 2, "routine.workHoursDelta": 0 },
+      "options": [
+        {
+          "id": "higher_focus_coursework",
+          "label": "优先课程和专业学习",
+          "description": "维持较高的学习投入，减少兼职和社交时间。",
+          "autoWeight": 0.34,
+          "timeUseHoursPerWeek": 22,
+          "cashCostReferenceShare": 0.015,
+          "cashCostPurpose": "额外课程和学习材料支出",
+          "effectSummary": "学习进展提高，心情压力增加",
+          "stateAssignments": { "routine.studyHoursPerWeek": 22, "routine.partTimeHoursPerWeek": 4, "routine.socialHoursPerWeek": 4 },
+          "statChanges": { "ability": 2, "mood": -1 }
+        },
+        {
+          "id": "higher_take_part_time_work",
+          "label": "增加兼职和实际经验",
+          "description": "用一部分学习时间换取收入和工作经验。",
+          "autoWeight": 0.28,
+          "timeUseHoursPerWeek": 16,
+          "effectSummary": "收入和经验增加，学习时间减少",
+          "stateAssignments": { "routine.studyHoursPerWeek": 14, "routine.partTimeHoursPerWeek": 16, "routine.socialHoursPerWeek": 4 },
+          "statChanges": { "wealth": 1, "ability": 1, "health": -1 }
+        },
+        {
+          "id": "higher_build_relationships",
+          "label": "参加集体活动并认识人",
+          "description": "为同学、社团和新的社会联系留出时间。",
+          "autoWeight": 0.22,
+          "timeUseHoursPerWeek": 10,
+          "effectSummary": "心情和关系提高",
+          "stateAssignments": { "routine.studyHoursPerWeek": 16, "routine.partTimeHoursPerWeek": 4, "routine.socialHoursPerWeek": 10 },
+          "statChanges": { "mood": 1, "relationships": 2 }
+        },
+        {
+          "id": "higher_protect_health",
+          "label": "保持睡眠和运动",
+          "description": "不把所有时间都排满，维持规律生活。",
+          "autoWeight": 0.16,
+          "timeUseHoursPerWeek": 5,
+          "cashCostReferenceShare": 0.01,
+          "cashCostPurpose": "运动或基础健康安排支出",
+          "effectSummary": "健康和心情改善",
+          "stateAssignments": { "routine.studyHoursPerWeek": 16, "routine.partTimeHoursPerWeek": 2, "routine.exerciseHoursPerWeek": 4 },
+          "statChanges": { "health": 2, "mood": 1 }
+        },
+        {
+          "id": "higher_manage_independent_daily_life",
+          "label": "把吃饭、洗衣和住处日常安排好",
+          "description": "自己处理宿舍或住处里的具体生活，建立不依赖临时应付的日常节奏。",
+          "category": "family",
+          "interestTags": ["making_repair", "practical_work"],
+          "autoWeight": 0.15,
+          "timeUseHoursPerWeek": 6,
+          "effectSummary": "独立生活能力、健康和意志积累增加",
+          "stateAssignments": { "routine.studyHoursPerWeek": 16, "routine.familyCareHoursPerWeek": 5 },
+          "statChanges": { "ability": 1, "health": 1, "mood": 1 }
+        },
+        {
+          "id": "higher_explore_city_and_culture",
+          "label": "走出校园接触城市和文化生活",
+          "description": "去书店、市场、展览、演出、街区或公共空间，把高等教育以外的社会生活也纳入经验。",
+          "category": "entertainment",
+          "interestTags": ["storytelling_media", "nature_observation"],
+          "autoWeight": 0.13,
+          "timeUseHoursPerWeek": 6,
+          "cashCostReferenceShare": 0.012,
+          "cashCostPurpose": "交通与文化娱乐支出",
+          "effectSummary": "文化兴趣、见闻和心情增加",
+          "statChanges": { "ability": 1, "mood": 2, "wealth": -1 }
+        },
+        {
+          "id": "higher_manage_budget",
+          "label": "把生活费、兼职收入和支出记清",
+          "description": "按实际金额整理吃饭、交通、材料和娱乐支出，不把家庭支持或兼职收入当成无限资源。",
+          "category": "finance",
+          "interestTags": ["numbers_logic"],
+          "autoWeight": 0.12,
+          "timeUseHoursPerWeek": 3,
+          "effectSummary": "金钱判断和储蓄倾向增加",
+          "stateDeltas": { "finance.savingRateAdjustment": 0.006 },
+          "statChanges": { "wealth": 1, "ability": 1 }
+        },
+        {
+          "id": "higher_keep_origin_relationships",
+          "label": "固定联系家人和原来的朋友",
+          "description": "在新的同学关系之外，为原生家庭和过去的朋友留下具体联系时间，让变化中的关系得到回应。",
+          "category": "social",
+          "interestTags": ["social_organizing"],
+          "autoWeight": 0.14,
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "原有关系和跨生活圈共同记忆继续增长",
+          "stateAssignments": { "routine.relationshipHoursPerWeek": 6, "routine.socialHoursPerWeek": 6 },
+          "statChanges": { "relationships": 2, "mood": 1 }
+        }
+      ]
+    },
+    {
+      "id": "adult_retired_year",
+      "stages": ["adult"],
+      "minAge": 45,
+      "maxAge": 120,
+      "weeklyDiscretionaryHours": 35,
+      "when": { "employmentStatusIn": ["retired"] },
+      "title": "退休后的这一年",
+      "prompt": "固定工作结束后，时间重新回到自己和家庭手里。这一年主要怎样生活？",
+      "stateDefaults": { "routine.studyHoursPerWeek": 0, "routine.partTimeHoursPerWeek": 0, "routine.socialHoursPerWeek": 4, "routine.exerciseHoursPerWeek": 2, "routine.relationshipHoursPerWeek": 5, "routine.familyCareHoursPerWeek": 4, "routine.workHoursDelta": 0 },
+      "options": [
+        {
+          "id": "retired_keep_active",
+          "label": "规律活动和锻炼",
+          "description": "保持散步、锻炼和较稳定的作息。",
+          "autoWeight": 0.3,
+          "timeUseHoursPerWeek": 7,
+          "effectSummary": "健康改善",
+          "stateAssignments": { "routine.exerciseHoursPerWeek": 5, "routine.socialHoursPerWeek": 4 },
+          "statChanges": { "health": 2, "mood": 1 }
+        },
+        {
+          "id": "retired_help_family",
+          "label": "多帮家人处理事情",
+          "description": "承担照护、家务或陪伴，让其他家庭成员腾出时间。",
+          "autoWeight": 0.28,
+          "timeUseHoursPerWeek": 14,
+          "effectSummary": "家庭关系改善，体力消耗增加",
+          "stateAssignments": { "routine.familyCareHoursPerWeek": 14, "routine.exerciseHoursPerWeek": 2 },
+          "statChanges": { "relationships": 2, "health": -1 }
+        },
+        {
+          "id": "retired_join_community",
+          "label": "参加邻里或社区活动",
+          "description": "维持退休后的社会联系和公共生活。",
+          "autoWeight": 0.22,
+          "timeUseHoursPerWeek": 8,
+          "effectSummary": "关系和心情改善",
+          "stateAssignments": { "routine.socialHoursPerWeek": 9, "routine.exerciseHoursPerWeek": 2 },
+          "statChanges": { "mood": 2, "relationships": 2 }
+        },
+        {
+          "id": "retired_return_to_interest",
+          "label": "重新投入个人兴趣",
+          "description": "把时间放在阅读、手艺、种植或其他长期兴趣上。",
+          "autoWeight": 0.2,
+          "timeUseHoursPerWeek": 9,
+          "cashCostReferenceShare": 0.008,
+          "cashCostPurpose": "个人兴趣所需材料支出",
+          "effectSummary": "心情和能力保持得更好",
+          "stateAssignments": { "routine.socialHoursPerWeek": 4, "routine.exerciseHoursPerWeek": 2 },
+          "statChanges": { "mood": 2, "ability": 1 }
+        },
+        {
+          "id": "retired_reconnect_old_friends",
+          "label": "约老朋友见面或互相走动",
+          "description": "主动联系仍能来往的人，把见面、通话或互相帮忙重新放回日常。",
+          "category": "social",
+          "interestTags": ["social_organizing"],
+          "autoWeight": 0.17,
+          "timeUseHoursPerWeek": 6,
+          "effectSummary": "旧关系重新获得共同经历",
+          "stateAssignments": { "routine.socialHoursPerWeek": 8, "routine.exerciseHoursPerWeek": 2 },
+          "statChanges": { "mood": 2, "relationships": 2 }
+        },
+        {
+          "id": "retired_sort_family_memories",
+          "label": "整理照片、旧物和家里的故事",
+          "description": "和家人一起辨认旧照片、物件与往事，把个人记忆变成可以共同谈论的家庭经历。",
+          "category": "family",
+          "interestTags": ["storytelling_media", "social_organizing"],
+          "autoWeight": 0.14,
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "家庭共同记忆和表达积累增加",
+          "stateAssignments": { "routine.familyCareHoursPerWeek": 6, "routine.relationshipHoursPerWeek": 7 },
+          "statChanges": { "mood": 1, "relationships": 2, "ability": 1 }
+        },
+        {
+          "id": "retired_explore_nearby_life",
+          "label": "慢慢逛附近新开的地方",
+          "description": "在身体允许时去公园、市场、文化场所或新的公共空间，重新认识已经变化的生活圈。",
+          "category": "exploration",
+          "interestTags": ["nature_observation", "storytelling_media"],
+          "autoWeight": 0.13,
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "活动量、见闻和心情增加",
+          "stateAssignments": { "routine.socialHoursPerWeek": 5, "routine.exerciseHoursPerWeek": 4 },
+          "statChanges": { "health": 1, "mood": 2, "ability": 1 }
+        }
+      ]
+    },
+    {
+      "id": "adult_emerging_life_18_24",
+      "extendsBand": "adult_general_year",
+      "stages": ["adult"],
+      "minAge": 18,
+      "maxAge": 24,
+      "weeklyDiscretionaryHours": 26,
+      "title": "第一次自己安排生活",
+      "prompt": "进入成年并不只等于工作或上学。钱怎么花、和谁来往、怎样休息以及独自处理日常，都在形成你的生活方式。",
+      "options": [
+        {
+          "id": "young_adult_run_own_daily_life",
+          "label": "学着把自己的日常安排顺",
+          "description": "亲自处理吃饭、洗衣、出行、证件或住处里的琐事，不再把生活能力当成自动完成。",
+          "category": "family",
+          "interestTags": ["making_repair", "practical_work"],
+          "autoWeight": 0.2,
+          "timeUseHoursPerWeek": 6,
+          "effectSummary": "独立生活经验和意志积累增加",
+          "stateAssignments": { "routine.familyCareHoursPerWeek": 6 },
+          "statChanges": { "ability": 1, "mood": 1 }
+        },
+        {
+          "id": "young_adult_explore_culture_and_city",
+          "label": "去看看工作和学校之外的地方",
+          "description": "逛书店、市场、展览、电影或城市街区，接触原有生活圈之外的人和事。",
+          "category": "entertainment",
+          "interestTags": ["storytelling_media", "nature_observation"],
+          "autoWeight": 0.18,
+          "timeUseHoursPerWeek": 6,
+          "cashCostReferenceShare": 0.012,
+          "cashCostPurpose": "交通与文化娱乐支出",
+          "effectSummary": "见闻、兴趣和心情增加",
+          "statChanges": { "ability": 1, "mood": 2, "wealth": -1 }
+        },
+        {
+          "id": "young_adult_keep_peer_circle",
+          "label": "固定给同学或同龄朋友留时间",
+          "description": "在工作、升学和搬动后主动维持几段具体关系，而不是等关系自然消失。",
+          "category": "social",
+          "interestTags": ["social_organizing"],
+          "autoWeight": 0.2,
+          "timeUseHoursPerWeek": 7,
+          "effectSummary": "朋友关系与共同记忆继续增长",
+          "stateAssignments": { "routine.socialHoursPerWeek": 9 },
+          "statChanges": { "relationships": 2, "mood": 1 }
+        },
+        {
+          "id": "young_adult_manage_first_income",
+          "label": "自己记清收入和每月支出",
+          "description": "无论收入来自岗位、家庭劳动还是零散工作，都先弄清能花多少钱和钱去了哪里。",
+          "category": "finance",
+          "interestTags": ["numbers_logic"],
+          "autoWeight": 0.16,
+          "timeUseHoursPerWeek": 3,
+          "effectSummary": "现实金钱判断和储蓄缓冲增加",
+          "stateDeltas": { "finance.savingRateAdjustment": 0.008 },
+          "statChanges": { "wealth": 1, "ability": 1 }
+        },
+        {
+          "id": "young_adult_try_closer_relationship",
+          "label": "认真了解一个想靠近的人",
+          "description": "通过一起做事、谈论生活和观察彼此边界，让关系在具体相处中决定是否继续。",
+          "category": "social",
+          "interestTags": ["social_organizing"],
+          "autoWeight": 0.13,
+          "timeUseHoursPerWeek": 6,
+          "effectSummary": "亲密关系经验增加，但结果取决于双方回应",
+          "stateAssignments": { "routine.relationshipHoursPerWeek": 7 },
+          "statChanges": { "relationships": 1, "mood": 1 }
+        }
+      ]
+    },
+    {
+      "id": "adult_building_life_25_39",
+      "extendsBand": "adult_general_year",
+      "stages": ["adult"],
+      "minAge": 25,
+      "maxAge": 39,
+      "weeklyDiscretionaryHours": 24,
+      "title": "建立自己的日常",
+      "prompt": "事业、住处、关系和家庭开始同时占用时间。你仍需要决定哪些生活不是只等有空再做。",
+      "options": [
+        {
+          "id": "adult_build_home_routine",
+          "label": "把住处和一周生活整理得更顺手",
+          "description": "整理家务分工、做饭、采购和收纳，让住处真正支持每天的工作与休息。",
+          "category": "family",
+          "interestTags": ["making_repair", "practical_work"],
+          "autoWeight": 0.17,
+          "timeUseHoursPerWeek": 6,
+          "effectSummary": "家庭协作和生活能力增加",
+          "stateAssignments": { "routine.familyCareHoursPerWeek": 7 },
+          "statChanges": { "relationships": 1, "ability": 1, "mood": 1 }
+        },
+        {
+          "id": "adult_review_housing_choices",
+          "label": "认真比较眼下的居住选择",
+          "description": "比较租住、与家人同住、通勤和未来住房支出，不把买房写成必然目标。",
+          "category": "finance",
+          "interestTags": ["numbers_logic"],
+          "autoWeight": 0.13,
+          "timeUseHoursPerWeek": 4,
+          "effectSummary": "住房与现金条件判断更清楚",
+          "statChanges": { "ability": 1, "wealth": 1 }
+        },
+        {
+          "id": "adult_keep_personal_hobby",
+          "label": "保住一项只属于自己的爱好",
+          "description": "即使工作和家庭变忙，也给运动、阅读、手艺、音乐或其他已有兴趣留固定时间。",
+          "category": "entertainment",
+          "interestTags": ["storytelling_media"],
+          "autoWeight": 0.15,
+          "timeUseHoursPerWeek": 6,
+          "effectSummary": "兴趣延续，压力和生活单一感降低",
+          "statChanges": { "mood": 2, "health": 1 }
+        },
+        {
+          "id": "adult_make_weekend_memory",
+          "label": "安排一次不为办事的共同出行",
+          "description": "和伴侣、家人或朋友去附近走走，让关系拥有工作和家务之外的新经历。",
+          "category": "social",
+          "interestTags": ["social_organizing", "nature_observation"],
+          "autoWeight": 0.14,
+          "timeUseHoursPerWeek": 5,
+          "cashCostReferenceShare": 0.012,
+          "cashCostPurpose": "共同出行与休闲支出",
+          "effectSummary": "关系共同记忆和心情增加",
+          "statChanges": { "relationships": 2, "mood": 2, "wealth": -1 }
+        },
+        {
+          "id": "adult_join_local_activity",
+          "label": "参加附近的一项共同活动",
+          "description": "从邻里、单位、家长群体或兴趣小组中选择一项真实活动，认识日常圈子之外的人。",
+          "category": "social",
+          "interestTags": ["social_organizing"],
+          "autoWeight": 0.11,
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "本地关系和组织经验增加",
+          "statChanges": { "relationships": 1, "ability": 1 }
+        }
+      ]
+    },
+    {
+      "id": "adult_responsibility_life_40_59",
+      "extendsBand": "adult_general_year",
+      "stages": ["adult"],
+      "minAge": 40,
+      "maxAge": 59,
+      "weeklyDiscretionaryHours": 22,
+      "title": "守住生活，也重新调整",
+      "prompt": "熟悉的工作、家人责任和身体变化同时存在。继续承担什么、放下什么以及重新找回什么，都需要具体安排。",
+      "options": [
+        {
+          "id": "midlife_reconnect_old_friend",
+          "label": "联系一个很久没见的老朋友",
+          "description": "不靠泛泛社交，而是主动联系一个曾经共同生活过的人，看看彼此如今还能怎样相处。",
+          "category": "social",
+          "interestTags": ["social_organizing"],
+          "autoWeight": 0.14,
+          "timeUseHoursPerWeek": 4,
+          "effectSummary": "旧关系可能重新产生共同经历",
+          "statChanges": { "relationships": 2, "mood": 1 }
+        },
+        {
+          "id": "midlife_mentor_younger_worker",
+          "label": "带一位刚入行的年轻人做事",
+          "description": "把自己积累的岗位经验拆成具体做法教给后来者，也重新检查多年形成的习惯。",
+          "category": "work",
+          "interestTags": ["practical_work", "social_organizing"],
+          "when": { "employmentStatusIn": ["employed"] },
+          "autoWeight": 0.13,
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "职业经验、表达和同事关系增加",
+          "stateDeltas": { "employment.careerSkillHours": 70 },
+          "statChanges": { "ability": 1, "relationships": 1 }
+        },
+        {
+          "id": "midlife_restore_personal_interest",
+          "label": "重新捡起搁置多年的兴趣",
+          "description": "从曾经喜欢却被工作或家庭挤掉的事情中选一项，先恢复低强度接触。",
+          "category": "entertainment",
+          "interestTags": ["storytelling_media", "making_repair"],
+          "autoWeight": 0.13,
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "兴趣重新出现，心情和自我感受改善",
+          "statChanges": { "mood": 2, "ability": 1 }
+        },
+        {
+          "id": "midlife_make_family_tradition",
+          "label": "固定一件全家会一起做的事",
+          "description": "把一顿饭、一次探望或一个节日安排固定下来，减少只有出事时才聚在一起的情况。",
+          "category": "family",
+          "interestTags": ["social_organizing"],
+          "autoWeight": 0.15,
+          "timeUseHoursPerWeek": 6,
+          "effectSummary": "家庭共同记忆和关系稳定性增加",
+          "stateAssignments": { "routine.relationshipHoursPerWeek": 7, "routine.familyCareHoursPerWeek": 7 },
+          "statChanges": { "relationships": 2, "mood": 1 }
+        },
+        {
+          "id": "midlife_review_load_and_recovery",
+          "label": "重新核算工作负荷和恢复时间",
+          "description": "把加班、通勤、家务、睡眠和身体不适放在一起检查，主动削减一项长期透支来源。",
+          "category": "health",
+          "interestTags": ["sports_movement"],
+          "autoWeight": 0.18,
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "疲劳风险下降，额外工作机会减少",
+          "stateAssignments": { "routine.workHoursDelta": -3, "routine.exerciseHoursPerWeek": 3 },
+          "statChanges": { "health": 2, "mood": 1, "wealth": -1 }
+        }
+      ]
+    },
+    {
+      "id": "adult_later_working_life_60_plus",
+      "extendsBand": "adult_general_year",
+      "stages": ["adult"],
+      "minAge": 60,
+      "maxAge": 120,
+      "weeklyDiscretionaryHours": 24,
+      "when": { "employmentStatusNotIn": ["retired"] },
+      "title": "还在工作时，怎样留下自己的生活",
+      "prompt": "尚未退休不等于只能继续原来的节奏。身体、工作需要、家庭与未来安排都在要求你重新分配时间。",
+      "options": [
+        {
+          "id": "later_worker_reduce_extra_load",
+          "label": "不再接下所有额外工作",
+          "description": "保留必须完成的职责，但明确拒绝一部分额外工时，为恢复和日常生活留出空间。",
+          "category": "health",
+          "interestTags": ["sports_movement"],
+          "autoWeight": 0.22,
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "身体恢复增加，短期收入机会减少",
+          "stateAssignments": { "routine.workHoursDelta": -5, "routine.exerciseHoursPerWeek": 3 },
+          "statChanges": { "health": 2, "wealth": -1 }
+        },
+        {
+          "id": "later_worker_prepare_retirement_routine",
+          "label": "提前试一试退休后的日常安排",
+          "description": "在休息日实践运动、兴趣、家务和来往节奏，避免退休只剩突然空下来的时间。",
+          "category": "exploration",
+          "interestTags": ["nature_observation", "social_organizing"],
+          "autoWeight": 0.16,
+          "timeUseHoursPerWeek": 6,
+          "effectSummary": "晚年生活准备和心情稳定性增加",
+          "statChanges": { "mood": 2, "health": 1, "ability": 1 }
+        },
+        {
+          "id": "later_worker_pass_on_experience",
+          "label": "把关键工作经验交给后来的人",
+          "description": "整理只有自己熟悉的流程、注意事项和人际协作方式，让经验不只留在记忆里。",
+          "category": "work",
+          "interestTags": ["practical_work", "social_organizing"],
+          "when": { "employmentStatusIn": ["employed"] },
+          "autoWeight": 0.15,
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "经验传递和同事共同记忆增加",
+          "stateDeltas": { "employment.careerSkillHours": 50 },
+          "statChanges": { "ability": 1, "relationships": 1 }
+        },
+        {
+          "id": "later_worker_sort_finance_and_support",
+          "label": "把养老、医疗和家庭支持账目理清",
+          "description": "结合实际收入、资产、医疗支出和需要支持的家人整理现金安排，不假定拥有固定养老金。",
+          "category": "finance",
+          "interestTags": ["numbers_logic"],
+          "autoWeight": 0.15,
+          "timeUseHoursPerWeek": 3,
+          "effectSummary": "晚年现金判断和家庭沟通增加",
+          "stateDeltas": { "finance.savingRateAdjustment": 0.006 },
+          "statChanges": { "ability": 1, "wealth": 1, "relationships": 1 }
+        },
+        {
+          "id": "later_worker_keep_world_contact",
+          "label": "继续接触工作圈以外的新变化",
+          "description": "通过社区、文化场所、媒体或年轻家人理解正在变化的生活，不把自己只留在旧经验里。",
+          "category": "exploration",
+          "interestTags": ["storytelling_media", "social_organizing"],
+          "autoWeight": 0.12,
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "见闻、关系和适应新生活的能力增加",
+          "statChanges": { "ability": 1, "mood": 1, "relationships": 1 }
+        }
+      ]
+    },
+    {
+      "id": "adult_general_year",
+      "stages": ["adult"],
+      "minAge": 16,
+      "maxAge": 120,
+      "weeklyDiscretionaryHours": 24,
+      "title": "这一年的生活重心",
+      "prompt": "工作、收入、家庭、关系和身体不能同时占满时间。这一年你主要把精力放在哪里？",
+      "stateDefaults": { "routine.studyHoursPerWeek": 0, "routine.partTimeHoursPerWeek": 0, "routine.socialHoursPerWeek": 4, "routine.exerciseHoursPerWeek": 1, "routine.relationshipHoursPerWeek": 3, "routine.familyCareHoursPerWeek": 3, "routine.workHoursDelta": 0 },
+      "options": [
+        {
+          "id": "adult_invest_in_work",
+          "label": "在工作和职业能力上多投入",
+          "description": "承担更多任务，并积累与当前职业相关的技能。",
+          "autoWeight": 0.28,
+          "timeUseHoursPerWeek": 10,
+          "effectSummary": "职业能力增加，健康和心情承压",
+          "stateAssignments": { "routine.workHoursDelta": 5, "routine.exerciseHoursPerWeek": 1, "routine.socialHoursPerWeek": 4 },
+          "stateDeltas": { "employment.careerSkillHours": 120, "employment.promotionLogOddsBonus": 0.03 },
+          "statChanges": { "ability": 2, "health": -1, "mood": -1 }
+        },
+        {
+          "id": "adult_learn_for_change",
+          "label": "学习新技能，为转行留机会",
+          "description": "每周稳定学习，不保证立刻产生新的岗位。",
+          "autoWeight": 0.18,
+          "timeUseHoursPerWeek": 8,
+          "cashCostReferenceShare": 0.025,
+          "cashCostPurpose": "学习材料、课程或技能练习支出",
+          "effectSummary": "长期职业选择增加",
+          "stateAssignments": { "routine.workHoursDelta": 0, "routine.exerciseHoursPerWeek": 1 },
+          "stateDeltas": { "employment.careerSkillHours": 180 },
+          "statChanges": { "ability": 2, "mood": 1 }
+        },
+        {
+          "id": "adult_maintain_relationships",
+          "label": "给伴侣、朋友和亲人留时间",
+          "description": "减少额外工作，把时间用于持续相处。",
+          "autoWeight": 0.2,
+          "timeUseHoursPerWeek": 9,
+          "effectSummary": "关系和心情改善，工作投入下降",
+          "stateAssignments": { "routine.workHoursDelta": -2, "routine.socialHoursPerWeek": 8, "routine.relationshipHoursPerWeek": 9 },
+          "statChanges": { "mood": 1, "relationships": 2 }
+        },
+        {
+          "id": "adult_support_family",
+          "label": "多处理孩子或父母的事情",
+          "description": "承担更多照护、陪伴和家庭事务。",
+          "autoWeight": 0.16,
+          "timeUseHoursPerWeek": 12,
+          "effectSummary": "家庭关系改善，可支配时间减少",
+          "stateAssignments": { "routine.workHoursDelta": -1, "routine.familyCareHoursPerWeek": 12, "routine.socialHoursPerWeek": 3 },
+          "statChanges": { "relationships": 2, "health": -1 }
+        },
+        {
+          "id": "adult_time_with_child",
+          "label": "给正在成长的孩子留出固定时间",
+          "description": "只有已有孩子时出现，把可支配时间明确用于陪伴、接送、沟通或处理成长阶段的事情。",
+          "autoWeight": 0.2,
+          "when": { "hasChild": true },
+          "timeUseHoursPerWeek": 10,
+          "effectSummary": "与孩子的相处时间和家庭关系增加",
+          "stateAssignments": { "routine.workHoursDelta": -1, "routine.familyCareHoursPerWeek": 10, "routine.relationshipHoursPerWeek": 5 },
+          "statChanges": { "relationships": 2, "mood": 1 }
+        },
+        {
+          "id": "adult_care_older_parents",
+          "label": "固定安排年长父母的照护",
+          "description": "只有仍在世的父母达到65岁以后出现，安排陪伴、办事或照护时间，不推断具体疾病。",
+          "autoWeight": 0.18,
+          "when": { "minimumOlderParentCount": 1 },
+          "timeUseHoursPerWeek": 12,
+          "effectSummary": "父母照护事实和家庭关系增加，个人时间减少",
+          "stateAssignments": { "routine.workHoursDelta": -2, "routine.familyCareHoursPerWeek": 12, "routine.socialHoursPerWeek": 3 },
+          "statChanges": { "relationships": 2, "health": -1 }
+        },
+        {
+          "id": "adult_protect_health",
+          "label": "优先规律生活和体检",
+          "description": "减少额外工作，增加运动、休息和必要的健康检查。",
+          "autoWeight": 0.12,
+          "timeUseHoursPerWeek": 6,
+          "cashCostReferenceShare": 0.015,
+          "cashCostPurpose": "体检、运动或规律生活安排支出",
+          "effectSummary": "健康改善，短期收入机会减少",
+          "stateAssignments": { "routine.workHoursDelta": -3, "routine.exerciseHoursPerWeek": 5, "health.medicalCheckCompleted": true },
+          "statChanges": { "health": 2, "wealth": -1 }
+        },
+        {
+          "id": "adult_save_and_plan",
+          "label": "整理支出并增加储蓄",
+          "description": "控制非必要支出，为住房、失业或晚年保留现金。",
+          "autoWeight": 0.06,
+          "timeUseHoursPerWeek": 2,
+          "effectSummary": "储蓄倾向提高，消费带来的心情减少",
+          "stateDeltas": { "finance.savingRateAdjustment": 0.015 },
+          "statChanges": { "wealth": 1, "mood": -1 }
+        },
+        {
+          "id": "adult_improve_local_family_work",
+          "label": "改进家庭经营或本地生产安排",
+          "description": "结合乡村居住条件，整理家庭生产、经营或本地工作中的具体做法，不假定一定从事农业。",
+          "autoWeight": 0.12,
+          "when": { "residenceIn": ["rural"] },
+          "timeUseHoursPerWeek": 8,
+          "effectSummary": "实践能力和家庭协作提高",
+          "stateDeltas": { "employment.careerSkillHours": 80 },
+          "statChanges": { "ability": 1, "relationships": 1 }
+        },
+        {
+          "id": "adult_compare_urban_commute_jobs",
+          "label": "比较通勤和附近岗位",
+          "description": "结合城镇居住条件，比较当前通勤、附近岗位和换岗成本，不假定一定迁移。",
+          "autoWeight": 0.12,
+          "when": { "residenceIn": ["urban"] },
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "求职信息增加，工作节奏略放缓",
+          "stateAssignments": { "routine.workHoursDelta": -1 },
+          "stateDeltas": { "employment.jobSearchContacts": 2 },
+          "statChanges": { "ability": 1, "mood": 1 }
+        },
+        {
+          "id": "adult_reduce_load_for_health",
+          "label": "按当前身体状态降低负荷",
+          "description": "当健康记录已经偏低时，主动减少额外工时，保留恢复和复查时间。",
+          "autoWeight": 0.28,
+          "when": { "healthValueMax": 65 },
+          "timeUseHoursPerWeek": 7,
+          "effectSummary": "健康恢复优先，短期工作与收入机会减少",
+          "stateAssignments": { "routine.workHoursDelta": -5, "routine.exerciseHoursPerWeek": 2 },
+          "statChanges": { "health": 2, "mood": 1, "wealth": -1 }
+        },
+        {
+          "id": "adult_review_contract_and_benefits",
+          "label": "核对合同、工时和单位待遇",
+          "description": "在劳动合同制度进入新阶段后，核对当前记录与实际工时；这不会凭空生成合同。",
+          "autoWeight": 0.12,
+          "when": { "calendarYearMin": 2008, "employmentStatusIn": ["employed"] },
+          "timeUseHoursPerWeek": 3,
+          "effectSummary": "对当前岗位条件的判断更清楚",
+          "stateDeltas": { "employment.careerSkillHours": 30 },
+          "statChanges": { "ability": 1 }
+        },
+        {
+          "id": "adult_protect_body_in_physical_work",
+          "label": "调整体力岗位的动作和恢复",
+          "description": "只有当前从事生产、施工、维修、农业、餐饮、保洁或物流等体力岗位时出现，减少额外负荷并复盘作业方式。",
+          "autoWeight": 0.16,
+          "when": {
+            "occupationIn": [
+              "agricultural_operator", "family_farm_worker",
+              "production_operator", "production_line_operator", "factory_trainee_operator",
+              "construction_worker", "construction_helper",
+              "technical_maintenance_worker", "repair_apprentice", "junior_technical_operator",
+              "food_or_lodging_service_worker", "restaurant_service_worker",
+              "cleaning_and_general_support_worker", "logistics_worker", "warehouse_and_transport_helper"
+            ]
+          },
+          "timeUseHoursPerWeek": 5,
+          "effectSummary": "体力恢复和岗位经验增加，额外工时减少",
+          "stateAssignments": { "routine.workHoursDelta": -3, "routine.exerciseHoursPerWeek": 3 },
+          "stateDeltas": { "employment.careerSkillHours": 50 },
+          "statChanges": { "health": 1, "ability": 1 }
+        }
+      ]
+    }
+  ]
+}

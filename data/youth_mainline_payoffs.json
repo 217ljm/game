@@ -1,0 +1,160 @@
+{
+  "schemaVersion": 1,
+  "contentStatus": "gameplay_scenes_derived_from_existing_life_facts",
+  "rules": {
+    "minimumDirectionScoreForRecognition": 12,
+    "minimumHealthForExtraCommitment": 45,
+    "minimumFamilyGrowthForNegotiation": 8,
+    "maximumOutcomeMemories": 12,
+    "description": "0至18岁主线兑现事件读取实际季度行为、兴趣、成长、人物、教育、健康与家庭现金事实。事件本身不是历史统计，也不保证单一道路成功。"
+  },
+  "directions": {
+    "understanding": {
+      "label": "理解与求知",
+      "interestIds": ["reading_language", "numbers_logic", "nature_observation"],
+      "growthIds": ["interest_exploration", "school_confidence"],
+      "activityId": "payoff_keep_question_record",
+      "activityLabel": "把一个问题连续记录并追下去",
+      "activityDescription": "因为过去有人注意到你的提问和观察，你可以把零散问题留成跨季度记录。",
+      "activityCategory": "learning",
+      "statChanges": { "ability": 2 },
+      "preparationDeltas": { "preparation.academicHours": 80, "transitionPreparationHours": 50 }
+    },
+    "practice": {
+      "label": "动手与实践",
+      "interestIds": ["making_repair", "practical_work"],
+      "growthIds": ["practical_independence", "family_participation"],
+      "activityId": "payoff_take_real_making_task",
+      "activityLabel": "接下一件有真实用途的制作或修补",
+      "activityDescription": "早期动手经验让身边的人愿意把一个安全、具体的小任务交给你。",
+      "activityCategory": "work",
+      "statChanges": { "ability": 2, "relationships": 1 },
+      "preparationDeltas": { "preparation.vocationalHours": 90, "transitionPreparationHours": 40 }
+    },
+    "expression": {
+      "label": "表达与创造",
+      "interestIds": ["visual_art", "music_performance", "storytelling_media"],
+      "growthIds": ["interest_exploration", "peer_bond"],
+      "activityId": "payoff_prepare_small_expression",
+      "activityLabel": "准备一件能给别人看见的表达作品",
+      "activityDescription": "过去反复画、讲、听或表演的经历，使你有机会完成一件可以分享的作品。",
+      "activityCategory": "entertainment",
+      "statChanges": { "ability": 1, "mood": 2 },
+      "preparationDeltas": { "preparation.academicHours": 40, "transitionPreparationHours": 30 }
+    },
+    "belonging": {
+      "label": "关系与共同生活",
+      "interestIds": ["social_organizing"],
+      "growthIds": ["peer_bond", "family_participation"],
+      "activityId": "payoff_organize_shared_task",
+      "activityLabel": "和熟悉的人共同安排一件具体事情",
+      "activityDescription": "持续相处形成的信任，让你不只是参加，也能协调时间、规则和分工。",
+      "activityCategory": "social",
+      "statChanges": { "relationships": 2, "ability": 1 },
+      "preparationDeltas": { "preparation.employmentHours": 50, "transitionPreparationHours": 30 }
+    },
+    "vitality": {
+      "label": "身体与生活节律",
+      "interestIds": ["sports_movement"],
+      "growthIds": ["healthy_rhythm", "peer_bond"],
+      "activityId": "payoff_keep_training_recovery_record",
+      "activityLabel": "把活动和恢复安排成可维持的节奏",
+      "activityDescription": "过去的运动经历使你开始记录活动、疲劳和恢复，而不是只在兴头上透支。",
+      "activityCategory": "health",
+      "statChanges": { "health": 2, "mood": 1 },
+      "preparationDeltas": { "preparation.employmentHours": 30, "transitionPreparationHours": 20 }
+    },
+    "security": {
+      "label": "工作与生活保障",
+      "interestIds": ["practical_work", "numbers_logic"],
+      "growthIds": ["family_participation", "practical_independence"],
+      "activityId": "payoff_record_work_and_expense",
+      "activityLabel": "学习记录劳动、用料和实际支出",
+      "activityDescription": "家庭劳动和数字经验开始连接起来，你能参与一小段真实的记录与核对。",
+      "activityCategory": "finance",
+      "statChanges": { "ability": 1, "relationships": 1 },
+      "preparationDeltas": { "preparation.vocationalHours": 50, "preparation.employmentHours": 70, "transitionPreparationHours": 30 }
+    }
+  },
+  "events": [
+    {
+      "id": "payoff_age6_someone_notices",
+      "age": 6,
+      "quarter": 3,
+      "stages": ["childhood"],
+      "chapterLabel": "第一次被别人认真看见",
+      "title": "有人注意到你总在反复做同一类事情",
+      "scene": "这不是突然出现的天赋判定。对方见过你过去的具体行动，才在这一次停下来问你愿不愿意继续。",
+      "personRoleId": "primary_teacher",
+      "choices": [
+        { "id": "accept_guidance", "kind": "deepen", "label": "答应在接下来的日子继续做下去", "gain": "获得一项可持续行动，并让相关兴趣与能力继续积累", "tradeoff": "每周需要留出稳定时间，其他玩耍会相应减少", "requiresDirectionScore": 12, "statScale": 1, "interestGain": 8, "growthGain": 3 },
+        { "id": "show_and_share", "kind": "share", "label": "把过去做过的东西拿给对方看", "gain": "认识一个会记住这段经历的人，关系和表达得到回应", "tradeoff": "结果可能很普通，也可能被指出不足", "interestGain": 4, "growthGain": 2 },
+        { "id": "keep_it_private", "kind": "pause", "label": "暂时仍按自己的方式做，不接受额外安排", "gain": "保留休息和自由尝试的时间", "tradeoff": "这次具体指导机会不会继续等待", "statChanges": { "mood": 1, "health": 1 } }
+      ]
+    },
+    {
+      "id": "payoff_age9_time_conflict",
+      "age": 9,
+      "quarter": 3,
+      "stages": ["primary"],
+      "chapterLabel": "时间第一次不够用",
+      "title": "一件想继续的事，撞上了功课和家里的安排",
+      "scene": "老师、同伴或家人给出了具体机会，但一周的时间没有因此变多。你必须决定怎样安排，而不是只选最高加成。",
+      "personRoleId": "primary_teacher",
+      "choices": [
+        { "id": "protect_fixed_time", "kind": "deepen", "label": "固定留下时间，把这件事真正继续下去", "gain": "相关兴趣形成连续投入，解锁更深入的行动", "tradeoff": "休息减少，健康较差时不能执行", "requiresDirectionScore": 24, "minimumHealth": 45, "statChanges": { "ability": 1, "mood": -1 }, "interestGain": 10, "growthGain": 3 },
+        { "id": "negotiate_family_time", "kind": "negotiate", "label": "和家里重新商量功课、家务与这件事的时间", "gain": "可能同时保住家庭信任和个人投入", "tradeoff": "需要过去已经形成一定家庭参与，且投入强度较低", "requiresFamilyGrowth": 8, "statChanges": { "relationships": 2, "ability": 1 }, "interestGain": 5, "growthGain": 2 },
+        { "id": "put_aside_for_now", "kind": "pause", "label": "这次先把时间留给眼前责任", "gain": "家庭安排和休息更稳定", "tradeoff": "相关兴趣会暂时中断，但以后仍可能重新捡起", "statChanges": { "relationships": 1, "health": 1 }, "interestGain": -3 }
+      ]
+    },
+    {
+      "id": "payoff_age12_carry_forward",
+      "age": 12,
+      "quarter": 1,
+      "stages": ["primary", "adolescence"],
+      "chapterLabel": "把童年带进青少年时期",
+      "title": "新的学习和生活阶段开始了，旧兴趣是否还留得下来",
+      "scene": "新的学习和生活阶段正在靠近，或已经开始。环境、同伴和要求都在变化。过去的经历不会自动变成未来道路，只有继续使用、分享或主动改换方向，才会留下新的结果。",
+      "personRoleId": "junior_peer",
+      "fallbackPersonRoleId": "neighborhood_youth",
+      "choices": [
+        { "id": "carry_forward", "kind": "deepen", "label": "保留固定时间，把过去的积累带进新阶段", "gain": "解锁青少年阶段的延续行动，并进入教育或技能准备", "tradeoff": "需要压缩其他自由安排", "requiresDirectionScore": 32, "statChanges": { "ability": 1 }, "interestGain": 10, "growthGain": 3 },
+        { "id": "make_it_shared", "kind": "share", "label": "邀请一个同伴一起做，让它进入新的关系", "gain": "形成持续人物记忆和共同经历", "tradeoff": "需要接受分歧，方向不会完全按你自己的方式发展", "statChanges": { "relationships": 2, "mood": 1 }, "interestGain": 6, "growthGain": 2 },
+        { "id": "explore_another_direction", "kind": "pivot", "label": "把一部分时间用于尝试另一种生活方向", "gain": "获得新的兴趣接触，不被童年经验锁死", "tradeoff": "原方向连续性降低，但不会被删除", "statChanges": { "ability": 1, "mood": 1 }, "interestGain": -2 }
+      ]
+    },
+    {
+      "id": "payoff_age15_reality_test",
+      "age": 15,
+      "quarter": 3,
+      "stages": ["adolescence", "youth"],
+      "chapterLabel": "第一次接受现实检验",
+      "title": "一项校内、邻里或技能实践机会要求你承担真实结果",
+      "scene": "这次不只是兴趣体验：要按时出现、完成别人需要的部分，并承受做不好或与家庭安排冲突的可能。",
+      "personRoleId": "training_peer",
+      "fallbackPersonRoleId": "neighborhood_youth",
+      "choices": [
+        { "id": "take_real_task", "kind": "deepen", "label": "接下具体任务，并按约定完成", "gain": "获得可进入教育或技能入口的实践记录", "tradeoff": "每周时间和精力被占用，健康较差时不能硬撑", "requiresDirectionScore": 40, "minimumHealth": 45, "statChanges": { "ability": 2, "mood": -1 }, "interestGain": 10, "growthGain": 3 },
+        { "id": "take_smaller_role", "kind": "negotiate", "label": "说明自己的限制，只承担其中一部分", "gain": "保留机会与人物信任，同时降低执行风险", "tradeoff": "获得的准备积累较少", "statChanges": { "relationships": 2, "ability": 1 }, "interestGain": 5, "growthGain": 2 },
+        { "id": "decline_and_recover", "kind": "pause", "label": "拒绝这次任务，把精力留给健康或家庭", "gain": "健康、家庭或学业压力得到缓冲", "tradeoff": "这条具体机会结束，但方向仍可通过其他方式延续", "statChanges": { "health": 2, "relationships": 1 }, "interestGain": -2 }
+      ]
+    },
+    {
+      "id": "payoff_age17_turn_into_entry",
+      "age": 17,
+      "quarter": 3,
+      "stages": ["adolescence", "youth", "adult"],
+      "chapterLabel": "把经历变成成年入口",
+      "title": "有人问起你这些年真正做过什么，以及下一步准备怎样生活",
+      "scene": "学历、技能、家庭责任和人物介绍都只提供部分条件。你需要决定如何使用过去积累，而不是由兴趣分数直接决定职业。",
+      "personRoleId": "training_peer",
+      "fallbackPersonRoleId": "work_contact",
+      "choices": [
+        { "id": "use_for_study", "kind": "study_entry", "label": "把经历整理成继续学习所需的准备", "gain": "增加学业与升学准备，并保留原方向", "tradeoff": "不能立刻转化为收入，且需要已有认知与求知基础", "directionIn": ["understanding", "expression"], "minimumAbility": 45, "statChanges": { "ability": 2 }, "interestGain": 6 },
+        { "id": "use_for_skill", "kind": "skill_entry", "label": "把经历整理成训练、学徒或技能入口", "gain": "增加技能与就业准备，可能获得人物介绍", "tradeoff": "道路更具体，也可能较早承受劳动时间", "directionIn": ["practice", "security", "vitality"], "minimumAbility": 35, "statChanges": { "ability": 1, "wealth": 1 }, "interestGain": 6 },
+        { "id": "use_people_connection", "kind": "social_entry", "label": "请熟悉的人说明你共同完成过的事情", "gain": "把长期关系转化为一条真实信息或介绍", "tradeoff": "机会依赖对方能够接触到的范围，不保证得到岗位", "minimumTrustedPerson": 38, "statChanges": { "relationships": 2 }, "interestGain": 4 },
+        { "id": "keep_outside_livelihood", "kind": "personal", "label": "先解决现实入口，把这件事留在谋生之外", "gain": "不强迫兴趣承担收入目标，保留个人生活", "tradeoff": "它暂时不会改善教育或就业条件", "statChanges": { "mood": 2, "health": 1 }, "interestGain": 3 }
+      ]
+    }
+  ]
+}

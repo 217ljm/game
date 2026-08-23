@@ -1,0 +1,289 @@
+{
+  "schemaVersion": 1,
+  "scope": {
+    "country": "中国大陆",
+    "startYear": 1992,
+    "endYear": 2006,
+    "minimumStageAge": 13,
+    "maximumStageAge": 24,
+    "formalEmploymentMinimumAge": 16,
+    "currency": "CNY",
+    "priceBasis": "各年名义价格"
+  },
+  "rules": [
+    "普通高中毕业生升入普通高校比例是普通高校招生数除以普通高中毕业生数，不是个人录取概率，也不包括全部高等教育形式。",
+    "城镇单位职工平均工资不覆盖乡镇企业、私营企业和城镇个体劳动者，只能作为部分工资岗位的时代参照。",
+    "城镇登记失业率不等于青年失业率，也不等于全体劳动者失业率，不得直接反推个人是否就业。",
+    "候选工作必须先生成行业、职业、单位性质、工时、收入和合同事实，再由玩家选择并进行录用结算。",
+    "家庭经营或家庭生产不是用人单位劳动关系；收入写为个人对家庭经营净收入的贡献，不伪造工资或合同。",
+    "家庭原有成员收入与玩家个人收入分列，家庭总收入等于两者之和。",
+    "所有未有全国统计直接支持的个体概率、费用、收入折算和工作机会结构均列入假设。"
+  ],
+  "sources": [
+    {
+      "id": "nbs_income_engel_1978_2010",
+      "publisher": "国家统计局",
+      "title": "中国统计年鉴2011：城乡居民家庭人均收入及恩格尔系数",
+      "url": "https://www.stats.gov.cn/sj/ndsj/2011/html/J1002C.HTM"
+    },
+    {
+      "id": "nbs_staff_wage_1978_2006",
+      "publisher": "国家统计局",
+      "title": "中国统计年鉴2007：职工平均工资及指数",
+      "url": "https://www.stats.gov.cn/sj/ndsj/2007/html/E0522C.HTM"
+    },
+    {
+      "id": "nbs_staff_statistics_scope",
+      "publisher": "国家统计局",
+      "title": "中国统计年鉴：从业人员和职工工资统计指标解释",
+      "url": "https://www.stats.gov.cn/sj/ndsj/2009/html/z04.htm"
+    },
+    {
+      "id": "moe_high_school_to_higher_education_1990_2008",
+      "publisher": "教育部",
+      "title": "各级学校毕业生升学率",
+      "url": "https://www.moe.gov.cn/jyb_sjzl/moe_560/s4628/s4631/201010/t20101021_109888.html"
+    },
+    {
+      "id": "moe_education_1999",
+      "publisher": "教育部",
+      "title": "1999年全国教育事业发展统计公报",
+      "url": "https://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/tnull_841.html"
+    },
+    {
+      "id": "moe_education_2006",
+      "publisher": "教育部",
+      "title": "2006年全国教育事业发展统计公报",
+      "url": "https://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/tnull_23240.html"
+    },
+    {
+      "id": "nbs_employment_1999",
+      "publisher": "国家统计局",
+      "title": "就业基本情况（1999年）",
+      "url": "https://www.stats.gov.cn/zt_18555/ztsj/hjtjzl/1999/202303/t20230302_1923318.html"
+    },
+    {
+      "id": "nbs_brics_employment_2000_2006",
+      "publisher": "国家统计局",
+      "title": "BRICS Joint Statistical Publication 2011：Employment",
+      "url": "https://www.stats.gov.cn/zt_18555/jzgj/jz2011/202302/P020230218536758236857.pdf"
+    },
+    {
+      "id": "nbs_unemployment_1990_2006",
+      "publisher": "国家统计局",
+      "title": "中国统计年鉴2007：人民物质文化生活提高情况",
+      "url": "https://www.stats.gov.cn/sj/ndsj/2007/html/J1001C.HTM"
+    },
+    {
+      "id": "nbs_1999_layoff_report",
+      "publisher": "国家统计局",
+      "title": "1999年国民经济和社会发展统计公报",
+      "url": "https://www.stats.gov.cn/sj/tjgb/ndtjgb/qgndtjgb/202302/t20230206_1901943.html"
+    },
+    {
+      "id": "gov_1998_reemployment_notice",
+      "publisher": "中共中央、国务院",
+      "title": "关于切实做好国有企业下岗职工基本生活保障和再就业工作的通知",
+      "url": "https://rsj.sh.gov.cn/tgwyxzfgwj_17255/20200617/t0035_1388257.html"
+    },
+    {
+      "id": "gov_labor_law_1995",
+      "publisher": "全国人民代表大会常务委员会",
+      "title": "中华人民共和国劳动法",
+      "url": "https://www.gov.cn/banshi/2005-05/25/content_905.htm"
+    },
+    {
+      "id": "gov_vocational_education_law_1996",
+      "publisher": "全国人民代表大会常务委员会",
+      "title": "中华人民共和国职业教育法（1996年文本）",
+      "url": "https://www.gov.cn/banshi/2005-05/25/content_928.htm"
+    },
+    {
+      "id": "mofcom_wto_accession_2001",
+      "publisher": "商务部",
+      "title": "中国加入世界贸易组织二十周年回顾",
+      "url": "https://chinawto.mofcom.gov.cn/article/ap/p/202112/20211203229608.shtml"
+    },
+    {
+      "id": "gov_employment_reemployment_2005",
+      "publisher": "国务院",
+      "title": "关于进一步加强就业再就业工作的通知",
+      "url": "https://www.moe.gov.cn/jyb_xxgk/gk_gbgg/moe_0/moe_1133/moe_1134/tnull_14135.html"
+    }
+  ],
+  "observations": {
+    "yearlyHouseholdReferences": [
+      { "year": 1992, "urbanIncomePerPersonYuan": 2026.6, "ruralIncomePerPersonYuan": 784.0, "urbanEngelCoefficient": 0.530, "ruralEngelCoefficient": 0.576, "sourceId": "nbs_income_engel_1978_2010" },
+      { "year": 1993, "urbanIncomePerPersonYuan": 2577.4, "ruralIncomePerPersonYuan": 921.6, "urbanEngelCoefficient": 0.503, "ruralEngelCoefficient": 0.581, "sourceId": "nbs_income_engel_1978_2010" },
+      { "year": 1994, "urbanIncomePerPersonYuan": 3496.2, "ruralIncomePerPersonYuan": 1221.0, "urbanEngelCoefficient": 0.500, "ruralEngelCoefficient": 0.589, "sourceId": "nbs_income_engel_1978_2010" },
+      { "year": 1995, "urbanIncomePerPersonYuan": 4283.0, "ruralIncomePerPersonYuan": 1577.7, "urbanEngelCoefficient": 0.501, "ruralEngelCoefficient": 0.586, "sourceId": "nbs_income_engel_1978_2010" },
+      { "year": 1996, "urbanIncomePerPersonYuan": 4838.9, "ruralIncomePerPersonYuan": 1926.1, "urbanEngelCoefficient": 0.488, "ruralEngelCoefficient": 0.563, "sourceId": "nbs_income_engel_1978_2010" },
+      { "year": 1997, "urbanIncomePerPersonYuan": 5160.3, "ruralIncomePerPersonYuan": 2090.1, "urbanEngelCoefficient": 0.466, "ruralEngelCoefficient": 0.551, "sourceId": "nbs_income_engel_1978_2010" },
+      { "year": 1998, "urbanIncomePerPersonYuan": 5425.1, "ruralIncomePerPersonYuan": 2162.0, "urbanEngelCoefficient": 0.447, "ruralEngelCoefficient": 0.534, "sourceId": "nbs_income_engel_1978_2010" },
+      { "year": 1999, "urbanIncomePerPersonYuan": 5854.0, "ruralIncomePerPersonYuan": 2210.3, "urbanEngelCoefficient": 0.421, "ruralEngelCoefficient": 0.526, "sourceId": "nbs_income_engel_1978_2010" },
+      { "year": 2000, "urbanIncomePerPersonYuan": 6280.0, "ruralIncomePerPersonYuan": 2253.4, "urbanEngelCoefficient": 0.394, "ruralEngelCoefficient": 0.491, "sourceId": "nbs_income_engel_1978_2010" },
+      { "year": 2001, "urbanIncomePerPersonYuan": 6859.6, "ruralIncomePerPersonYuan": 2366.4, "urbanEngelCoefficient": 0.382, "ruralEngelCoefficient": 0.477, "sourceId": "nbs_income_engel_1978_2010" },
+      { "year": 2002, "urbanIncomePerPersonYuan": 7702.8, "ruralIncomePerPersonYuan": 2475.6, "urbanEngelCoefficient": 0.377, "ruralEngelCoefficient": 0.462, "sourceId": "nbs_income_engel_1978_2010" },
+      { "year": 2003, "urbanIncomePerPersonYuan": 8472.2, "ruralIncomePerPersonYuan": 2622.2, "urbanEngelCoefficient": 0.371, "ruralEngelCoefficient": 0.456, "sourceId": "nbs_income_engel_1978_2010" },
+      { "year": 2004, "urbanIncomePerPersonYuan": 9421.6, "ruralIncomePerPersonYuan": 2936.4, "urbanEngelCoefficient": 0.377, "ruralEngelCoefficient": 0.472, "sourceId": "nbs_income_engel_1978_2010" },
+      { "year": 2005, "urbanIncomePerPersonYuan": 10493.0, "ruralIncomePerPersonYuan": 3254.9, "urbanEngelCoefficient": 0.367, "ruralEngelCoefficient": 0.455, "sourceId": "nbs_income_engel_1978_2010" },
+      { "year": 2006, "urbanIncomePerPersonYuan": 11759.5, "ruralIncomePerPersonYuan": 3587.0, "urbanEngelCoefficient": 0.358, "ruralEngelCoefficient": 0.430, "sourceId": "nbs_income_engel_1978_2010" }
+    ],
+    "staffAverageWageReferences": [
+      { "year": 1992, "all": 2711, "stateOwned": 2878, "urbanCollective": 2109, "otherUnits": 3966, "sourceId": "nbs_staff_wage_1978_2006" },
+      { "year": 1993, "all": 3371, "stateOwned": 3532, "urbanCollective": 2592, "otherUnits": 4966, "sourceId": "nbs_staff_wage_1978_2006" },
+      { "year": 1994, "all": 4538, "stateOwned": 4797, "urbanCollective": 3245, "otherUnits": 6303, "sourceId": "nbs_staff_wage_1978_2006" },
+      { "year": 1995, "all": 5500, "stateOwned": 5625, "urbanCollective": 3931, "otherUnits": 7463, "sourceId": "nbs_staff_wage_1978_2006" },
+      { "year": 1996, "all": 6210, "stateOwned": 6280, "urbanCollective": 4302, "otherUnits": 8261, "sourceId": "nbs_staff_wage_1978_2006" },
+      { "year": 1997, "all": 6470, "stateOwned": 6747, "urbanCollective": 4512, "otherUnits": 8789, "sourceId": "nbs_staff_wage_1978_2006" },
+      { "year": 1998, "all": 7479, "stateOwned": 7668, "urbanCollective": 5331, "otherUnits": 8972, "sourceId": "nbs_staff_wage_1978_2006" },
+      { "year": 1999, "all": 8346, "stateOwned": 8543, "urbanCollective": 5774, "otherUnits": 9829, "sourceId": "nbs_staff_wage_1978_2006" },
+      { "year": 2000, "all": 9371, "stateOwned": 9552, "urbanCollective": 6262, "otherUnits": 10984, "sourceId": "nbs_staff_wage_1978_2006" },
+      { "year": 2001, "all": 10870, "stateOwned": 11178, "urbanCollective": 6867, "otherUnits": 12140, "sourceId": "nbs_staff_wage_1978_2006" },
+      { "year": 2002, "all": 12422, "stateOwned": 12869, "urbanCollective": 7667, "otherUnits": 13212, "sourceId": "nbs_staff_wage_1978_2006" },
+      { "year": 2003, "all": 14040, "stateOwned": 14577, "urbanCollective": 8678, "otherUnits": 14574, "sourceId": "nbs_staff_wage_1978_2006" },
+      { "year": 2004, "all": 16024, "stateOwned": 16729, "urbanCollective": 9814, "otherUnits": 16259, "sourceId": "nbs_staff_wage_1978_2006" },
+      { "year": 2005, "all": 18364, "stateOwned": 19313, "urbanCollective": 11283, "otherUnits": 18244, "sourceId": "nbs_staff_wage_1978_2006" },
+      { "year": 2006, "all": 21001, "stateOwned": 22112, "urbanCollective": 13014, "otherUnits": 20755, "sourceId": "nbs_staff_wage_1978_2006" }
+    ],
+    "highSchoolToRegularHigherEducationProgression": [
+      { "year": 1992, "rate": 0.349, "sourceId": "moe_high_school_to_higher_education_1990_2008" },
+      { "year": 1993, "rate": 0.433, "sourceId": "moe_high_school_to_higher_education_1990_2008" },
+      { "year": 1994, "rate": 0.467, "sourceId": "moe_high_school_to_higher_education_1990_2008" },
+      { "year": 1995, "rate": 0.499, "sourceId": "moe_high_school_to_higher_education_1990_2008" },
+      { "year": 1996, "rate": 0.510, "sourceId": "moe_high_school_to_higher_education_1990_2008" },
+      { "year": 1997, "rate": 0.486, "sourceId": "moe_high_school_to_higher_education_1990_2008" },
+      { "year": 1998, "rate": 0.461, "sourceId": "moe_high_school_to_higher_education_1990_2008" },
+      { "year": 1999, "rate": 0.638, "sourceId": "moe_high_school_to_higher_education_1990_2008" },
+      { "year": 2000, "rate": 0.732, "sourceId": "moe_high_school_to_higher_education_1990_2008" },
+      { "year": 2001, "rate": 0.788, "sourceId": "moe_high_school_to_higher_education_1990_2008" },
+      { "year": 2002, "rate": 0.835, "sourceId": "moe_high_school_to_higher_education_1990_2008" },
+      { "year": 2003, "rate": 0.834, "sourceId": "moe_high_school_to_higher_education_1990_2008" },
+      { "year": 2004, "rate": 0.825, "sourceId": "moe_high_school_to_higher_education_1990_2008" },
+      { "year": 2005, "rate": 0.763, "sourceId": "moe_high_school_to_higher_education_1990_2008" },
+      { "year": 2006, "rate": 0.751, "sourceId": "moe_high_school_to_higher_education_1990_2008" }
+    ],
+    "seniorStageSnapshots": [
+      { "year": 1999, "allEntrantsTenThousands": 905.26, "academicSeniorEntrantsTenThousands": 396.32, "vocationalEntrantsTenThousands": 473.27, "vocationalEntrantShare": 0.5228, "vocationalStudentShare": 0.5647, "sourceId": "moe_education_1999" },
+      { "year": 2006, "allEntrantsTenThousands": 1619.03, "academicSeniorEntrantsTenThousands": 871.21, "vocationalEntrantsTenThousands": 747.82, "vocationalEntrantShare": 0.4619, "seniorGrossEnrollmentRate": 0.598, "sourceId": "moe_education_2006" }
+    ],
+    "vocationalEntrantsBySchoolType": [
+      { "year": 1999, "ordinarySpecializedSecondary": 163.37, "vocationalHighSchool": 160.38, "technicalWorkerSchool": 51.55, "adultSpecializedSecondary": 97.97, "total": 473.27, "sourceId": "moe_education_1999" },
+      { "year": 2006, "ordinarySpecializedSecondary": 278.89, "vocationalHighSchool": 288.02, "technicalWorkerSchool": 134.76, "adultSpecializedSecondary": 46.16, "total": 747.82, "sourceId": "moe_education_2006" }
+    ],
+    "employmentStructureAnchors": [
+      { "year": 1991, "primary": 0.597, "secondary": 0.214, "tertiary": 0.189, "sourceId": "nbs_employment_1999" },
+      { "year": 1995, "primary": 0.522, "secondary": 0.230, "tertiary": 0.248, "sourceId": "nbs_employment_1999" },
+      { "year": 1999, "primary": 0.501, "secondary": 0.230, "tertiary": 0.269, "sourceId": "nbs_employment_1999" },
+      { "year": 2000, "primary": 0.5000, "secondary": 0.2250, "tertiary": 0.2750, "sourceId": "nbs_brics_employment_2000_2006" },
+      { "year": 2004, "primary": 0.4690, "secondary": 0.2250, "tertiary": 0.3060, "sourceId": "nbs_brics_employment_2000_2006" },
+      { "year": 2005, "primary": 0.4480, "secondary": 0.2385, "tertiary": 0.3135, "sourceId": "nbs_brics_employment_2000_2006" },
+      { "year": 2006, "primary": 0.4262, "secondary": 0.2516, "tertiary": 0.3222, "sourceId": "nbs_brics_employment_2000_2006" }
+    ],
+    "registeredUrbanUnemploymentRate": [
+      { "year": 1990, "rate": 0.025, "sourceId": "nbs_unemployment_1990_2006" },
+      { "year": 2000, "rate": 0.031, "sourceId": "nbs_unemployment_1990_2006" },
+      { "year": 2004, "rate": 0.042, "sourceId": "nbs_unemployment_1990_2006" },
+      { "year": 2005, "rate": 0.042, "sourceId": "nbs_unemployment_1990_2006" },
+      { "year": 2006, "rate": 0.041, "sourceId": "nbs_unemployment_1990_2006" }
+    ],
+    "historicalMilestones": [
+      { "year": 1995, "id": "labor_law_effective", "sourceId": "gov_labor_law_1995" },
+      { "year": 1996, "id": "vocational_education_law_effective", "sourceId": "gov_vocational_education_law_1996" },
+      { "year": 1998, "id": "state_enterprise_layoff_and_reemployment", "sourceId": "gov_1998_reemployment_notice" },
+      { "year": 1999, "id": "higher_education_expansion", "sourceId": "moe_education_1999" },
+      { "year": 2001, "id": "china_wto_accession", "sourceId": "mofcom_wto_accession_2001" },
+      { "year": 2005, "id": "employment_and_reemployment_policy", "sourceId": "gov_employment_reemployment_2005" }
+    ]
+  },
+  "assumptions": {
+    "householdIncomeContinuation": {
+      "id": "YWE01",
+      "description": "原家庭成员总收入继续围绕同年同城乡居民人均收入变化；玩家收入另列后再相加。",
+      "annualShockSigma": { "urban": 0.17, "rural": 0.22 }
+    },
+    "parentEmploymentContinuity": {
+      "id": "YWE02",
+      "description": "本阶段不重建父母完整职业变动，仅继续其既有就业并在家庭收入中分配贡献。"
+    },
+    "seniorSchoolModel": {
+      "id": "YWE03",
+      "description": "普通高中和中职均按常见三学年制模拟，学校具体地点、招生线和专业名称未知。",
+      "prescribedYears": 3,
+      "instructionDays": 200,
+      "academicBaseStudyHoursPerWeek": 15,
+      "vocationalClassHoursPerWeek": 20,
+      "vocationalPracticeHoursPerWeek": 10
+    },
+    "educationExpense": {
+      "id": "YWE04",
+      "description": "缺少逐年城乡同口径学费数据时，以居民人均收入比例构造可追溯的现金支出，不声称为实际收费标准。",
+      "shareOfReferenceIncome": {
+        "academic_senior": { "urban": 0.24, "rural": 0.31 },
+        "vocational_secondary": { "urban": 0.27, "rural": 0.34 }
+      }
+    },
+    "seniorLearningAndCompletion": {
+      "id": "YWE05",
+      "description": "出勤、学习时间、家庭劳动、健康与既有能力共同决定游戏内学习进度、辍学、留级和毕业；不是重建地区考试分数。",
+      "annualShockStandardDeviation": 9,
+      "academicAnnualExitBase": 0.025,
+      "vocationalAnnualExitBase": 0.035,
+      "baseRepeatProbability": 0.035,
+      "academicFinalGraduationProbability": 0.93,
+      "vocationalFinalGraduationProbability": 0.90
+    },
+    "higherEducationTransition": {
+      "id": "YWE06",
+      "description": "把全国普通高中毕业生升入普通高校比例作为同届基准，再根据个人学习进度、备考投入和家庭支出负担作个体化；不生成院校或专业。"
+    },
+    "vocationalSchoolTypeAllocation": {
+      "id": "YWE07",
+      "description": "以1999和2006年中职招生类型构成为锚插值；成人中专仅保留较小适龄权重，具体专业由训练方向假设生成。"
+    },
+    "trainingProgram": {
+      "id": "YWE08",
+      "description": "短训和中职技能方向、训练小时、完成概率为游戏设计假设，均保存为事实。",
+      "shortProgramHours": 360,
+      "shortProgramMonths": 6,
+      "baseCompletionProbability": 0.86
+    },
+    "opportunityGeneration": {
+      "id": "YWE09",
+      "description": "候选工作的可见集合来自配置模板，并用全国三次产业就业结构、城乡、学历、技能和家庭介绍调整权重；不把全国结构当成个人分配结果。",
+      "candidateCount": 3,
+      "maximumSearchAge": 24
+    },
+    "offerAndHiring": {
+      "id": "YWE10",
+      "description": "录用概率、合同概率、工时区间和收入相对参照倍数缺少全国同口径微观数据，全部作为显式假设；真实结果由种子结算。",
+      "baseHiringProbability": 0.64,
+      "familyIntroductionLogOddsBonus": 0.38,
+      "vocationalMatchLogOddsBonus": 0.42,
+      "seniorEducationLogOddsBonus": 0.18
+    },
+    "familyEconomicActivity": {
+      "id": "YWE11",
+      "description": "家庭经济活动按家庭既有主业和城乡生成，个人净收入贡献以城乡居民人均收入折算，不伪造用人单位工资。",
+      "incomeReferenceMultipliers": { "urban": 0.72, "rural": 0.62 }
+    },
+    "healthEpisodes": {
+      "id": "YWE12",
+      "description": "每年一般症状及少量较重症状按泊松过程生成，只记录天数，不伪造诊断。",
+      "meanEpisodesPerYear": 1.35,
+      "severeEpisodeProbability": 0.055
+    },
+    "visibleStatEvolution": {
+      "id": "YWE13",
+      "description": "健康、财富、心情、能力和关系只由已记录事实改变；财富由家庭总账相对同年城乡参考重算。"
+    },
+    "eventChoices": {
+      "id": "YWE14",
+      "description": "高中、中职、训练和求职中的选择权重仅用于自动模拟，玩家选择时不限制。"
+    },
+    "selfStudyBridge": {
+      "id": "YWE15",
+      "description": "选择继续自学者先经历一个可记录的自学年，随后进入具体求职机会；本阶段不把自学写成学历。"
+    }
+  }
+}

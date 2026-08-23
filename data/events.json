@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 2,
+  "status": "legacy_manifest_only",
+  "loadedByGame": false,
+  "reason": "早期按年龄直接加减属性的事件已经停用。正式内容按人生阶段拆分，并先生成年度事实再反馈五项属性。",
+  "activeEventFiles": [
+    "childhood_events.json",
+    "primary_education_events.json",
+    "adolescence_events.json",
+    "youth_entry_events.json",
+    "adult_life_events.json"
+  ]
+}

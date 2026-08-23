@@ -1,0 +1,236 @@
+{
+  "schemaVersion": 1,
+  "scope": {
+    "country": "中国大陆",
+    "startYear": 1984,
+    "endYear": 1996,
+    "minimumEntryAge": 6,
+    "maximumStageAge": 14,
+    "currency": "CNY",
+    "priceBasis": "各年名义价格"
+  },
+  "rules": [
+    "学校、家庭和学生均保存具体事实，不保存教育资源好坏或成绩优劣标签。",
+    "入学率、巩固率、辍学率、毕业率和升学率是不同统计指标，不得相互替代。",
+    "全国统计只校准总体概率；个人结果由出勤、家庭劳动、健康、学习投入和随机冲击共同生成。",
+    "五年制、六年制以及全日制、半日制或简易教学形式必须作为明确学校事实保存。"
+  ],
+  "sources": [
+    {
+      "id": "nbs_income_engel_1978_2000",
+      "publisher": "国家统计局",
+      "title": "中国统计年鉴2001：城乡居民家庭人均收入及恩格尔系数",
+      "url": "https://www.stats.gov.cn/sj/ndsj/2001c/j1003c.htm"
+    },
+    {
+      "id": "moe_primary_enrollment",
+      "publisher": "教育部",
+      "title": "小学学龄儿童入学率",
+      "url": "https://www.moe.gov.cn/jyb_sjzl/moe_560/moe_1389/moe_1390/moe_1393/201002/t20100226_20345.html"
+    },
+    {
+      "id": "moe_primary_1980_1985",
+      "publisher": "教育部",
+      "title": "基本普及小学教育（1980－1985年）",
+      "url": "https://www.moe.gov.cn/jyb_xwfb/xw_zt/moe_357/s3580/moe_2448/moe_2450/moe_2454/tnull_39698.html"
+    },
+    {
+      "id": "moe_education_1987",
+      "publisher": "教育部",
+      "title": "国家教委1987年工作要点（含1987年教育事业数据）",
+      "url": "https://www.moe.gov.cn/jyb_sjzl/moe_164/tnull_3450.html"
+    },
+    {
+      "id": "moe_compulsory_education_history",
+      "publisher": "教育部",
+      "title": "九年义务教育开始实施",
+      "url": "https://www.moe.gov.cn/jyb_xwfb/xw_zt/moe_357/s3581/moe_2669/moe_2921/tnull_51639.html"
+    },
+    {
+      "id": "moe_school_system_history",
+      "publisher": "教育部",
+      "title": "教育部对十二届全国人大四次会议第7853号建议的答复",
+      "url": "https://www.moe.gov.cn/jyb_xxgk/xxgk_jyta/jyta_jcys/201609/t20160901_277364.html"
+    },
+    {
+      "id": "nbs_education_progression",
+      "publisher": "国家统计局",
+      "title": "初中、小学毕业生升学率及小学学龄儿童入学率",
+      "url": "https://www.stats.gov.cn/sj/ndsj/yb2004-c/html/U2116ac.htm"
+    },
+    {
+      "id": "moe_education_progression_1990_2000",
+      "publisher": "教育部",
+      "title": "2000年各级普通学校毕业生升学率",
+      "url": "https://www.moe.gov.cn/jyb_sjzl/moe_560/moe_566/moe_588/201002/t20100226_7843.html"
+    },
+    {
+      "id": "nbs_education_1991",
+      "publisher": "国家统计局",
+      "title": "1991年国民经济和社会发展统计公报",
+      "url": "https://www.stats.gov.cn/xxgk/sjfb/tjgb2020/201311/P020200617516954477760.PDF"
+    },
+    {
+      "id": "nbs_education_1995",
+      "publisher": "国家统计局",
+      "title": "1995年国民经济和社会发展统计公报",
+      "url": "https://www.stats.gov.cn/sj/tjgb/ndtjgb/qgndtjgb/202302/t20230206_1901939.html"
+    },
+    {
+      "id": "nbs_education_teacher_load",
+      "publisher": "国家统计局",
+      "title": "中国统计年鉴2000：教育、科技、文化主要指标",
+      "url": "https://www.stats.gov.cn/sj/ndsj/zgnj/2000/B05c.htm"
+    }
+  ],
+  "observations": {
+    "yearlyHouseholdReferences": [
+      { "year": 1984, "urbanIncomePerPersonYuan": 651.2, "ruralIncomePerPersonYuan": 355.3, "urbanEngelCoefficient": 0.580, "ruralEngelCoefficient": 0.592, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1985, "urbanIncomePerPersonYuan": 739.1, "ruralIncomePerPersonYuan": 397.6, "urbanEngelCoefficient": 0.533, "ruralEngelCoefficient": 0.578, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1986, "urbanIncomePerPersonYuan": 899.6, "ruralIncomePerPersonYuan": 423.8, "urbanEngelCoefficient": 0.524, "ruralEngelCoefficient": 0.564, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1987, "urbanIncomePerPersonYuan": 1002.2, "ruralIncomePerPersonYuan": 462.6, "urbanEngelCoefficient": 0.535, "ruralEngelCoefficient": 0.558, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1988, "urbanIncomePerPersonYuan": 1181.4, "ruralIncomePerPersonYuan": 544.9, "urbanEngelCoefficient": 0.514, "ruralEngelCoefficient": 0.540, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1989, "urbanIncomePerPersonYuan": 1375.7, "ruralIncomePerPersonYuan": 601.5, "urbanEngelCoefficient": 0.544, "ruralEngelCoefficient": 0.548, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1990, "urbanIncomePerPersonYuan": 1510.2, "ruralIncomePerPersonYuan": 686.3, "urbanEngelCoefficient": 0.542, "ruralEngelCoefficient": 0.588, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1991, "urbanIncomePerPersonYuan": 1700.6, "ruralIncomePerPersonYuan": 708.6, "urbanEngelCoefficient": 0.538, "ruralEngelCoefficient": 0.576, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1992, "urbanIncomePerPersonYuan": 2026.6, "ruralIncomePerPersonYuan": 784.0, "urbanEngelCoefficient": 0.529, "ruralEngelCoefficient": 0.576, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1993, "urbanIncomePerPersonYuan": 2577.4, "ruralIncomePerPersonYuan": 921.6, "urbanEngelCoefficient": 0.501, "ruralEngelCoefficient": 0.581, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1994, "urbanIncomePerPersonYuan": 3496.2, "ruralIncomePerPersonYuan": 1221.0, "urbanEngelCoefficient": 0.499, "ruralEngelCoefficient": 0.589, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1995, "urbanIncomePerPersonYuan": 4283.0, "ruralIncomePerPersonYuan": 1577.7, "urbanEngelCoefficient": 0.499, "ruralEngelCoefficient": 0.586, "sourceId": "nbs_income_engel_1978_2000" },
+      { "year": 1996, "urbanIncomePerPersonYuan": 4838.9, "ruralIncomePerPersonYuan": 1926.1, "urbanEngelCoefficient": 0.486, "ruralEngelCoefficient": 0.563, "sourceId": "nbs_income_engel_1978_2000" }
+    ],
+    "primaryEnrollmentRateAnchors": [
+      { "year": 1984, "rate": 0.950, "relation": "at_least", "sourceId": "moe_primary_1980_1985", "note": "截至1984年入学率和巩固率均超过95%，校准时把95%作为下界锚点。" },
+      { "year": 1985, "rate": 0.959, "relation": "observed", "sourceId": "moe_primary_enrollment" },
+      { "year": 1986, "rate": 0.964, "relation": "derived_from_1987_change", "sourceId": "moe_education_1987" },
+      { "year": 1987, "rate": 0.971, "relation": "observed", "sourceId": "moe_education_1987" },
+      { "year": 1990, "rate": 0.978, "relation": "observed", "sourceId": "moe_primary_enrollment" },
+      { "year": 1991, "rate": 0.978, "relation": "observed", "sourceId": "nbs_education_1991" },
+      { "year": 1992, "rate": 0.972, "relation": "observed", "sourceId": "moe_primary_enrollment" },
+      { "year": 1993, "rate": 0.977, "relation": "observed", "sourceId": "moe_primary_enrollment" },
+      { "year": 1994, "rate": 0.984, "relation": "observed", "sourceId": "moe_primary_enrollment" },
+      { "year": 1995, "rate": 0.985, "relation": "observed", "sourceId": "nbs_education_1995" },
+      { "year": 1996, "rate": 0.988, "relation": "observed", "sourceId": "moe_primary_enrollment" }
+    ],
+    "annualDropoutOrNonRetentionAnchors": [
+      { "year": 1987, "rate": 0.028, "metric": "one_minus_annual_retention_rate", "sourceId": "moe_education_1987" },
+      { "year": 1991, "rate": 0.0235, "metric": "primary_student_dropout_rate", "sourceId": "nbs_education_1991" },
+      { "year": 1995, "rate": 0.0149, "metric": "primary_student_dropout_rate", "sourceId": "nbs_education_1995" }
+    ],
+    "primaryGraduation1987": {
+      "rate": 0.951,
+      "metric": "graduating_class_graduation_rate",
+      "sourceId": "moe_education_1987"
+    },
+    "primaryToJuniorProgressionAnchors": [
+      { "year": 1985, "rate": 0.684, "sourceId": "nbs_education_progression" },
+      { "year": 1990, "rate": 0.746, "sourceId": "moe_education_progression_1990_2000" },
+      { "year": 1991, "rate": 0.777, "sourceId": "moe_education_progression_1990_2000" },
+      { "year": 1992, "rate": 0.797, "sourceId": "moe_education_progression_1990_2000" },
+      { "year": 1993, "rate": 0.818, "sourceId": "moe_education_progression_1990_2000" },
+      { "year": 1994, "rate": 0.866, "sourceId": "moe_education_progression_1990_2000" },
+      { "year": 1995, "rate": 0.908, "sourceId": "moe_education_progression_1990_2000" },
+      { "year": 1996, "rate": 0.926, "sourceId": "moe_education_progression_1990_2000" }
+    ],
+    "primaryStudentsPerTeacherReference": [
+      { "year": 1985, "value": 24.9, "unit": "students_per_teacher", "sourceId": "nbs_education_teacher_load" },
+      { "year": 1990, "value": 21.9, "unit": "students_per_teacher", "sourceId": "nbs_education_teacher_load" },
+      { "year": 1995, "value": 23.3, "unit": "students_per_teacher", "sourceId": "nbs_education_teacher_load" }
+    ],
+    "compulsoryEducationLaw": {
+      "effective": "1986-07-01",
+      "ordinaryEntryAge": 6,
+      "deferredEntryAgeWhereConditionsInsufficient": 7,
+      "sourceId": "moe_compulsory_education_history"
+    },
+    "schoolSystemHistory": {
+      "fiveAndSixYearSystemsCoexisted": true,
+      "sixYearTransitionPolicyStartYear": 1980,
+      "sourceId": "moe_school_system_history"
+    },
+    "schoolFormsHistory": {
+      "fullDayAndHalfDayOrSimpleClassesCoexisted": true,
+      "sourceId": "moe_primary_1980_1985"
+    }
+  },
+  "assumptions": {
+    "entryAgeDistribution": {
+      "id": "P01",
+      "description": "1986年前首轮入学年龄为7岁；1986年后部分儿童6岁入学，其余7岁，城乡比例为可替换代理。",
+      "age6EntryShareByResidence": { "urban": 0.38, "rural": 0.18 }
+    },
+    "individualEnrollmentProbability": {
+      "id": "P02",
+      "description": "以全国净入学率为基线，按实际人均收入、食品需要未满足月份、健康、入学准备小时和延迟年龄调整。",
+      "lateEntryAnnualProbability": 0.72
+    },
+    "schoolSystemDistribution": {
+      "id": "P03",
+      "description": "五年制和六年制并存，但缺少全国逐年城乡份额；使用按入学年份和城乡变化的六年制概率代理。",
+      "sixYearProbability": {
+        "1984": { "urban": 0.52, "rural": 0.22 },
+        "1990": { "urban": 0.78, "rural": 0.48 },
+        "1995": { "urban": 0.88, "rural": 0.65 }
+      }
+    },
+    "schoolFormDistribution": {
+      "id": "P04",
+      "description": "城镇地方或单位小学、农村村办或乡镇全日制小学及半日制/简易教学班的份额为首版代理。",
+      "urban": { "local_public_full_day": 0.68, "work_unit_full_day": 0.32 },
+      "rural1984": { "village_full_day": 0.54, "township_full_day": 0.24, "half_day_or_simple_class": 0.22 },
+      "rural1995": { "village_full_day": 0.62, "township_full_day": 0.30, "half_day_or_simple_class": 0.08 }
+    },
+    "instructionDays": {
+      "id": "P05",
+      "description": "全日制每学年190个教学日、半日制或简易班165个教学日，是缺少逐年全国数据时的游戏时间尺度。",
+      "fullDay": 190,
+      "halfDayOrSimple": 165
+    },
+    "householdLaborTime": {
+      "id": "P06",
+      "description": "学生家庭劳动小时由城乡、家庭行业、食品需要未满足月份和玩家行动共同生成。",
+      "baseHoursPerWeek": { "urban": 4, "rural": 8 }
+    },
+    "studentIllnessAbsence": {
+      "id": "P07",
+      "description": "学龄儿童常见症状事件和病假日数为首版年龄段代理，不生成未经校准的具体诊断。",
+      "meanEpisodesPerYear": 0.65,
+      "severeEpisodeProbability": 0.055
+    },
+    "learningProgress": {
+      "id": "P08",
+      "description": "0至100学习进展分仅为游戏内部尺度，由出勤、校外练习、既有能力、家庭劳动和随机冲击计算，不冒充统一考试分数。",
+      "annualShockStandardDeviation": 8
+    },
+    "gradeProgression": {
+      "id": "P09",
+      "description": "留级概率由出勤和学习进展分生成；全国缺少同口径逐年留级数据。",
+      "baseRepeatProbability": 0.025
+    },
+    "individualDropoutProbability": {
+      "id": "P10",
+      "description": "用年度巩固/辍学锚点为基线，再按家庭实际收入、缺课、家庭劳动和学习进展调整。"
+    },
+    "graduationProbability": {
+      "id": "P11",
+      "description": "毕业年以1987届毕业率为锚点，按出勤和学习进展调整。"
+    },
+    "juniorTransitionProbability": {
+      "id": "P12",
+      "description": "小学毕业后升入初中的概率以当年全国升学率为基线，按毕业年学习进展、准备投入、家庭收入和随机结果调整。"
+    },
+    "householdIncomeContinuation": {
+      "id": "P13",
+      "description": "延续6岁末家庭相对同年同城乡收入位置，每年叠加均值为1的随机冲击。",
+      "annualShockSigma": { "urban": 0.13, "rural": 0.19 }
+    },
+    "visibleStatEvolution": {
+      "id": "P14",
+      "description": "财富由当年相对收入重算；能力、健康、心情和人际只因已记录的学习、健康、劳动和选择事实变化。"
+    },
+    "noReentryAfterPrimaryExit": {
+      "id": "P15",
+      "description": "首版小学阶段在正式退出后不模拟复学；该限制在结局中明确记录。"
+    }
+  }
+}

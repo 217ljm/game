@@ -1,0 +1,194 @@
+{
+  "schemaVersion": 1,
+  "stage": "adolescence_education_and_preparation",
+  "events": [
+    {
+      "id": "junior_entry_routine",
+      "path": "junior_student",
+      "trigger": "on_junior_entry",
+      "title": "上初中后的每天",
+      "prompt": "课程、路程和家里的事情一起占用时间。你打算怎样安排大部分放学后时间？",
+      "contentStatus": "design_assumption",
+      "assumptionId": "AE01",
+      "options": [
+        {
+          "id": "junior_entry_regular_study",
+          "label": "固定完成练习和复习",
+          "autoWeight": 0.35,
+          "routineChanges": { "studyHoursPerWeek": 10, "householdLaborHoursPerWeek": 5, "peerHoursPerWeek": 3 },
+          "immediateStatEffects": { "ability": 1 }
+        },
+        {
+          "id": "junior_entry_family_first",
+          "label": "先完成家里的事务",
+          "autoWeight": 0.33,
+          "routineChanges": { "studyHoursPerWeek": 6, "householdLaborHoursPerWeek": 12, "peerHoursPerWeek": 2 },
+          "immediateStatEffects": { "relationships": 1 }
+        },
+        {
+          "id": "junior_entry_peer_study",
+          "label": "和同学一起学习活动",
+          "autoWeight": 0.32,
+          "routineChanges": { "studyHoursPerWeek": 8, "householdLaborHoursPerWeek": 5, "peerHoursPerWeek": 7 },
+          "immediateStatEffects": { "mood": 1, "relationships": 1 }
+        }
+      ]
+    },
+    {
+      "id": "junior_grade2_expense_arrangement",
+      "path": "junior_student",
+      "trigger": "before_grade",
+      "grade": 2,
+      "title": "书本、路费和生活安排",
+      "prompt": "这一年的书本、路费或住宿开销让家庭账本更紧。你准备怎样安排？",
+      "contentStatus": "design_assumption",
+      "assumptionId": "AE02",
+      "options": [
+        {
+          "id": "grade2_keep_full_materials",
+          "label": "保留完整学习安排",
+          "autoWeight": 0.34,
+          "educationExpenseMultiplier": 1.00,
+          "routineChanges": { "studyHoursPerWeek": 10, "householdLaborHoursPerWeek": 5, "peerHoursPerWeek": 3 },
+          "annualFacts": { "materialsSharedOrReused": false },
+          "immediateStatEffects": { "ability": 1, "relationships": -1 }
+        },
+        {
+          "id": "grade2_reuse_and_borrow",
+          "label": "借用或重复使用资料",
+          "autoWeight": 0.36,
+          "educationExpenseMultiplier": 0.76,
+          "routineChanges": { "studyHoursPerWeek": 8, "householdLaborHoursPerWeek": 6, "peerHoursPerWeek": 5 },
+          "annualFacts": { "materialsSharedOrReused": true, "sharedMaterialWeeks": 24 },
+          "immediateStatEffects": { "relationships": 1 }
+        },
+        {
+          "id": "grade2_more_household_work",
+          "label": "多承担家里的生产和家务",
+          "autoWeight": 0.30,
+          "educationExpenseMultiplier": 0.90,
+          "routineChanges": { "studyHoursPerWeek": 6, "householdLaborHoursPerWeek": 14, "peerHoursPerWeek": 2 },
+          "annualFacts": { "additionalHouseholdWorkWeeks": 32 },
+          "immediateStatEffects": { "health": -1, "relationships": 2 }
+        }
+      ]
+    },
+    {
+      "id": "junior_final_direction",
+      "path": "junior_student",
+      "trigger": "before_final_grade",
+      "title": "初中之后的方向",
+      "prompt": "毕业前的时间有限。你希望把准备重点放在哪条路上？",
+      "contentStatus": "design_assumption",
+      "assumptionId": "AE03",
+      "options": [
+        {
+          "id": "final_academic_senior_preparation",
+          "label": "准备普通高中课程和考试",
+          "autoWeight": 0.34,
+          "routineChanges": { "studyHoursPerWeek": 15, "householdLaborHoursPerWeek": 4, "peerHoursPerWeek": 3 },
+          "academicPreparationHours": 180,
+          "vocationalPreparationHours": 24,
+          "employmentPreparationHours": 8,
+          "immediateStatEffects": { "ability": 2 }
+        },
+        {
+          "id": "final_vocational_exploration",
+          "label": "了解职业学校并练习实用技能",
+          "autoWeight": 0.38,
+          "routineChanges": { "studyHoursPerWeek": 10, "householdLaborHoursPerWeek": 7, "peerHoursPerWeek": 3 },
+          "academicPreparationHours": 70,
+          "vocationalPreparationHours": 150,
+          "employmentPreparationHours": 36,
+          "immediateStatEffects": { "ability": 2, "relationships": 1 }
+        },
+        {
+          "id": "final_work_preparation",
+          "label": "为毕业后参加劳动做准备",
+          "autoWeight": 0.28,
+          "routineChanges": { "studyHoursPerWeek": 7, "householdLaborHoursPerWeek": 12, "peerHoursPerWeek": 3 },
+          "academicPreparationHours": 24,
+          "vocationalPreparationHours": 60,
+          "employmentPreparationHours": 150,
+          "immediateStatEffects": { "ability": 1, "relationships": 2 }
+        }
+      ]
+    },
+    {
+      "id": "nonstudent_early_direction",
+      "path": "nonstudent",
+      "trigger": "on_nonstudent_path_entry",
+      "title": "离开学校后的日子",
+      "prompt": "你现在没有继续在学校读书，但每天仍可以积累不同的经历。你准备先做什么？",
+      "contentStatus": "design_assumption",
+      "assumptionId": "AE04",
+      "options": [
+        {
+          "id": "nonstudent_family_production",
+          "label": "跟家人参加生产和家务",
+          "autoWeightByResidence": { "urban": 0.28, "rural": 0.48 },
+          "nonstudentRoutineChanges": { "householdLaborHoursPerWeek": 30, "selfStudyHoursPerWeek": 2, "skillPracticeHoursPerWeek": 5 },
+          "immediateStatEffects": { "relationships": 2, "ability": 1 }
+        },
+        {
+          "id": "nonstudent_self_study",
+          "label": "保留固定的读写和自学时间",
+          "autoWeightByResidence": { "urban": 0.37, "rural": 0.25 },
+          "nonstudentRoutineChanges": { "householdLaborHoursPerWeek": 16, "selfStudyHoursPerWeek": 10, "skillPracticeHoursPerWeek": 2 },
+          "immediateStatEffects": { "ability": 2 }
+        },
+        {
+          "id": "nonstudent_observe_trade",
+          "label": "跟着熟人观察一门手艺",
+          "autoWeightByResidence": { "urban": 0.35, "rural": 0.27 },
+          "nonstudentRoutineChanges": { "householdLaborHoursPerWeek": 18, "selfStudyHoursPerWeek": 3, "skillPracticeHoursPerWeek": 12 },
+          "immediateStatEffects": { "ability": 2, "relationships": 1 }
+        }
+      ]
+    },
+    {
+      "id": "age16_next_direction",
+      "path": "nonstudent",
+      "trigger": "at_age",
+      "age": 16,
+      "title": "十六岁后的下一步",
+      "prompt": "你已经十六岁，接下来可以开始核对真正的劳动或训练机会。下一阶段准备优先尝试哪条路？",
+      "contentStatus": "design_assumption",
+      "assumptionId": "AE05",
+      "options": [
+        {
+          "id": "age16_continue_family_activity",
+          "label": "继续参与家庭的经济活动",
+          "autoWeightByResidence": { "urban": 0.20, "rural": 0.42 },
+          "nextPath": "family_economic_activity",
+          "preparationFacts": { "trainingHours": 120, "jobSearchContacts": 0, "familyIntroductions": 2 },
+          "immediateStatEffects": { "ability": 1, "relationships": 2 }
+        },
+        {
+          "id": "age16_seek_entry_job",
+          "label": "准备寻找入门工作",
+          "autoWeightByResidence": { "urban": 0.38, "rural": 0.24 },
+          "nextPath": "entry_job_search",
+          "preparationFacts": { "trainingHours": 48, "jobSearchContacts": 8, "familyIntroductions": 3 },
+          "immediateStatEffects": { "ability": 1, "relationships": 1 }
+        },
+        {
+          "id": "age16_short_training",
+          "label": "先参加短期技能训练",
+          "autoWeightByResidence": { "urban": 0.28, "rural": 0.22 },
+          "nextPath": "short_vocational_training",
+          "preparationFacts": { "trainingHours": 280, "jobSearchContacts": 2, "familyIntroductions": 1 },
+          "immediateStatEffects": { "ability": 3 }
+        },
+        {
+          "id": "age16_keep_self_study",
+          "label": "继续自学并稍后再决定",
+          "autoWeightByResidence": { "urban": 0.14, "rural": 0.12 },
+          "nextPath": "continued_self_study",
+          "preparationFacts": { "trainingHours": 40, "selfStudyHours": 260, "jobSearchContacts": 1, "familyIntroductions": 0 },
+          "immediateStatEffects": { "ability": 2, "mood": 1 }
+        }
+      ]
+    }
+  ]
+}

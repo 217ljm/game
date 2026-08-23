@@ -1,0 +1,356 @@
+{
+  "schemaVersion": 1,
+  "scope": {
+    "country": "中国",
+    "birthYearMin": 1978,
+    "birthYearMax": 1982,
+    "historicalStartYear": 1978,
+    "historicalDataThrough": 2025,
+    "projectionStartsAfter": 2025
+  },
+  "usageRules": [
+    "本文件保存群体统计观察和制度节点，不直接保存个人阶层标签。",
+    "统计观察只用于校准分布和转移概率，不直接赋值给具体人物。",
+    "不同统计口径和不同年份的数据不得在未核对可比性时直接连成序列。",
+    "来源页面可能在2026年发布，但本文件最后的统计观察年份是2025年；2026年起必须使用独立情景，不得标记为历史事实。"
+  ],
+  "sources": [
+    {
+      "id": "nbs_reform_30_overview",
+      "publisher": "国家统计局",
+      "title": "改革开放30年报告之一：大改革 大开放 大发展",
+      "url": "https://www.stats.gov.cn/zt_18555/ztfx/jnggkf30n/202303/t20230301_1920460.html"
+    },
+    {
+      "id": "nbs_employment_40",
+      "publisher": "国家统计局",
+      "title": "就业总量持续增长 就业结构调整优化——改革开放40年经济社会发展成就系列报告之十四",
+      "url": "https://www.stats.gov.cn/zt_18555/ztfx/ggkf40n/202302/t20230209_1902594.html"
+    },
+    {
+      "id": "nbs_living_40",
+      "publisher": "国家统计局",
+      "title": "居民生活水平不断提高 消费质量明显改善——改革开放40年经济社会发展成就系列报告之四",
+      "url": "https://www.stats.gov.cn/zt_18555/ztfx/ggkf40n/202302/t20230209_1902584.html"
+    },
+    {
+      "id": "nbs_urbanization_14th_five_year",
+      "publisher": "国家统计局",
+      "title": "新型城镇化建设深入推进 城市高质量发展成效显著",
+      "url": "https://www.stats.gov.cn/sj/sjjd/202606/t20260603_1963868.html"
+    },
+    {
+      "id": "nbs_income_2025",
+      "publisher": "国家统计局",
+      "title": "2025年居民收入和消费支出情况",
+      "url": "https://www.stats.gov.cn/sj/zxfbhjd/202601/t20260119_1962321.html"
+    },
+    {
+      "id": "state_council_housing_1998",
+      "publisher": "国务院",
+      "title": "关于进一步深化城镇住房制度改革加快住房建设的通知",
+      "url": "https://www.beijing.gov.cn/zhengce/zhengcefagui/qtwj/201309/t20130924_776668.html"
+    },
+    {
+      "id": "housing_fund_1999",
+      "publisher": "国务院",
+      "title": "住房公积金管理条例",
+      "url": "https://www.ggj.gov.cn/zcfg/flfg/202201/t20220126_34474.htm"
+    },
+    {
+      "id": "moe_education_1999",
+      "publisher": "教育部",
+      "title": "1999年全国教育事业发展统计公报",
+      "url": "https://www.moe.gov.cn/jyb_sjzl/sjzl_fztjgb/tnull_841.html"
+    },
+    {
+      "id": "moe_compulsory_education_funding",
+      "publisher": "教育部",
+      "title": "义务教育经费保障机制改革",
+      "url": "https://www.moe.gov.cn/jyb_xwfb/xw_zt/moe_357/s3580/moe_2448/moe_2450/moe_2454/tnull_40474.html"
+    },
+    {
+      "id": "mofcom_wto_20_years",
+      "publisher": "商务部",
+      "title": "加入世界贸易组织20年回顾与展望",
+      "url": "https://chinawto.mofcom.gov.cn/article/ap/p/202112/20211203229608.shtml"
+    },
+    {
+      "id": "npc_labor_contract_2008",
+      "publisher": "全国人大",
+      "title": "劳动合同法热点问题解答",
+      "url": "https://www.npc.gov.cn/zgrdw/npc/zt/2008-04/03/content_1423202.htm"
+    }
+  ],
+  "observations": [
+    {
+      "metric": "urban_population_share",
+      "year": 1978,
+      "value": 17.92,
+      "unit": "percent",
+      "population": "全国常住人口",
+      "sourceId": "nbs_reform_30_overview"
+    },
+    {
+      "metric": "urban_population_share",
+      "year": 2007,
+      "value": 44.94,
+      "unit": "percent",
+      "population": "全国常住人口",
+      "sourceId": "nbs_reform_30_overview"
+    },
+    {
+      "metric": "urban_population_share",
+      "year": 2020,
+      "value": 63.89,
+      "unit": "percent",
+      "population": "全国常住人口",
+      "sourceId": "nbs_urbanization_14th_five_year"
+    },
+    {
+      "metric": "urban_population_share",
+      "year": 2025,
+      "value": 67.89,
+      "unit": "percent",
+      "population": "全国常住人口",
+      "sourceId": "nbs_urbanization_14th_five_year"
+    },
+    {
+      "metric": "employment_share_by_sector",
+      "year": 1978,
+      "values": {
+        "primary": 70.5,
+        "secondary": 17.3,
+        "tertiary": 12.2
+      },
+      "unit": "percent",
+      "population": "全国就业人员",
+      "sourceId": "nbs_employment_40"
+    },
+    {
+      "metric": "employment_share_by_sector",
+      "year": 2017,
+      "values": {
+        "primary": 27.0,
+        "secondary": 28.1,
+        "tertiary": 44.9
+      },
+      "unit": "percent",
+      "population": "全国就业人员",
+      "sourceId": "nbs_employment_40"
+    },
+    {
+      "metric": "urban_non_public_employment_share",
+      "year": 1978,
+      "value": 0.2,
+      "unit": "percent",
+      "population": "城镇就业人员",
+      "sourceId": "nbs_employment_40",
+      "note": "来源表述为城镇就业人口几乎都集中在国有和集体单位，占比99.8%。"
+    },
+    {
+      "metric": "urban_employment_share_selected_ownership",
+      "year": 2017,
+      "values": {
+        "private_enterprises": 31.4,
+        "individual_business": 22.0,
+        "selected_public_units": 17.4
+      },
+      "unit": "percent",
+      "population": "城镇就业人员",
+      "sourceId": "nbs_employment_40",
+      "note": "所列类别不是完整穷尽分类，不应强制求和为100%。"
+    },
+    {
+      "metric": "urban_non_private_average_wage",
+      "year": 1978,
+      "value": 615,
+      "unit": "yuan_per_year_nominal",
+      "population": "城镇非私营单位就业人员",
+      "sourceId": "nbs_employment_40"
+    },
+    {
+      "metric": "urban_non_private_average_wage",
+      "year": 2017,
+      "value": 74318,
+      "unit": "yuan_per_year_nominal",
+      "population": "城镇非私营单位就业人员",
+      "sourceId": "nbs_employment_40"
+    },
+    {
+      "metric": "urban_public_rental_household_share",
+      "year": 1984,
+      "value": 88.2,
+      "unit": "percent",
+      "population": "城镇居民家庭",
+      "sourceId": "nbs_living_40"
+    },
+    {
+      "metric": "urban_owner_occupied_household_share",
+      "year": 1984,
+      "value": 9.4,
+      "unit": "percent",
+      "population": "城镇居民家庭",
+      "sourceId": "nbs_living_40"
+    },
+    {
+      "metric": "higher_education_gross_enrollment_rate",
+      "year": 1999,
+      "value": 10.5,
+      "unit": "percent",
+      "population": "全国适龄人口",
+      "sourceId": "moe_education_1999"
+    },
+    {
+      "metric": "regular_higher_education_new_enrollment",
+      "year": 1999,
+      "value": 1596800,
+      "unit": "persons",
+      "population": "普通本专科招生",
+      "sourceId": "moe_education_1999",
+      "note": "比上年增加51.32万人，增长47.4%。"
+    },
+    {
+      "metric": "resident_disposable_income",
+      "year": 2025,
+      "values": {
+        "national": 43377,
+        "urban": 56502,
+        "rural": 24456
+      },
+      "unit": "yuan_per_person_per_year",
+      "population": "全国居民",
+      "sourceId": "nbs_income_2025"
+    }
+  ],
+  "eraPeriods": [
+    {
+      "id": "early_reform_1978_1984",
+      "startYear": 1978,
+      "endYear": 1984,
+      "label": "改革开放初期",
+      "description": "家庭生产和就业结构开始变化，城乡生活仍有明显差异。",
+      "sourceIds": ["nbs_reform_30_overview", "nbs_employment_40", "nbs_living_40"]
+    },
+    {
+      "id": "education_and_livelihood_transition_1985_1991",
+      "startYear": 1985,
+      "endYear": 1991,
+      "label": "教育制度与城乡生活继续调整",
+      "description": "义务教育进入法律实施阶段，家庭能否持续入学仍要结合所在地和实际收支结算。",
+      "sourceIds": ["moe_compulsory_education_funding", "nbs_reform_30_overview"]
+    },
+    {
+      "id": "employment_forms_expand_1992_1997",
+      "startYear": 1992,
+      "endYear": 1997,
+      "label": "就业形式和流动机会增多",
+      "description": "职业选择逐渐增多，但具体机会仍受城乡、教育、技能和家庭处境共同影响。",
+      "sourceIds": ["nbs_employment_40"]
+    },
+    {
+      "id": "restructuring_housing_education_1998_2001",
+      "startYear": 1998,
+      "endYear": 2001,
+      "label": "就业、住房、升学与开放节点密集出现",
+      "description": "城镇单位就业调整、住房制度改革、高等教育扩招和加入世界贸易组织先后影响个人选择环境。",
+      "sourceIds": ["nbs_employment_40", "state_council_housing_1998", "moe_education_1999", "mofcom_wto_20_years"]
+    },
+    {
+      "id": "urbanization_and_service_growth_2002_2007",
+      "startYear": 2002,
+      "endYear": 2007,
+      "label": "城镇化和服务业就业继续发展",
+      "description": "更多工作与生活机会进入城镇和第三产业，迁移成本与家庭联系仍需逐年权衡。",
+      "sourceIds": ["nbs_employment_40", "nbs_reform_30_overview"]
+    },
+    {
+      "id": "labor_contract_stage_2008_2012",
+      "startYear": 2008,
+      "endYear": 2012,
+      "label": "劳动合同制度进入新阶段",
+      "description": "合同与劳动保护的制度环境发生变化，个人是否签约、工时和收入仍按具体岗位记录。",
+      "sourceIds": ["npc_labor_contract_2008", "nbs_employment_40"]
+    },
+    {
+      "id": "service_and_urban_life_2013_2019",
+      "startYear": 2013,
+      "endYear": 2019,
+      "label": "服务业和城镇生活进一步扩展",
+      "description": "第三产业就业与城镇人口占比继续提高，家庭的职业、住房和消费路径更加分化。",
+      "sourceIds": ["nbs_employment_40", "nbs_urbanization_14th_five_year", "nbs_living_40"]
+    },
+    {
+      "id": "recent_structure_change_2020_2022",
+      "startYear": 2020,
+      "endYear": 2022,
+      "label": "近期就业和生活结构变化",
+      "description": "城镇化和服务业结构继续变化；具体岗位受到的冲击只在对应工作事实上结算。",
+      "sourceIds": ["nbs_urbanization_14th_five_year", "nbs_employment_40"]
+    },
+    {
+      "id": "latest_observed_years_2023_2025",
+      "startYear": 2023,
+      "endYear": 2025,
+      "label": "当前历史观测末段",
+      "description": "收入与城镇化使用截至2025年的观测锚点；2026年以后将明确切换为游戏情景。",
+      "sourceIds": ["nbs_income_2025", "nbs_urbanization_14th_five_year"]
+    }
+  ],
+  "policyMilestones": [
+    {
+      "year": 1978,
+      "id": "reform_opening_start",
+      "scope": ["economy", "employment", "household"],
+      "sourceId": "nbs_reform_30_overview"
+    },
+    {
+      "year": 1986,
+      "id": "compulsory_education_law",
+      "scope": ["education"],
+      "sourceId": "moe_compulsory_education_funding"
+    },
+    {
+      "year": 1998,
+      "id": "urban_housing_monetization",
+      "scope": ["housing", "household_finance"],
+      "sourceId": "state_council_housing_1998"
+    },
+    {
+      "year": 1999,
+      "id": "higher_education_expansion_observed",
+      "scope": ["education"],
+      "sourceId": "moe_education_1999"
+    },
+    {
+      "year": 1999,
+      "id": "housing_provident_fund_regulation",
+      "scope": ["housing", "employment_benefits"],
+      "sourceId": "housing_fund_1999"
+    },
+    {
+      "year": 2001,
+      "id": "china_joins_wto",
+      "scope": ["trade", "manufacturing", "employment"],
+      "sourceId": "mofcom_wto_20_years"
+    },
+    {
+      "year": 2006,
+      "id": "revised_compulsory_education_law",
+      "scope": ["education", "household_expense"],
+      "sourceId": "moe_compulsory_education_funding"
+    },
+    {
+      "year": 2008,
+      "id": "labor_contract_law_effective",
+      "scope": ["employment", "labor_protection"],
+      "sourceId": "npc_labor_contract_2008"
+    },
+    {
+      "year": 2008,
+      "id": "urban_compulsory_education_fees_removed",
+      "scope": ["education", "household_expense"],
+      "sourceId": "moe_compulsory_education_funding"
+    }
+  ]
+}

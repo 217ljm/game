@@ -1,0 +1,182 @@
+{
+  "schemaVersion": "age6-blind-participant-v1",
+  "studyId": "life.age6.p2.exploratory",
+  "batchId": "replace-with-batch-id",
+  "participantId": "P01",
+  "sessionStatus": "completed",
+  "eligibility": {
+    "firstTimePlayer": null,
+    "notProjectContributor": null,
+    "didNotSeeImplementation": null,
+    "testedIndependently": null
+  },
+  "consent": {
+    "anonymousObservation": null,
+    "recording": null,
+    "notesUse": null,
+    "withdrawn": false
+  },
+  "session": {
+    "startedAt": "",
+    "endedAt": "",
+    "observerId": "",
+    "deviceKind": "",
+    "operatingSystem": "",
+    "browser": "",
+    "viewport": { "width": null, "height": null },
+    "touch": null,
+    "assignedDraftCondition": "",
+    "assignedEventCondition": "",
+    "actualEventId": null,
+    "reducedMotion": null,
+    "muted": null,
+    "saveRestoreTask": null,
+    "hostPromptCount": null,
+    "debugUiSeen": false,
+    "technicalFailures": []
+  },
+  "observations": {
+    "stateAndGoal30s": {
+      "status": "not_observed",
+      "seconds": null,
+      "ageCorrect": null,
+      "quarterCorrect": null,
+      "goalCorrect": null,
+      "source": "spontaneous",
+      "quote": "",
+      "evidenceRefs": []
+    },
+    "ordinaryQuarterWithin3m": {
+      "status": "not_observed",
+      "seconds": null,
+      "source": "behavior",
+      "evidenceRefs": []
+    },
+    "twoActionsWithoutHelp": {
+      "status": "not_observed",
+      "actionIds": [],
+      "executed": null,
+      "source": "behavior",
+      "evidenceRefs": []
+    },
+    "timeGridMeaning": {
+      "status": "not_observed",
+      "code": "unknown",
+      "source": "spontaneous",
+      "quote": "",
+      "evidenceRefs": []
+    },
+    "immediateFeedback": {
+      "status": "not_observed",
+      "noticed": null,
+      "source": "spontaneous",
+      "quote": "",
+      "evidenceRefs": []
+    },
+    "actionDifferenceCostObject": {
+      "status": "not_observed",
+      "actionIds": [],
+      "identifiedCosts": null,
+      "identifiedObjects": null,
+      "source": "spontaneous",
+      "quote": "",
+      "evidenceRefs": []
+    },
+    "longTermChange": {
+      "status": "not_observed",
+      "q1ActionId": "",
+      "laterChange": "",
+      "source": "spontaneous",
+      "quote": "",
+      "evidenceRefs": []
+    },
+    "resourceShortage": {
+      "status": "not_observed",
+      "encountered": false,
+      "displayedGap": {},
+      "understoodReason": null,
+      "recoveredWithoutHelp": null,
+      "recoverySeconds": null,
+      "source": "behavior",
+      "quote": "",
+      "evidenceRefs": []
+    },
+    "eventInterruption": {
+      "status": "not_observed",
+      "encountered": false,
+      "eventId": null,
+      "eventMonth": null,
+      "affectedActionIds": [],
+      "identifiedAffectedActionOrMonthOrResource": null,
+      "selectedOptionId": null,
+      "source": "spontaneous",
+      "quote": "",
+      "evidenceRefs": []
+    },
+    "q4Age7": {
+      "status": "not_observed",
+      "completedYear": null,
+      "reviewBeforeAgeUp": null,
+      "recognizedAge7": null,
+      "actionPoolChanged": null,
+      "source": "spontaneous",
+      "quote": "",
+      "evidenceRefs": []
+    },
+    "recordsPage": {
+      "status": "not_observed",
+      "opened": null,
+      "expandedQuarterCount": null,
+      "recalledFacts": [],
+      "source": "behavior",
+      "evidenceRefs": []
+    },
+    "saveRestore": {
+      "status": "not_observed",
+      "tested": false,
+      "beforeFactIds": [],
+      "afterFactIds": [],
+      "lostFactIds": [],
+      "evidenceRefs": []
+    },
+    "mobileUsability": {
+      "status": "not_observed",
+      "horizontalOverflow": null,
+      "importantButtonVisible": null,
+      "blockedTouchTarget": null,
+      "misTapCount": null,
+      "evidenceRefs": []
+    },
+    "noticedPersonInterestLongTerm": {
+      "status": "not_observed",
+      "source": "spontaneous",
+      "quote": "",
+      "evidenceRefs": []
+    }
+  },
+  "interview": {
+    "whatWereYouDoing": {
+      "quote": "",
+      "uncuedProductFrame": "unknown",
+      "source": "spontaneous",
+      "evidenceRefs": []
+    },
+    "timeEnergyResponsibilityQuote": "",
+    "eventEffectQuote": "",
+    "mostConfusing": "",
+    "mostBoring": "",
+    "mostTableLike": "",
+    "wantsAge7": { "answer": "unknown", "quote": "" },
+    "oneChange": ""
+  },
+  "evidence": [],
+  "issues": [],
+  "attestation": {
+    "humanSessionObserved": null,
+    "notAutomationOrDeveloperProxy": null,
+    "recordedLive": null,
+    "noSyntheticData": null,
+    "observerStatement": "",
+    "observerConfirmedAt": ""
+  }
+}

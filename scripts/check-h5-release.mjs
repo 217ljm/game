@@ -26,7 +26,15 @@ for (const relative of requiredFiles) {
 for (const forbidden of ["docs", "scripts", "artifacts", "node_modules", ".git"]) {
   assert.ok(!fs.existsSync(path.join(distRoot, forbidden)), `发布包不应包含 ${forbidden}`);
 }
-for (const forbidden of ["public/spikes", "public/vendor/phaser"]) {
+for (const forbidden of [
+  "public/light-scene",
+  "public/spikes",
+  "public/playtest",
+  "public/vendor/phaser",
+  "src/game/light-scene-contract.mjs",
+  "src/game/light-scene-core-bridge.mjs",
+  "data/gameplay/light_scene_yard_1984.json",
+]) {
   assert.ok(!fs.existsSync(path.join(distRoot, forbidden)), `发布包不应包含开发期原型 ${forbidden}`);
 }
 

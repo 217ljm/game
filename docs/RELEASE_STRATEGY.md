@@ -8,8 +8,8 @@
 
 选择原因：
 
-1. TapTap 官方支持普通小游戏和 H5 小游戏；当前 Vue/Vite 客户端可以直接构建为 H5，不需要为了首发重写成 Canvas 游戏；
-2. 即点即玩适合文字人生，不需要玩家先下载大型包体；
+1. TapTap 官方支持 H5 小游戏；Phaser/Canvas 2D 游戏运行时可以作为 H5 构建产物发布。H5 是运行容器，不等于网页 UI；
+2. 即点即玩适合季度人生模拟，不需要玩家先下载大型包体；
 3. TapTap 用户本身具有游戏消费和评价意愿，比单独发一个网址更容易获得有效玩家反馈；
 4. 官方提供首页、排行榜、编辑推荐和“玩游戏/即点即玩”专区等小游戏曝光入口；
 5. 认证开发者支持个人主体，适合学生个人开发者；
@@ -65,16 +65,18 @@ TapTap 认证开发者支持个人主体。官方当前列出的个人资料包�
 ## 技术发布结构
 
 ```text
-packages/core + content + presentation
-                 │
-          apps/web（开发/PWA）
-                 │ 复用构建
-          apps/taptap-h5
-                 │
-      TapTap 登录 / 云存档 / 分享 / 生命周期
+packages/core + application + presentation
+                      │
+          packages/game-runtime（Phaser/Canvas）
+                      │
+                 apps/game
+                      │ 复用构建
+                 apps/taptap-h5
+                      │
+         TapTap 登录 / 云存档 / 分享 / 生命周期
 ```
 
-`apps/taptap-h5` 只能实现平台接口。任何 TapTap API 缺失时，游戏必须退化到本地存档和普通分享提示，而不是中断人生模拟。
+`apps/taptap-h5` 只能实现平台接口。任何 TapTap API 缺失时，游戏必须退化到本地存档和普通分享提示，而不是中断人生模拟。设置、长记录和调试可以使用 DOM 工具层，正式季度主玩法必须来自同一 Phaser/Canvas 游戏运行时。
 
 ## 不作为首发主平台
 

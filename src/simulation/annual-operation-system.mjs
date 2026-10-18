@@ -111,12 +111,26 @@ export function quarterOperationKey(calendarYear, quarter) {
 
 const QUARTER_LABELS = ["第一季度", "第二季度", "第三季度", "第四季度"];
 const CONTROL_PREFIX = "quarter-control:";
+export const AGE6_1984_QUARTERLY_PROFILE = "age6-1984-quarterly-v1";
 
 /**
  * 操作量按人生阶段变化。低龄儿童由家庭一次安排半年；青少年到普通成年每季可调整；
  * 退休后减少例行点击，但关键事件仍由各阶段模拟器单独打断。
  */
-export function lifeStageQuarterCadence(age) {
+export function lifeStageQuarterCadence(age, context = {}) {
+  if (
+    context.quarterCadenceProfile === AGE6_1984_QUARTERLY_PROFILE
+    && context.stage === "childhood"
+    && context.calendarYear === 1984
+    && age === 6
+  ) {
+    return {
+      id: AGE6_1984_QUARTERLY_PROFILE,
+      label: "六岁四季度切片",
+      interactiveQuarters: [1, 2, 3, 4],
+      continuationLabel: "本切片每季度重新安排",
+    };
+  }
   if (age === 0) {
     return {
       id: "newborn_observation",
@@ -547,7 +561,11 @@ export function handleAnnualOperation({
     throw new Error(`${stage}阶段${record.age}岁受时间或现金约束后没有足够的具体生活活动`);
   }
 
-  const cadence = lifeStageQuarterCadence(record.age);
+  const cadence = lifeStageQuarterCadence(record.age, {
+    stage,
+    calendarYear: record.calendarYear,
+    quarterCadenceProfile: choices.__quarterCadenceProfile ?? null,
+  });
   const quarterSelections = [];
   const quarterRecords = [];
   let previous = null;
@@ -737,6 +755,8 @@ export function handleAnnualOperation({
     const quarterRecord = {
       quarter,
       label: QUARTER_LABELS[quarter - 1],
+      source,
+      controlMode,
       weeks: 13,
       operationId: selected.id,
       operationLabel: selected.label,
@@ -759,8 +779,6 @@ export function handleAnnualOperation({
         ?? band.weeklyDiscretionaryHours,
       cashCostYuan: quarterCashCostYuan,
       effectSummary: selected.effectSummary,
-      source,
-      controlMode,
       quickSettled: !["provided", "automatic"].includes(source),
       experience: record.age <= 2
         ? infantExperience(content, record.age, record.calendarYear, quarter, state.seed)

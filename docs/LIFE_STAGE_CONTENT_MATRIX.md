@@ -2,7 +2,7 @@
 
 状态：阶段 E 开发控制文档  
 生效日期：2026-08-23  
-上位规范：`docs/FULL_GAME_REBUILD_V2.md`
+上位规范：`docs/QUARTERLY_LIFE_SIMULATOR_MASTER_PLAN.md`、`docs/TECHNICAL_ARCHITECTURE.md`
 
 ## 1. 目的
 

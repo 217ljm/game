@@ -1,7 +1,6 @@
 import { buildTimeline, presentGame } from "./presenter.mjs";
 import { routeForPending } from "../app/routes.mjs";
 import { lifeMainlineTimelineEntries } from "../simulation/life-mainline-system.mjs";
-import { buildWorldMapView } from "./world-map-presenter.mjs";
 
 function groupTimeline(entries) {
   const groups = [];
@@ -38,10 +37,13 @@ export function buildPageViewModels(result, data, session = null) {
       dataStatusLabel: game.dataStatusLabel,
       situation: game.situation,
       quarterProgress: game.quarterProgress,
+      age6: game.age6,
+      modules: game.age6?.modules ?? [],
+      moduleCounts: game.age6?.currentModuleCounts ?? {},
+      persistentRoles: game.age6?.persistentRoles ?? [],
       pending: game.pending,
       mainline: game.mainline,
     },
-    map: buildWorldMapView(result, game),
     growth: {
       stats: game.stats,
       characterStates: game.characterStates,
@@ -73,6 +75,7 @@ export function buildPageViewModels(result, data, session = null) {
       latestDecision: game.latestDecision,
       outcome: game.latestQuarterOutcome,
       outcomes: game.quarterOutcomes,
+      age6: game.age6,
     },
     yearReview: {
       year: game.year,

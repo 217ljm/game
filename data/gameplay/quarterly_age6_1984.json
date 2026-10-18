@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": "age6-1984-p2-v1",
+  "authority": "docs/QUARTERLY_LIFE_SIMULATOR_MASTER_PLAN.md",
+  "status": "frozen-for-implementation",
+  "slice": {
+    "id": "life.slice.1984.age6",
+    "birthYear": 1978,
+    "calendarYear": 1984,
+    "age": 6,
+    "stage": "childhood",
+    "activePlanningQuarters": [1, 2, 3, 4],
+    "continuationQuarters": [],
+    "yearReviewId": "review:1984",
+    "nextStage": "primary",
+    "nextAge": 7
+  },
+  "modules": [
+    { "id": "life.module.learning", "label": "学习准备", "description": "认字、数量、学校路线与向老师求助。" },
+    { "id": "life.module.interests", "label": "兴趣活动", "description": "画画、故事、广播、观察与动手。" },
+    { "id": "life.module.relationships", "label": "伙伴关系", "description": "附近同伴、共同规则与持续来往。" },
+    { "id": "life.module.family", "label": "家庭生活", "description": "照看者、家庭回应与力所能及的责任。" },
+    { "id": "life.module.daily", "label": "日常节律", "description": "跑跳、休息、整理与季度节奏。" }
+  ],
+  "persistentRoleIds": [
+    "caregiver",
+    "neighborhood_friend",
+    "primary_teacher"
+  ],
+  "actions": [
+    { "id": "child_play_nearby", "moduleId": "life.module.daily" },
+    { "id": "child_talk_with_caregiver", "moduleId": "life.module.family", "targetRoleId": "caregiver" },
+    { "id": "child_observe_household_work", "moduleId": "life.module.family", "residence": "rural" },
+    { "id": "child_observe_neighborhood_work", "moduleId": "life.module.interests", "residence": "urban" },
+    { "id": "child_practice_symbols", "moduleId": "life.module.learning" },
+    { "id": "child_small_household_task", "moduleId": "life.module.family", "targetRoleId": "caregiver" },
+    { "id": "child_walk_school_route", "moduleId": "life.module.learning", "targetRoleId": "caregiver" },
+    { "id": "child_practice_name_numbers", "moduleId": "life.module.learning", "targetRoleId": "caregiver" },
+    { "id": "child_meet_future_schoolmate", "moduleId": "life.module.relationships", "targetRoleId": "neighborhood_friend" },
+    { "id": "child_prepare_daily_belongings", "moduleId": "life.module.daily", "targetRoleId": "caregiver" },
+    { "id": "child_balance_play_and_preparation", "moduleId": "life.module.daily", "targetRoleId": "caregiver" },
+    { "id": "child_make_learning_card", "moduleId": "life.module.learning", "targetRoleId": "caregiver", "lockedUntil": "interest_exploration or practical_independence reaches 4" },
+    { "id": "leisure_1978_1985_radio_picturebooks", "moduleId": "life.module.interests" },
+    { "id": "quarter_intentional_rest", "moduleId": "life.module.daily" },
+    { "id": "child_age6_ask_teacher_about_school", "moduleId": "life.module.learning", "targetRoleId": "primary_teacher" },
+    { "id": "child_age6_make_and_change_game_rules", "moduleId": "life.module.relationships", "targetRoleId": "neighborhood_friend" },
+    { "id": "child_age6_draw_and_compare_objects", "moduleId": "life.module.interests" },
+    { "id": "child_age6_run_jump_ball_game", "moduleId": "life.module.daily", "targetRoleId": "neighborhood_friend" },
+    { "id": "child_age6_tell_school_day_at_home", "moduleId": "life.module.family", "targetRoleId": "caregiver" }
+  ],
+  "randomEventIds": [
+    "found_small_creature",
+    "borrowed_picture_or_story_book",
+    "neighborhood_game_invitation",
+    "rainy_day_inside",
+    "minor_play_injury",
+    "radio_song_attention"
+  ],
+  "interruptingEventIds": [
+    "rainy_day_inside",
+    "minor_play_injury"
+  ],
+  "causalityEvidence": [
+    { "id": "age6.cause.repetition-memory", "source": "activity history and shared memories" },
+    { "id": "age6.cause.growth-unlock", "source": "child growth path milestone unlocks" },
+    { "id": "age6.cause.interest-continuation", "source": "continue_interest_* activities" },
+    { "id": "age6.cause.event-interruption", "source": "event cooldown and quarter plan interruption" }
+  ],
+  "draftProtocol": {
+    "id": "quarter-draft-v1",
+    "productionStorageKey": "people-life:quarter-draft:v1",
+    "debugStorageKey": "people-life:debug-quarter-draft:v1"
+  },
+  "commandProtocol": {
+    "quarterPlanType": "quarter.plan",
+    "quarterPlanProtocol": "resource-v1",
+    "requiredFields": ["type", "eventId", "allocations"],
+    "intensityIds": ["trial", "regular", "focus"]
+  }
+}

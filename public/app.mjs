@@ -17,7 +17,6 @@ import {
   routeTitle,
 } from "../src/app/routes.mjs";
 import { createBrowserPlatform } from "./browser-platform.mjs";
-import { LifeStageRenderer, lifeStageAssetUrls } from "./life-stage-renderer.mjs";
 import {
   DEBUG_FAMILY_PRESETS,
   DEBUG_KEY_AGES,
@@ -61,6 +60,8 @@ const LEGACY_SAVE_KEYS = [
 const GALLERY_KEY = "people-life:gallery:v1";
 const UI_KEY = "people-life:ui:v1";
 const DEBUG_UI_KEY = "people-life:debug-ui:v1";
+const QUARTER_DRAFT_KEY = "people-life:quarter-draft:v1";
+const DEBUG_QUARTER_DRAFT_KEY = "people-life:debug-quarter-draft:v1";
 const DEBUG_MODE = new URLSearchParams(location.search).get("debug") === "1";
 const platform = createBrowserPlatform();
 const byId = (id) => document.getElementById(id);
@@ -105,19 +106,13 @@ let debugLastRun = null;
 let debugLastError = null;
 let debugTargetEnding = false;
 let actionPoolState = { key: null, category: "all", offset: 0 };
-let selectedMapLocationId = "home";
 const actionDrafts = new Map();
 const actionIntensityDrafts = new Map();
 let toastTimer = 0;
 let lastPresentationFeedbackKey = null;
 let recoveredSaveSourceKey = null;
-const lifeStageRenderer = new LifeStageRenderer(byId("life-stage-canvas"), {
-  motionMode: presentationPreferences.motionMode,
-});
-const lifeStageReady = lifeStageRenderer.preload().catch((error) => {
-  console.warn(error);
-  return null;
-});
+let simulatorModuleId = "life.module.learning";
+let activeQuarterPlanController = null;
 
 function activeUiKey() {
   return DEBUG_MODE ? DEBUG_UI_KEY : UI_KEY;
@@ -139,7 +134,6 @@ function applyPresentationPreferences(next, { persist = true } = {}) {
   document.body.dataset.motion = presentationPreferences.motionMode;
   setSoundEnabled(presentationPreferences.soundEnabled);
   setHapticEnabled(presentationPreferences.hapticEnabled);
-  lifeStageRenderer.setMotionMode(presentationPreferences.motionMode);
   byId("motion-mode-select").value = presentationPreferences.motionMode;
   byId("sound-toggle").checked = presentationPreferences.soundEnabled;
   byId("haptic-toggle").checked = presentationPreferences.hapticEnabled;
@@ -159,9 +153,18 @@ function showGameToast(message, icon = "ph-sparkle") {
   }, 1900);
 }
 
+function hideGameToast() {
+  const toast = byId("game-toast");
+  if (!toast) return;
+  clearTimeout(toastTimer);
+  toast.classList.remove("visible");
+  toast.hidden = true;
+}
+
 function showScreen(name) {
   for (const screen of screens) byId(`${screen}-screen`).hidden = screen !== name;
   document.body.dataset.screen = name;
+  if (["random-event", "quarter-result", "year-review"].includes(name)) hideGameToast();
   platform.scrollToTop();
 }
 
@@ -225,6 +228,50 @@ function saveActiveSession() {
       ? `调试存档 · ${session.seed.slice(-12)}`
       : `已自动保存 · ${session.seed.slice(-8)}`;
   }
+}
+
+function quarterDraftStorageKey() {
+  return DEBUG_MODE ? DEBUG_QUARTER_DRAFT_KEY : QUARTER_DRAFT_KEY;
+}
+
+function readQuarterDraft() {
+  const draft = platform.storage.read(quarterDraftStorageKey());
+  if (!draft || draft.protocol !== "quarter-draft-v1" || typeof draft.eventId !== "string") return null;
+  if (!Array.isArray(draft.allocations)) return null;
+  return draft;
+}
+
+function clearQuarterDraft(eventId = null) {
+  const draft = readQuarterDraft();
+  if (!draft || eventId == null || draft.eventId === eventId) platform.storage.remove(quarterDraftStorageKey());
+}
+
+function persistQuarterDraft(eventId, allocations) {
+  platform.storage.write(quarterDraftStorageKey(), {
+    protocol: "quarter-draft-v1",
+    eventId,
+    allocations: allocations.map(({ actionId, intensity }) => ({ actionId, intensity })),
+    updatedAt: Date.now(),
+  });
+}
+
+function restoreQuarterDraft(eventId, options) {
+  const draft = readQuarterDraft();
+  if (!draft || draft.eventId !== eventId) {
+    if (draft) clearQuarterDraft(draft.eventId);
+    return { allocations: [], valid: false };
+  }
+  const optionMap = new Map(options.map((option) => [option.id, option]));
+  const allocations = draft.allocations
+    .filter((allocation) => optionMap.has(allocation.actionId))
+    .map((allocation) => ({
+      actionId: allocation.actionId,
+      intensity: ["trial", "regular", "focus"].includes(allocation.intensity)
+        ? allocation.intensity
+        : (optionMap.get(allocation.actionId).defaultIntensity ?? "regular"),
+    }));
+  if (allocations.length !== draft.allocations.length) persistQuarterDraft(eventId, allocations);
+  return { allocations, valid: allocations.length > 0 };
 }
 
 function unchosenText(entry) {
@@ -787,245 +834,220 @@ function makeOptionButton(option, kind) {
   return button;
 }
 
-function lifeStageSeason(quarter) {
-  return ({ 1: "春季", 2: "初夏", 3: "秋季", 4: "冬季" })[quarter] ?? "这一季";
+const SIMULATOR_MODULES = Object.freeze([
+  { id: "life.module.learning", label: "学校 / 启蒙", shortLabel: "学习", icon: "ph-book-open-text", categories: ["learning"] },
+  { id: "life.module.interests", label: "兴趣 / 活动", shortLabel: "兴趣", icon: "ph-paint-brush", categories: ["creative", "exploration", "entertainment"] },
+  { id: "life.module.relationships", label: "同伴 / 关系", shortLabel: "关系", icon: "ph-users-three", categories: ["social"] },
+  { id: "life.module.family", label: "家庭 / 生活", shortLabel: "家庭", icon: "ph-house-line", categories: ["family"] },
+  { id: "life.module.daily", label: "日常 / 恢复", shortLabel: "日常", icon: "ph-bed", categories: ["recovery", "health", "finance", "work"] },
+]);
+
+function simulatorModuleFor(option) {
+  if (option.moduleId && SIMULATOR_MODULES.some((module) => module.id === option.moduleId)) return option.moduleId;
+  return SIMULATOR_MODULES.find((module) => module.categories.includes(option.category))?.id
+    ?? "life.module.daily";
 }
 
-function lifeStageSceneFor(option, age = 6) {
-  if (!option) {
-    if (age <= 2) return "relations";
-    if (age <= 5) return "family";
-    if (age <= 11) return "base";
-    if (age <= 17) return "growth";
-    if (age <= 29) return "journey";
-    if (age <= 59) return "growth";
-    return "memory";
-  }
-  const wording = `${option.id ?? ""} ${option.label ?? ""}`;
-  if (age <= 11) {
-    if (/玩|同学|伙伴|孩子|运动|收音机|连环画|电影/.test(wording)) return "play";
-    if (/认字|数数|写|学习|作业|书|卡片|上学路线|symbol|learning|school_route/.test(wording)) return "study";
-    if (/家|照看|大人|整理|家务|做饭|caregiver|household|belongings/.test(wording)) return "family";
-    if (["learning", "exploration", "work"].includes(option.category)) return "study";
-    if (["entertainment", "social", "health"].includes(option.category)) return "play";
-    return "family";
-  }
-  if (/家|父母|伴侣|孩子|亲戚|同学|朋友|邻里|聚会|social|family|care/.test(wording) || ["social", "family"].includes(option.category)) return "relations";
-  if (/学|读|书|技能|工作|岗位|赚钱|生意|复习|考试|训练|learning|work|finance/.test(wording) || ["learning", "work", "finance"].includes(option.category)) return "growth";
-  if (age >= 60 && /休息|回忆|散步|养生|阅读|独处/.test(wording)) return "memory";
-  return age >= 60 ? "memory" : "journey";
+function simulatorModule(id) {
+  return SIMULATOR_MODULES.find((module) => module.id === id) ?? SIMULATOR_MODULES[0];
 }
 
-function lifeStageFeaturedActivities(activities, age) {
-  const executable = activities
-    .filter((option) => option.available !== false)
-    .sort((left, right) => (
-      (right.recommendationScore ?? 1) - (left.recommendationScore ?? 1)
-    ));
-  const featured = [];
-  const scenes = age <= 11 ? ["study", "play", "family"] : (age >= 60 ? ["memory", "relations", "journey"] : ["growth", "relations", "journey"]);
-  for (const scene of scenes) {
-    const preferredPattern = scene === "study"
-      ? /认字|数数|写|学习|作业|卡片/
-      : (scene === "play" ? /玩|同学|伙伴|孩子|运动/ : (scene === "growth" ? /学|书|技能|工作|训练|赚钱/ : (scene === "relations" ? /家|父母|朋友|同学|伴侣|孩子/ : /散步|休息|出门|旅行|运动|逛/)));
-    const option = executable.find((candidate) => (
-      lifeStageSceneFor(candidate, age) === scene
-      && preferredPattern.test(`${candidate.id ?? ""} ${candidate.label ?? ""}`)
-      && !featured.includes(candidate)
-    )) ?? executable.find((candidate) => lifeStageSceneFor(candidate, age) === scene && !featured.includes(candidate));
-    if (option) featured.push(option);
-  }
-  for (const option of executable) {
-    if (featured.length >= 3) break;
-    if (!featured.includes(option)) featured.push(option);
-  }
-  return featured;
-}
-
-function lifeStageCopyFor(view, pending) {
-  if (view.age <= 2) return { kicker: "家人替你安排大部分生活", title: "这一季，你会怎样认识身边的世界？" };
-  if (view.age <= 5) return { kicker: "游戏、模仿与启蒙", title: "今天，你想靠近什么？" };
-  if (view.age <= 11) return { kicker: pending.quarterLabel ? `${pending.quarterLabel}的课余生活` : "放学后的时间", title: "入学前后，你想把时间花在哪里？" };
-  if (view.age <= 17) return { kicker: "学校之外，你也在成为自己", title: "这一季，你想把力气放在哪里？" };
-  if (view.age <= 24) return { kicker: "学业、工作与关系开始分岔", title: "你要怎样安排这段正在展开的生活？" };
-  if (view.age <= 59) return { kicker: "现实不会暂停，但时间仍由你分配", title: "这一季，你准备优先守住什么？" };
-  return { kicker: "日子慢下来，选择仍会留下痕迹", title: "接下来的时间，你想怎样度过？" };
-}
-
-function lifeStageImpactText(option) {
-  const effects = option.effects ?? {};
-  const stat = effects.stats?.[0];
-  if (stat) return `${stat.label} ${stat.delta >= 0 ? "+" : ""}${stat.delta}`;
-  const interest = effects.interests?.[0];
-  if (interest) return `${interest.label} +${interest.delta}`;
-  const growth = effects.growth?.[0];
-  if (growth) return `${growth.label} +${growth.delta}`;
-  const mainline = effects.mainline?.[0];
-  if (mainline) return `进入主线 · ${mainline.label}`;
-  return `${option.timeSlots ?? 2}格时间 · ${option.energyCost ?? 2}点精力`;
-}
-
-function lifeStageActionIconFor(option, scene) {
-  const wording = `${option.id ?? ""} ${option.label ?? ""}`;
-  if (/认字|数数|读|写|书|作业|学习/.test(wording)) return "ph-book-open-text";
-  if (/画|涂|手工|创作/.test(wording)) return "ph-paint-brush";
-  if (/唱|节奏|声音|音乐/.test(wording)) return "ph-music-notes";
-  if (/说话|讲|聊天|表达/.test(wording)) return "ph-chat-circle-dots";
-  if (/跑|运动|踢|球|锻炼/.test(wording)) return "ph-soccer-ball";
-  if (/玩|朋友|同学|伙伴|孩子/.test(wording)) return "ph-users-three";
-  const byCategory = {
-    recovery: "ph-bed",
-    learning: "ph-book-open-text",
-    exploration: "ph-binoculars",
-    entertainment: "ph-game-controller",
-    social: "ph-users-three",
-    family: "ph-house-line",
-    health: "ph-person-simple-run",
-    work: "ph-briefcase",
-    finance: "ph-wallet",
-    creative: "ph-paint-brush",
+function simulatorIntensity(option, selectedIntensities) {
+  const intensityId = selectedIntensities.get(option.id) ?? option.defaultIntensity ?? "regular";
+  const intensity = option.intensities?.find((entry) => entry.id === intensityId);
+  return {
+    id: intensityId,
+    label: intensity?.label ?? intensityId,
+    timeSlots: intensity?.timeSlots ?? option.timeSlots ?? 2,
+    energyCost: intensity?.energyCost ?? option.energyCost ?? 2,
   };
-  if (byCategory[option.category]) return byCategory[option.category];
-  return ({
-    study: "ph-pencil-line",
-    play: "ph-ball",
-    family: "ph-house-line",
-    relations: "ph-users-three",
-    growth: "ph-trend-up",
-    journey: "ph-path",
-    memory: "ph-book-open-text",
-  })[scene] ?? "ph-sparkle";
 }
 
-function hideLifeStage() {
-  const page = byId("scene-page");
-  const card = byId("life-stage-card");
-  card.hidden = true;
-  card.classList.remove("is-committing");
-  page.classList.remove("visual-stage-active", "show-all-actions", "show-life-context");
-  lifeStageRenderer.hide();
+function simulatorCashLabel(value) {
+  if (!Number.isFinite(value)) return "不限";
+  return formatCurrency(value);
 }
 
-function renderLifeStage(view, pending, activities, selectedIds, toggleActivity) {
-  if (pending.kind !== "quarter_plan") {
-    hideLifeStage();
-    return false;
-  }
-  const page = byId("scene-page");
-  const card = byId("life-stage-card");
-  const featured = lifeStageFeaturedActivities(activities, view.age);
-  const copy = lifeStageCopyFor(view, pending);
-  const baseScene = lifeStageSceneFor(null, view.age);
-  card.hidden = false;
-  card.classList.remove("is-committing");
-  card.dataset.lifeStage = view.age <= 2 ? "infant" : (view.age <= 5 ? "early-childhood" : (view.age <= 11 ? "school-age" : (view.age <= 17 ? "teen" : (view.age <= 59 ? "adult" : "later-life"))));
-  card.dataset.scene = baseScene;
-  page.classList.add("visual-stage-active");
-  page.classList.remove("show-all-actions", "show-life-context");
-  byId("life-stage-time").textContent = `${view.year} · ${view.age}岁 · ${lifeStageSeason(pending.quarter)}`;
-  byId("life-stage-quarter").textContent = `第${pending.quarter ?? 1} / 4季`;
-  byId("life-stage-kicker").textContent = copy.kicker;
-  byId("life-stage-title").textContent = copy.title;
-  const obligations = pending.quarterBudget.obligations ?? [];
-  const obligationText = obligations.length > 0
-    ? `${pending.quarterBudget.obligationSlots}格已用于${obligations.map((entry) => entry.label).join("、")}。`
-    : "";
-  byId("life-stage-prompt").textContent = `${obligationText}你还有${pending.quarterBudget.availableTimeSlots}格可支配时间和${pending.quarterBudget.availableEnergy}点精力，行动会在三个月中持续发生。`;
-  byId("life-stage-action-count").textContent = `${activities.length}种现实行动可选 · 推荐${featured.length}种`;
-  const stageActionList = byId("life-stage-action-list");
-  stageActionList.classList.remove("ready");
-  stageActionList.replaceChildren(...featured.map((option) => {
-    const scene = lifeStageSceneFor(option, view.age);
-    const button = document.createElement("button");
-    const iconWrap = document.createElement("span");
-    const icon = document.createElement("i");
-    const copy = document.createElement("span");
+function renderSimulatorDrawer(activities, selectedIds, selectedIntensities, toggleActivity, setIntensity, resources, pending) {
+  const drawer = byId("life-action-drawer");
+  if (!drawer || drawer.hidden) return;
+  const module = simulatorModule(simulatorModuleId);
+  byId("life-action-drawer-kicker").textContent = module.shortLabel;
+  byId("life-action-drawer-title").textContent = module.label;
+  const moduleActivities = activities.filter((option) => simulatorModuleFor(option) === module.id);
+  const list = byId("life-action-drawer-list");
+  list.replaceChildren(...moduleActivities.map((option) => {
+    const intensity = simulatorIntensity(option, selectedIntensities);
+    const row = document.createElement("article");
+    const header = document.createElement("div");
     const title = document.createElement("strong");
-    const time = document.createElement("small");
-    const impact = document.createElement("b");
-    const toggle = document.createElement("span");
-    button.type = "button";
-    button.className = "life-stage-action";
-    button.dataset.optionId = option.id;
-    button.dataset.scene = scene;
-    button.disabled = option.available === false;
-    button.setAttribute("aria-pressed", String(selectedIds.has(option.id)));
-    iconWrap.className = "life-stage-action-icon";
-    icon.className = `ph-duotone ${lifeStageActionIconFor(option, scene)}`;
-    icon.setAttribute("aria-hidden", "true");
-    iconWrap.append(icon);
-    copy.className = "life-stage-action-copy";
+    const object = document.createElement("span");
+    const costs = document.createElement("small");
+    const hint = document.createElement("p");
+    const longTerm = document.createElement("p");
+    const action = document.createElement("button");
+    row.className = "simulator-action-row";
+    row.dataset.actionId = option.id;
+    row.dataset.moduleId = simulatorModuleFor(option);
+    row.classList.toggle("selected", selectedIds.has(option.id));
+    row.classList.toggle("unavailable", option.available === false);
     title.textContent = option.label;
-    time.textContent = `${option.categoryLabel ?? "生活行动"} · ${option.repetitionLabel ?? "本季可做"} · ${option.timeSlots ?? 2}格 · ${option.energyCost ?? 2}精力`;
-    impact.textContent = lifeStageImpactText(option);
-    toggle.className = "life-stage-action-toggle";
-    toggle.setAttribute("aria-hidden", "true");
-    copy.append(title, time, impact);
-    button.append(iconWrap, copy, toggle);
-    button.addEventListener("click", () => toggleActivity(option));
+    object.textContent = option.actor?.name ? `对象：${option.actor.name}` : `对象：${option.setting ?? "当前生活"}`;
+    costs.textContent = `${intensity.timeSlots}格 · ${intensity.energyCost}精力 · ${simulatorCashLabel(option.cashCostYuan ?? 0)}`;
+    hint.textContent = option.available === false
+      ? `条件：${option.unavailableReason ?? option.unlockHint ?? "当前条件还不满足"}`
+      : `现在：${option.description ?? "这件事会在三个月里慢慢发生。"}`;
+    longTerm.className = "simulator-action-long-term";
+    longTerm.textContent = `长期：${option.longTermPrompt
+      ?? option.effects?.[0]?.label
+      ?? "结果会写入季度记录，后续行动和事件可能读取这段经历"}`;
+    action.type = "button";
+    action.className = "simulator-action-toggle";
+    action.textContent = option.available === false ? "查看原因" : (selectedIds.has(option.id) ? "移除" : "加入本季");
+    action.disabled = option.available === false;
+    if (!action.disabled) action.addEventListener("click", () => toggleActivity(option));
+    header.append(title, object, costs);
+    row.append(header, hint, longTerm, action);
+    if (selectedIds.has(option.id) && option.intensities?.length) {
+      const intensityBar = document.createElement("div");
+      intensityBar.className = "simulator-intensity-bar";
+      intensityBar.replaceChildren(...option.intensities.map((entry) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = `${entry.label} · ${entry.timeSlots}格/${entry.energyCost}精力`;
+        button.classList.toggle("active", entry.id === intensity.id);
+        button.addEventListener("click", () => setIntensity(option, entry.id));
+        return button;
+      }));
+      row.append(intensityBar);
+    }
+    return row;
+  }));
+  if (moduleActivities.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "simulator-empty-state";
+    empty.textContent = "这一季暂时没有符合条件的具体行动。可以换一个生活模块。";
+    list.append(empty);
+  }
+  byId("life-action-drawer-note").textContent = pending
+    ? `已选${selectedIds.size}项 · 还剩${Math.max(0, resources.remainingSlots)}格时间、${Math.max(0, resources.remainingEnergy)}点精力。行动先进入草案，提交后才成为 Core 事实。`
+    : "当前没有可编辑的季度草案。";
+  byId("life-action-drawer-budget").textContent = `${resources.timeSlots}/${pending?.quarterBudget?.availableTimeSlots ?? 0}格 · ${resources.energy}/${pending?.quarterBudget?.availableEnergy ?? 0}精力`;
+}
+
+function renderSimulatorShell(view, pending, activities, selectedIds, selectedIntensities, resources, toggleActivity, setIntensity, submitQuarterPlan) {
+  const root = byId("life-simulator-main");
+  if (!root) return;
+  const quarter = pending?.quarter ?? view.quarterProgress?.currentQuarter ?? 1;
+  byId("simulator-year").textContent = `${view.year}`;
+  byId("simulator-age").textContent = `${view.age}岁`;
+  byId("simulator-quarter").textContent = `Q${quarter}`;
+  byId("simulator-stage").textContent = view.stageLabel;
+  byId("simulator-data-status").textContent = view.dataStatusLabel;
+  const budget = pending?.quarterBudget;
+  const availableSlots = budget?.availableTimeSlots ?? 0;
+  const availableEnergy = budget?.availableEnergy ?? 0;
+  const cash = pending?.availableCashYuan;
+  byId("simulator-time").textContent = `${Math.max(0, resources.remainingSlots)}/${availableSlots}格`;
+  byId("simulator-energy").textContent = `${Math.max(0, resources.remainingEnergy)}/${availableEnergy}`;
+  byId("simulator-cash").textContent = Number.isFinite(cash) ? formatCurrency(cash) : "不限";
+  const responsibilities = budget?.obligations ?? [];
+  byId("simulator-responsibility-summary").textContent = `${budget?.obligationSlots ?? 0}格固定占用`;
+  byId("simulator-responsibility-list").replaceChildren(...(responsibilities.length > 0 ? responsibilities.map((entry) => {
+    const item = document.createElement("span");
+    item.textContent = `${entry.label} · ${entry.slots ?? entry.timeSlots ?? 0}格`;
+    return item;
+  }) : [Object.assign(document.createElement("span"), { textContent: "本季暂无额外固定责任" })]));
+  const quarterList = byId("simulator-quarter-list");
+  quarterList.replaceChildren(...(view.quarterProgress?.quarters ?? []).map((entry) => {
+    const item = document.createElement("div");
+    item.className = `simulator-quarter-item ${entry.status}`;
+    item.dataset.quarter = String(entry.quarter);
+    item.innerHTML = `<b>Q${entry.quarter}</b><span>${entry.status === "completed" ? "已完成" : (entry.status === "current" ? "现在" : "将来")}</span>`;
+    return item;
+  }));
+  byId("simulator-quarter-title").textContent = `Q${quarter} · ${pending?.quarterLabel ?? "本季度"}`;
+  byId("simulator-quarter-count").textContent = `${view.quarterProgress?.completedCount ?? 0} / 4 已完成`;
+  const selected = activities.filter((option) => selectedIds.has(option.id));
+  byId("simulator-draft-budget").textContent = selected.length > 0
+    ? `${selected.length}项 · ${resources.timeSlots}格/${resources.energy}精力`
+    : "尚未安排";
+  byId("simulator-draft-list").replaceChildren(...selected.map((option) => {
+    const chip = document.createElement("div");
+    const label = document.createElement("strong");
+    const meta = document.createElement("span");
+    const remove = document.createElement("button");
+    const intensity = simulatorIntensity(option, selectedIntensities);
+    chip.className = "simulator-draft-chip";
+    chip.dataset.actionId = option.id;
+    chip.dataset.moduleId = simulatorModuleFor(option);
+    label.textContent = option.label;
+    meta.textContent = `${intensity.label} · ${intensity.timeSlots}格/${intensity.energyCost}精力`;
+    remove.type = "button";
+    remove.textContent = "移除";
+    remove.addEventListener("click", () => toggleActivity(option));
+    chip.append(label, meta, remove);
+    return chip;
+  }));
+  const budgetProblem = resources.remainingSlots < 0
+    ? `时间还差${Math.abs(resources.remainingSlots)}格：固定责任已占用${budget?.obligationSlots ?? 0}格，请移除行动或降低投入。`
+    : (resources.remainingEnergy < 0
+      ? `精力还差${Math.abs(resources.remainingEnergy)}点：请降低投入或移除一项行动。`
+      : (resources.validCash === false
+        ? `现金还差${formatCurrency(resources.cash - (pending?.availableCashYuan ?? 0))}：先换一项不花钱的安排。`
+        : null));
+  byId("simulator-draft-note").textContent = budgetProblem
+    ?? (selected.length > 0
+      ? "行动仍是草案；推进季度后才由 Core 结算。"
+      : `从下面五个生活模块加入${pending?.minActivities ?? 1}～${pending?.maxActivities ?? 3}件具体的事。`);
+  const recent = [
+    ...(view.latestQuarterOutcome?.mainline ?? []).map((entry) => entry.label),
+    ...(view.interests ?? []).slice(0, 1).map((entry) => `${entry.label} · ${entry.stageLabel}`),
+    ...(view.people ?? []).slice(0, 1).map((entry) => `${entry.name} · ${entry.role}`),
+  ].filter(Boolean).slice(0, 2);
+  byId("simulator-recent-list").replaceChildren(...(recent.length > 0 ? recent.map((text) => {
+    const item = document.createElement("p");
+    item.textContent = text;
+    return item;
+  }) : [Object.assign(document.createElement("p"), { textContent: "这是第一季，最近发生会从你的行动开始留下来。" })]));
+  const moduleList = byId("simulator-module-list");
+  moduleList.replaceChildren(...SIMULATOR_MODULES.map((module) => {
+    const button = document.createElement("button");
+    const icon = document.createElement("i");
+    const title = document.createElement("strong");
+    const count = document.createElement("small");
+    const moduleCount = activities.filter((option) => simulatorModuleFor(option) === module.id).length;
+    button.type = "button";
+    button.className = `simulator-module ${module.id === simulatorModuleId ? "active" : ""}`;
+    button.dataset.moduleId = module.id;
+    icon.className = `ph-duotone ${module.icon}`;
+    icon.setAttribute("aria-hidden", "true");
+    title.textContent = module.label;
+    count.textContent = `${moduleCount}项可用`;
+    button.append(icon, title, count);
+    button.addEventListener("click", () => {
+      simulatorModuleId = module.id;
+      const drawer = byId("life-action-drawer");
+      drawer.hidden = false;
+      renderSimulatorDrawer(activities, selectedIds, selectedIntensities, toggleActivity, setIntensity, resources, pending);
+    });
     return button;
   }));
-  const moreButton = byId("life-stage-more-actions");
-  moreButton.textContent = `查看全部${activities.length}项行动`;
-  moreButton.setAttribute("aria-expanded", "false");
-  moreButton.onclick = () => {
-    const expanded = page.classList.toggle("show-all-actions");
-    moreButton.setAttribute("aria-expanded", String(expanded));
-    moreButton.textContent = expanded ? "收起全部行动" : `查看全部${activities.length}项行动`;
-    if (expanded) byId("event-card").scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
-  };
-  const contextButton = byId("life-stage-context-toggle");
-  contextButton.setAttribute("aria-expanded", "false");
-  contextButton.onclick = () => {
-    const expanded = page.classList.toggle("show-life-context");
-    contextButton.setAttribute("aria-expanded", String(expanded));
-    contextButton.textContent = expanded ? "收起现实处境" : "展开现实处境";
-  };
-  lifeStageRenderer.show();
-  lifeStageRenderer.setVisualContext(view.visual);
-  lifeStageRenderer.setScene(baseScene);
-  byId("life-stage-canvas").setAttribute("aria-label", `${view.year}年，${view.age}岁的你正在安排${pending.quarterLabel ?? "这一季"}的生活`);
-  void lifeStageReady.then(() => {
-    if (card.hidden) return;
-    lifeStageRenderer.show();
-    requestAnimationFrame(() => stageActionList.classList.add("ready"));
-  });
-  return true;
-}
-
-function updateLifeStageSelection(pending, activities, selectedIds, valid, resources) {
-  const card = byId("life-stage-card");
-  if (card.hidden) return;
-  const selected = activities.filter((option) => selectedIds.has(option.id));
-  for (const button of byId("life-stage-action-list").querySelectorAll(".life-stage-action")) {
-    const isSelected = selectedIds.has(button.dataset.optionId);
-    button.classList.toggle("selected", isSelected);
-    button.setAttribute("aria-pressed", String(isSelected));
-  }
-  byId("life-stage-hours").textContent = `${resources.timeSlots}/${pending.quarterBudget.availableTimeSlots}格 · ${resources.energy}/${pending.quarterBudget.availableEnergy}精力`;
-  const selection = byId("life-stage-selection");
-  if (selected.length === 0) {
-    selection.textContent = `先选${pending.minActivities}～${pending.maxActivities}件想认真做的事；其余时间仍会用于普通生活和休息。`;
-  } else {
-    const emphasis = document.createElement("strong");
-    emphasis.textContent = selected.map((option) => option.label).join("、");
-    selection.replaceChildren(emphasis, document.createTextNode(` · 还剩${Math.max(0, resources.remainingSlots)}格时间，精力${Math.max(0, resources.remainingEnergy)}。`));
-  }
-  const current = selected.at(-1);
-  const scene = lifeStageSceneFor(current, pending.age);
-  card.dataset.scene = scene;
-  lifeStageRenderer.setScene(scene);
-  const confirm = byId("life-stage-confirm");
-  confirm.disabled = !valid;
-  confirm.textContent = valid ? "开始这一季" : `选择${pending.minActivities}～${pending.maxActivities}件行动`;
+  const primary = byId("simulator-primary-action");
+  primary.hidden = selected.length < (pending?.minActivities ?? 1);
+  primary.disabled = !pending || !resources.valid;
+  primary.textContent = selected.length > 0 && resources.valid ? "进入下一季度" : "安排本季度";
+  primary.onclick = submitQuarterPlan;
+  if (!byId("life-action-drawer").hidden) renderSimulatorDrawer(activities, selectedIds, selectedIntensities, toggleActivity, setIntensity, resources, pending);
 }
 
 function renderQuarterPlan(pending, view) {
   const poolKey = pending.eventId;
   if (actionPoolState.key !== poolKey) actionPoolState = { key: poolKey, category: "all", offset: 0 };
-  const selectedIds = actionDrafts.get(poolKey) ?? new Set();
+  const restoredDraft = restoreQuarterDraft(poolKey, pending.options.filter((option) => !option.isPlanControl));
+  const selectedIds = actionDrafts.get(poolKey) ?? new Set(restoredDraft.allocations.map((allocation) => allocation.actionId));
   actionDrafts.set(poolKey, selectedIds);
-  const selectedIntensities = actionIntensityDrafts.get(poolKey) ?? new Map();
+  const selectedIntensities = actionIntensityDrafts.get(poolKey) ?? new Map(restoredDraft.allocations.map((allocation) => [allocation.actionId, allocation.intensity]));
   actionIntensityDrafts.set(poolKey, selectedIntensities);
   const controls = pending.options.filter((option) => option.isPlanControl);
   const activities = pending.options.filter((option) => !option.isPlanControl);
@@ -1069,6 +1091,12 @@ function renderQuarterPlan(pending, view) {
       showGameToast(`这一季最多安排${pending.maxActivities}项行动`, "ph-warning");
     }
     if (changed) playFeedback("choice", "medium");
+    persistQuarterDraft(poolKey, [...selectedIds].map((actionId) => ({
+      actionId,
+      intensity: selectedIntensities.get(actionId)
+        ?? activities.find((entry) => entry.id === actionId)?.defaultIntensity
+        ?? "regular",
+    })));
     updateBudget();
   }
 
@@ -1145,7 +1173,7 @@ function renderQuarterPlan(pending, view) {
     const validHours = remaining >= 0;
     const validCash = !Number.isFinite(pending.availableCashYuan) || cash <= pending.availableCashYuan;
     const validSlots = remainingSlots >= 0;
-    const validEnergy = remainingEnergy >= -3;
+    const validEnergy = remainingEnergy >= 0;
     const valid = validCount && validHours && validCash && validSlots && validEnergy;
     byId("plan-budget-title").textContent = `已选${selected.length}项 · 需${pending.minActivities}～${pending.maxActivities}项`;
     byId("plan-budget-hours").textContent = `${timeSlots}/${pending.quarterBudget.availableTimeSlots}格 · ${energy}/${pending.quarterBudget.availableEnergy}精力`;
@@ -1160,8 +1188,8 @@ function renderQuarterPlan(pending, view) {
       ? `保留${remainingSlots}格时间、${Math.max(0, remainingEnergy)}点精力。${pending.unallocatedTimeMeaning}`
       : (!validSlots
           ? `超过季度时间预算${Math.abs(remainingSlots)}格，请减少行动或降低投入。`
-          : (!validEnergy
-              ? `精力将透支${Math.abs(remainingEnergy)}点，超过最多3点的限制。`
+               : (!validEnergy
+               ? `精力还差${Math.abs(remainingEnergy)}点，请降低投入或移除一项行动。`
               : (!validHours ? `具体生活工时无法同时安排，请减少活动。` : `本季度活动预计支出${formatCurrency(cash)}，超过可用额度。`)));
     confirm.disabled = !valid;
     byId("plan-selected-summary").textContent = selected.length > 0
@@ -1183,6 +1211,12 @@ function renderQuarterPlan(pending, view) {
         button.setAttribute("aria-pressed", String(selectedIntensities.get(option.id) === intensity.id));
         button.addEventListener("click", () => {
           selectedIntensities.set(option.id, intensity.id);
+          persistQuarterDraft(poolKey, [...selectedIds].map((actionId) => ({
+            actionId,
+            intensity: selectedIntensities.get(actionId)
+              ?? activities.find((entry) => entry.id === actionId)?.defaultIntensity
+              ?? "regular",
+          })));
           playFeedback("click", "light");
           updateBudget();
         });
@@ -1192,33 +1226,36 @@ function renderQuarterPlan(pending, view) {
       return row;
     });
     byId("plan-intensity-list").replaceChildren(...createIntensityRows());
-    const stageIntensityList = byId("life-stage-intensity-list");
-    stageIntensityList.hidden = selected.length === 0;
-    stageIntensityList.replaceChildren(...createIntensityRows(true));
     for (const button of container.querySelectorAll(".activity-option")) {
       const selected = selectedIds.has(button.dataset.optionId);
       button.classList.toggle("selected", selected);
       button.setAttribute("aria-pressed", String(selected));
     }
-    updateLifeStageSelection(pending, activities, selectedIds, valid, {
+    renderSimulatorShell(view, pending, activities, selectedIds, selectedIntensities, {
       timeSlots,
       energy,
       remainingSlots,
       remainingEnergy,
-    });
+      valid,
+      validCash,
+      cash,
+    }, toggleActivity, (option, intensity) => {
+      selectedIntensities.set(option.id, intensity);
+      persistQuarterDraft(poolKey, [...selectedIds].map((actionId) => ({
+        actionId,
+        intensity: selectedIntensities.get(actionId)
+          ?? activities.find((entry) => entry.id === actionId)?.defaultIntensity
+          ?? "regular",
+      })));
+      updateBudget();
+    }, submitQuarterPlan);
   }
   async function submitQuarterPlan() {
     if (confirm.disabled || selectedIds.size === 0) return;
-    const stageCard = byId("life-stage-card");
     playFeedback("stamp", "medium");
-    if (!stageCard.hidden) {
-      stageCard.classList.add("is-committing");
-      confirm.disabled = true;
-      byId("life-stage-confirm").disabled = true;
-      await lifeStageRenderer.playCommit();
-    }
     chooseOption({
       type: "quarter.plan",
+      eventId: pending.eventId,
       allocations: [...selectedIds].map((actionId) => ({
         actionId,
         intensity: selectedIntensities.get(actionId)
@@ -1228,8 +1265,6 @@ function renderQuarterPlan(pending, view) {
     });
   }
   confirm.onclick = submitQuarterPlan;
-  byId("life-stage-confirm").onclick = submitQuarterPlan;
-  renderLifeStage(view, pending, activities, selectedIds, toggleActivity);
   renderCategories();
   renderPool();
 }
@@ -1255,9 +1290,10 @@ function pendingStageText(view) {
 
 function renderLifeDecision(view) {
   const pending = view.pending;
-  byId("event-card").hidden = !pending;
+  const quarterPlan = pending?.kind === "quarter_plan";
+  byId("life-simulator-main").hidden = !quarterPlan;
+  byId("event-card").hidden = !pending || quarterPlan;
   if (!pending) {
-    hideLifeStage();
     return;
   }
   byId("event-stage").textContent = pendingStageText(view);
@@ -1265,9 +1301,8 @@ function renderLifeDecision(view) {
   byId("event-prompt").textContent = pending.kind === "quarter_plan"
     ? `${pending.prompt} 本季度有${pending.quarterBudget.availableTimeSlots}格可支配时间和${pending.quarterBudget.availableEnergy}点精力；行动将在三个月中结算。${Number.isFinite(pending.availableCashYuan) ? `本季度可用于这些活动的额度为${formatCurrency(pending.availableCashYuan)}。` : ""}`
     : pending.prompt;
-  if (pending.kind === "quarter_plan") renderQuarterPlan(pending, view);
+  if (quarterPlan) renderQuarterPlan(pending, view);
   else {
-    hideLifeStage();
     byId("action-pool-card").hidden = true;
     byId("plan-control-list").hidden = true;
     byId("plan-budget").hidden = true;
@@ -1373,6 +1408,47 @@ function renderQuarterMonths(outcomes) {
   }));
 }
 
+function renderQuarterInterruptions(outcomes) {
+  const card = byId("quarter-interruption-card");
+  const categoryLabels = {
+    "*": "全部安排",
+    entertainment: "兴趣活动",
+    health: "身体活动",
+    social: "关系活动",
+    exploration: "观察探索",
+  };
+  const interrupted = outcomes.filter((outcome) => outcome.interruption);
+  card.hidden = interrupted.length === 0;
+  if (card.hidden) {
+    byId("quarter-interruption-list").replaceChildren();
+    return;
+  }
+  byId("quarter-interruption-list").replaceChildren(...interrupted.map((outcome) => {
+    const interruption = outcome.interruption;
+    const item = document.createElement("section");
+    const title = document.createElement("strong");
+    const timing = document.createElement("span");
+    const affected = document.createElement("p");
+    const settlement = document.createElement("small");
+    const affectedCategories = interruption.affectedCategories ?? ["*"];
+    const affectedActivities = (outcome.activities ?? [])
+      .filter((activity) => affectedCategories.includes("*") || affectedCategories.includes(activity.category))
+      .map((activity) => activity.label ?? activity.activityLabel ?? activity.id);
+    const interruptionMonth = Math.min(3, Math.max(1, interruption.monthInQuarter ?? 1));
+    const monthsBefore = interruptionMonth - 1;
+    const monthsAfter = 3 - interruptionMonth;
+    item.className = "quarter-interruption-item";
+    title.textContent = `Q${outcome.quarter} · ${interruption.reason}`;
+    timing.textContent = `第${interruptionMonth}个月发生 · 严重度${interruption.severity === "major" ? "较高" : "较轻"}`;
+    affected.textContent = affectedActivities.length > 0
+      ? `受影响行动：${affectedActivities.join("、")}`
+      : `受影响范围：${affectedCategories.map((id) => categoryLabels[id] ?? id).join("、")}`;
+    settlement.textContent = `事件前已执行${monthsBefore}个月；事件后剩余${monthsAfter}个月按调整后的计划继续，最终完成${Math.round((outcome.executionRate ?? 1) * 100)}%。`;
+    item.append(title, timing, affected, settlement);
+    return item;
+  }));
+}
+
 function renderLatestGrowth(outcome) {
   const card = byId("latest-growth-card");
   const count = renderImpactList("latest-growth-list", outcome ? [outcome] : []);
@@ -1414,69 +1490,6 @@ function renderTimeline(groups) {
     }
     return group;
   }));
-}
-
-function renderWorldMap(view) {
-  if (!view.locations.some((location) => location.id === selectedMapLocationId)) {
-    selectedMapLocationId = view.locations[0]?.id ?? "home";
-  }
-  const board = byId("world-map-board");
-  byId("world-map-title").textContent = view.title;
-  byId("world-map-subtitle").textContent = view.subtitle;
-  byId("world-map-count").textContent = `${view.locations.filter((location) => location.status !== "locked").length}/${view.locations.length}处可接触`;
-
-  const renderLocationPanel = (location) => {
-    selectedMapLocationId = location.id;
-    for (const node of board.querySelectorAll(".world-map-node")) {
-      const selected = node.dataset.locationId === location.id;
-      node.classList.toggle("selected", selected);
-      node.setAttribute("aria-pressed", String(selected));
-    }
-    const icon = document.createElement("i");
-    icon.className = `ph-duotone ${location.icon}`;
-    icon.setAttribute("aria-hidden", "true");
-    byId("map-location-icon").replaceChildren(icon);
-    byId("map-location-title").textContent = location.label;
-    byId("map-location-status").textContent = location.statusLabel;
-    byId("map-location-detail").textContent = location.detail;
-    byId("map-location-travel").textContent = `出行：${location.travel}`;
-    byId("map-location-people").textContent = `人物：${location.people.length > 0 ? location.people.join("、") : "等待具体经历出现"}`;
-    byId("map-location-opportunities").replaceChildren(...location.opportunities.map((opportunity) => {
-      const chip = document.createElement("span");
-      chip.textContent = opportunity;
-      return chip;
-    }));
-    const unlock = byId("map-location-unlock");
-    unlock.hidden = !location.unlockHint;
-    unlock.textContent = location.unlockHint ? `开放条件：${location.unlockHint}` : "";
-    byId("map-location-panel").dataset.status = location.status;
-  };
-
-  board.replaceChildren(...view.locations.map((location, index) => {
-    const button = document.createElement("button");
-    const icon = document.createElement("i");
-    const copy = document.createElement("span");
-    const label = document.createElement("strong");
-    const status = document.createElement("small");
-    button.type = "button";
-    button.className = `world-map-node ${location.status}`;
-    button.dataset.locationId = location.id;
-    button.style.setProperty("--map-index", index);
-    button.setAttribute("role", "listitem");
-    button.setAttribute("aria-pressed", "false");
-    icon.className = `ph-duotone ${location.icon}`;
-    icon.setAttribute("aria-hidden", "true");
-    label.textContent = location.label;
-    status.textContent = location.statusLabel;
-    copy.append(label, status);
-    button.append(icon, copy);
-    button.addEventListener("click", () => {
-      playFeedback("click", "light");
-      renderLocationPanel(location);
-    });
-    return button;
-  }));
-  renderLocationPanel(view.locations.find((location) => location.id === selectedMapLocationId) ?? view.locations[0]);
 }
 
 function setRecordsTab(tabId) {
@@ -1524,7 +1537,6 @@ function renderMain(route) {
   renderFacts("growth-fact-list", view.facts);
   renderYearLedger("year-ledger-list", view.yearLedger);
   renderPeople(view.people);
-  renderWorldMap(pages.map);
   renderTimeline(pages.timeline.groups);
   byId("archive-birth-year").textContent = `${pages.archive.birthYear}年`;
   byId("archive-current-point").textContent = `${pages.archive.year}年 · ${pages.archive.age}岁 · ${pages.archive.stageLabel}`;
@@ -1557,10 +1569,6 @@ function renderRandomEvent() {
     : "计划之外发生了变化";
   byId("random-event-title").textContent = pending.title;
   byId("random-event-prompt").textContent = pending.prompt;
-  const eventScene = isMainline
-    ? lifeStageSceneFor(pending, view.age)
-    : (pending.category === "health" ? "journey" : lifeStageSceneFor(pending, view.age));
-  byId("random-event-image").src = lifeStageAssetUrls[eventScene];
   const evidenceCard = byId("mainline-event-evidence");
   evidenceCard.hidden = !isMainline;
   if (isMainline) {
@@ -1593,11 +1601,8 @@ function renderQuarterResult() {
   showScreen("quarter-result");
   playFeedbackOnce(`quarter-result:${quarter.year}:${quarter.quarter}`, "reward", "success");
   const visual = byId("quarter-result-visual");
-  const visualActivity = last?.activities?.[0];
   visual.hidden = !last;
   if (!visual.hidden) {
-    const scene = lifeStageSceneFor(visualActivity, quarter.age);
-    byId("quarter-result-image").src = lifeStageAssetUrls[scene];
     byId("quarter-result-visual-kicker").textContent = `${quarter.year}年 · ${last.label}真实发生`;
     byId("quarter-result-visual-caption").textContent = last.operationLabel;
   }
@@ -1607,6 +1612,7 @@ function renderQuarterResult() {
   byId("quarter-result-meta").textContent = `${quarter.year}年 · ${quarter.age}岁 · 本次推进${outcomes.length || 1}个季度`;
   byId("quarter-result-plan").textContent = outcomes.map((entry) => entry.operationLabel).join("；") || quarter.plan;
   byId("quarter-result-detail").textContent = outcomes.map((entry) => `Q${entry.quarter}：${entry.detail}`).join("\n") || quarter.detail;
+  renderQuarterInterruptions(outcomes);
   renderQuarterMonths(outcomes);
   const impactCount = renderImpactList("quarter-impact-list", outcomes);
   byId("quarter-impact-card").hidden = impactCount === 0;
@@ -1699,7 +1705,7 @@ function normalizedRoute(route) {
   if (route === ROUTES.QUARTER_RESULT || route === ROUTES.PERSON) return route;
   if (["random_life_event", "mainline_event"].includes(pages.game.pending?.kind)) return ROUTES.RANDOM_EVENT;
   if (pages.game.pending?.kind === "year_review") return ROUTES.YEAR_REVIEW;
-  if ([ROUTES.RANDOM_EVENT, ROUTES.YEAR_REVIEW, ROUTES.ENDING].includes(route)) return ROUTES.SCENE;
+  if ([ROUTES.RANDOM_EVENT, ROUTES.YEAR_REVIEW, ROUTES.ENDING].includes(route)) return ROUTES.LIFE;
   return route;
 }
 
@@ -1735,7 +1741,7 @@ function completedQuarterCount() {
 }
 
 function chooseOption(optionId) {
-  for (const button of document.querySelectorAll(".option-list button, #confirm-plan-button, .life-stage-action, #life-stage-confirm")) button.disabled = true;
+  for (const button of document.querySelectorAll(".option-list button, #confirm-plan-button")) button.disabled = true;
   const priorCount = completedQuarterCount();
   const priorKind = result?.pendingDecision?.kind;
   const priorEventId = result?.pendingDecision?.eventId;
@@ -1743,17 +1749,20 @@ function chooseOption(optionId) {
     syncDebugConfigToSession();
     ({ session, result } = submitLifeChoice(data, session, result, optionId));
     saveActiveSession();
-    showGameToast(
-      priorKind === "quarter_plan" ? "这一季已经成为经历" : (priorKind === "year_review" ? "新的一年开始了" : "选择已经写入人生"),
-      priorKind === "year_review" ? "ph-sun-horizon" : "ph-bookmark-simple",
-    );
+    const leadsToStrongResultSurface = ["quarter_plan", "random_life_event", "mainline_event", "year_review"].includes(priorKind);
+    if (leadsToStrongResultSurface) hideGameToast();
+    else showGameToast("选择已经写入人生", "ph-bookmark-simple");
     pages = buildPageViewModels(result, data, session);
     if (result.status === "completed") {
       navigate(ROUTES.ENDING);
       return;
     }
     const quarterSettled = priorKind !== "year_review" && completedQuarterCount() > priorCount;
-    if (priorEventId) actionDrafts.delete(priorEventId);
+    if (priorEventId) {
+      actionDrafts.delete(priorEventId);
+      actionIntensityDrafts.delete(priorEventId);
+      clearQuarterDraft(priorEventId);
+    }
     if (quarterSettled) navigate(ROUTES.QUARTER_RESULT, { from: priorCount });
     else navigate(routeForPending(pages.game.pending));
   } catch (error) {
@@ -1762,6 +1771,7 @@ function chooseOption(optionId) {
 }
 
 function startNewLife() {
+  clearQuarterDraft();
   if (DEBUG_MODE) {
     executeDebugJump();
     return;
@@ -2039,7 +2049,17 @@ byId("quarter-result-continue").addEventListener("click", () => {
   playFeedback("click", "light");
   navigate(routeForPending(pages.game.pending));
 });
-byId("latest-growth-back-life").addEventListener("click", () => navigate(ROUTES.SCENE));
+byId("latest-growth-back-life").addEventListener("click", () => navigate(ROUTES.LIFE));
+function closeLifeActionDrawer() {
+  const drawer = byId("life-action-drawer");
+  if (drawer) drawer.hidden = true;
+}
+byId("life-action-drawer-close")?.addEventListener("click", closeLifeActionDrawer);
+byId("life-action-drawer-backdrop")?.addEventListener("click", closeLifeActionDrawer);
+byId("life-action-drawer-done")?.addEventListener("click", closeLifeActionDrawer);
+byId("simulator-primary-action")?.addEventListener("click", () => {
+  if (activeQuarterPlanController?.submit) activeQuarterPlanController.submit();
+});
 byId("ending-timeline-button").addEventListener("click", () => {
   if (result) navigate(ROUTES.RECORDS);
 });

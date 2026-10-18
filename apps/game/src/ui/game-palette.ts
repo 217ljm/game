@@ -1,0 +1,1 @@
+export const palette = { ink: 0x2e2926, muted: 0x786e65, paper: 0xfffbf4, cream: 0xf7efe3, line: 0xe6d8c8, coral: 0xe77d68, teal: 0x5e9f91, yellow: 0xf0c66d, blue: 0x6f91bd, lavender: 0xa991c8 };

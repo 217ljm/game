@@ -1,0 +1,633 @@
+{
+  "schemaVersion": 1,
+  "description": "70后、80后、90后、00后 全年代标志性历史大事件数据库，覆盖经济、科技、文化、体育、国家里程碑与社会生活变迁",
+  "events": [
+    {
+      "id": "hist_1977_gaokao_resumption",
+      "year": 1977,
+      "eraTag": "70s",
+      "stage": "youth_and_adult",
+      "title": "恢复高考制度",
+      "category": "education_milestone",
+      "headlineNews": "《人民日报》头版刊发：高等学校招生进行重大改革，实行自愿报名、统考择优录取！",
+      "description": "关闭了整整十年的高考大门重新开启。全国570万考生从工厂、田间、军营奔赴考场，用知识改变命运的号角响彻神州大地。",
+      "culturalImpact": "开启了尊重知识、尊重人才的崭新时代，无数知青彻夜煤油灯下苦读《数理化自学丛书》。",
+      "personalEcho": "亲戚邻里都在四处借阅泛黄的复习资料，整个县城的新华书店门口天不亮就排起了长龙。",
+      "icon": "gaokao_admission_ticket",
+      "options": [
+        {
+          "id": "opt_study_hard_for_gaokao",
+          "label": "点起煤油灯，通宵达旦啃复习材料备战高考",
+          "effectDesc": "智力与学识大幅提升，背水一战逆天改命",
+          "effects": { "ability": 3, "mood": -1, "ambition": 2 }
+        },
+        {
+          "id": "opt_support_peer_gaokao",
+          "label": "把手头珍贵的复习册借给挚友，共同打气",
+          "effectDesc": "人际关系深厚，见证时代的转折",
+          "effects": { "relationships": 2, "mood": 1 }
+        },
+        {
+          "id": "opt_stay_calm_job",
+          "label": "坚守当前岗位，利用业余时间报读夜大电大",
+          "effectDesc": "稳健积累技能与经验",
+          "effects": { "ability": 1, "practicalSkill": 2 }
+        }
+      ]
+    },
+    {
+      "id": "hist_1978_reform_opening",
+      "year": 1978,
+      "eraTag": "70s",
+      "stage": "all_stages",
+      "title": "改革开放启幕与真理标准大讨论",
+      "category": "reform_economy",
+      "headlineNews": "党的十一届三中全会胜利召开，作出把全党工作重点转移到社会主义现代化建设上来的战略抉择！",
+      "description": "安徽凤阳小岗村18位农民按下红手印搞包产到户，思想解放的春风吹遍大江南北，中国由此开启了波澜壮阔的改革开放征程。",
+      "culturalImpact": "“实事求是”、“实践是检验真理的唯一标准”成为时代最强音，社会活力全面迸发。",
+      "personalEcho": "生产队里的气氛悄然改变，集市上开始出现悄悄摆摊卖自留地蔬菜和小百货的小商贩。",
+      "icon": "red_thumbprint_contract",
+      "options": [
+        {
+          "id": "opt_embrace_market_ideas",
+          "label": "积极学习新的经济思想，关注沿海与特区新风向",
+          "effectDesc": "眼界大开，商业敏锐度显著提升",
+          "effects": { "insight": 2, "ability": 1 }
+        },
+        {
+          "id": "opt_diligent_farming_work",
+          "label": "承包责任田或积极提高工效，靠勤劳双手发家致富",
+          "effectDesc": "家庭收入提升，生活日渐红火",
+          "effects": { "wealth": 2, "energy": 1 }
+        }
+      ]
+    },
+    {
+      "id": "hist_1980_special_economic_zone",
+      "year": 1980,
+      "eraTag": "80s",
+      "stage": "youth_and_adult",
+      "title": "深圳等经济特区正式设立",
+      "category": "reform_economy",
+      "headlineNews": "全国人大常委会批准设立深圳、珠海、汕头、厦门四个经济特区，“时间就是金钱，效率就是生命”！",
+      "description": "昔日的小渔村蛇口轰然炸响改革开放的“开山炮”。无数怀揣梦想的南下建设者带着边防证踏上这片热土，创造出“三天一层楼”的深圳速度。",
+      "culturalImpact": "特区成为中国看世界、世界看中国的窗口，电子表、蛤蟆镜、喇叭裤和港台流行金曲经由特区风靡全国。",
+      "personalEcho": "村里最早去深圳打工的年轻人带回了带收录机的卡带和电子手表，引来全弄堂孩童的围观。",
+      "icon": "special_zone_pass",
+      "options": [
+        {
+          "id": "opt_head_south_shenzhen",
+          "label": "办下边防证南下闯荡特区，追赶时代的浪潮",
+          "effectDesc": "见识与冒险精神大增，开启全新际遇",
+          "effects": { "insight": 3, "courage": 2, "wealth": 1 }
+        },
+        {
+          "id": "opt_trade_goods_local",
+          "label": "在本地倒腾特区带回的小家电与时髦成衣",
+          "effectDesc": "小赚一笔，成为街头最懂潮流的体面人",
+          "effects": { "wealth": 2, "charm": 1 }
+        }
+      ]
+    },
+    {
+      "id": "hist_1984_olympic_gold_parade",
+      "year": 1984,
+      "eraTag": "80s",
+      "stage": "all_stages",
+      "title": "洛杉矶奥运首金与国庆大阅兵",
+      "category": "national_milestone",
+      "headlineNews": "许海峰一声枪响斩获中国奥运首金！国庆35周年游行中北大学子打出“小平您好”横幅！",
+      "description": "中国代表团重返夏季奥运会赛场，女排三连冠更激荡起全民拼搏斗志；天安门广场上青年学子自发打出的真挚横幅温暖了整整一代人。",
+      "culturalImpact": "“团结起来，振兴中华”成为最炽热的青春口号，健力宝与女排精神走进千家万户。",
+      "personalEcho": "大伙围在邻居家的黑白电视机前屏息凝神，许海峰夺冠瞬间，整栋居民楼爆发出雷鸣般的掌声与敲盆庆祝声。",
+      "icon": "gold_medal_1984",
+      "options": [
+        {
+          "id": "opt_cheer_for_volleyball",
+          "label": "跟着全校师生在操场狂奔欢呼，激情高唱国歌",
+          "effectDesc": "集体荣誉感与心情大幅提升",
+          "effects": { "mood": 3, "health": 1 }
+        },
+        {
+          "id": "opt_join_sports_train",
+          "label": "以奥运健儿为榜样，每天清晨坚持长跑锻炼",
+          "effectDesc": "体质与毅力大获增强",
+          "effects": { "health": 2, "willpower": 1 }
+        }
+      ]
+    },
+    {
+      "id": "hist_1987_first_kfc_beijing",
+      "year": 1987,
+      "eraTag": "80s",
+      "stage": "childhood_and_youth",
+      "title": "首家肯德基在前门开业",
+      "category": "social_life",
+      "headlineNews": "中国大陆首家西式快餐店落户北京前门繁华地段，开业首日排队长龙蜿蜒数百米！",
+      "description": "三层楼的西式餐厅、香气扑鼻的原味吮指鸡与穿西装戴领结的服务员，让普通市民第一次近距离触碰大洋彼岸的现代快餐文化。",
+      "culturalImpact": "吃一顿洋快餐成为当年最风光、最排面的时髦盛事，甚至有新人特意选在肯德基举办西式婚礼。",
+      "personalEcho": "考了双百分的孩子央求父母带自己去前门尝一块炸鸡，装快餐纸盒被洗干净摆在书桌上当笔筒纪念。",
+      "icon": "kfc_bucket_retro",
+      "options": [
+        {
+          "id": "opt_queue_for_fried_chicken",
+          "label": "排了两个小时长队，终于尝到第一口金黄脆皮炸鸡",
+          "effectDesc": "大饱口福，成为班里吹嘘的谈资",
+          "effects": { "mood": 2, "charm": 1, "wealth": -1 }
+        },
+        {
+          "id": "opt_save_money_watch",
+          "label": "站在橱窗外观察现代快餐的流水线运作与管理模式",
+          "effectDesc": "引发对现代商业模式的思考",
+          "effects": { "insight": 1, "practicalSkill": 1 }
+        }
+      ]
+    },
+    {
+      "id": "hist_1990_beijing_asian_games",
+      "year": 1990,
+      "eraTag": "90s",
+      "stage": "all_stages",
+      "title": "北京亚运会与上海证券交易所开业",
+      "category": "sports_and_finance",
+      "headlineNews": "第十一届亚运会在北京隆重开幕，吉祥物“熊猫盼盼”火遍全球！同年末，上海证券交易所正式开市！",
+      "description": "“我们亚洲，山是高昂的头……”刘欢与韦唯的激昂歌声响彻街巷。全国人民自发捐款硬币支援亚运建设；12月上交所锣声响起，“老八股”开启中国资本市场新纪元。",
+      "culturalImpact": "亚运会大幅提升了中国国际形象，熊猫盼盼手持金牌的形象成为一代人的童年图腾。",
+      "personalEcho": "学校组织了亚运募捐，每个人都把积攒的零花硬币投进募捐箱，拿到一枚精致的盼盼金属纪念徽章。",
+      "icon": "panpan_asian_games",
+      "options": [
+        {
+          "id": "opt_collect_panpan_pins",
+          "label": "收集盼盼吉祥物徽章与贴纸，贴满整个文具盒",
+          "effectDesc": "收获童年最顶级的快乐",
+          "effects": { "mood": 2, "charm": 1 }
+        },
+        {
+          "id": "opt_learn_stock_market",
+          "label": "跟着财经新闻研究股票发行与认购证的基本知识",
+          "effectDesc": "财商启蒙，理解资本市场的初阶逻辑",
+          "effects": { "insight": 2, "ability": 1 }
+        }
+      ]
+    },
+    {
+      "id": "hist_1992_southern_tour_talks",
+      "year": 1992,
+      "eraTag": "90s",
+      "stage": "youth_and_adult",
+      "title": "南方谈话与九二派下海潮",
+      "category": "reform_economy",
+      "headlineNews": "春天的故事写下新篇章：“发展才是硬道理”、“不搞改革开放，只能是死路一条”！",
+      "description": "东方风来满眼春。南方谈话解开了姓“资”姓“社”的思想束缚，全国掀起第二轮停薪留职、投身市场经济的“下海经商”狂潮。",
+      "culturalImpact": "市场经济体制确立，催生了著名的“九二派”企业家，商业与创业不再被视作偏门，而是时代英雄的舞台。",
+      "personalEcho": "单位里几个业务骨干纷纷办理了停薪留职去南方办厂，街上的私营贸易公司与广告牌如雨后春笋般冒出。",
+      "icon": "business_license_1992",
+      "options": [
+        {
+          "id": "opt_start_business_venture",
+          "label": "毅然拿出积蓄注册皮包贸易公司，勇敢下海搏击商海",
+          "effectDesc": "商业技能与财富潜力激增，承担市场风浪",
+          "effects": { "wealth": 3, "courage": 2, "stress": 1 }
+        },
+        {
+          "id": "opt_learn_market_skills",
+          "label": "考取会计证、驾驶证或外语证书，顺应市场化人才需求",
+          "effectDesc": "个人职场竞争力大幅提升",
+          "effects": { "ability": 2, "practicalSkill": 2 }
+        }
+      ]
+    },
+    {
+      "id": "hist_1994_internet_and_jia_a",
+      "year": 1994,
+      "eraTag": "90s",
+      "stage": "childhood_and_youth",
+      "title": "接入国际互联网与甲A足球联赛元年",
+      "category": "tech_and_sports",
+      "headlineNews": "中国通过一条64K国际专线全功能接入国际互联网；首届全国足球甲A职业联赛在成都打响第一枪！",
+      "description": "中关村立起巨幅广告牌“中国人离信息高速公路还有多远”，瀛海威等早期网络公司诞生；每周日全家守着电视看甲A，成都保卫战万人空巷“雄起”声震天。",
+      "culturalImpact": "中国正式叩开信息时代的数字化大门；职业足球成为亿万球迷每周最狂热的精神寄托。",
+      "personalEcho": "初中计算机房换成了微机，老师教大家在MS-DOS下打字，报纸上第一篇介绍E-mail电子邮件的文章令人神往。",
+      "icon": "dialup_modem_56k",
+      "options": [
+        {
+          "id": "opt_learn_computer_early",
+          "label": "泡在少年宫机房苦练五笔字型与Basic编程语言",
+          "effectDesc": "抢占信息时代先机，智力与前瞻力出众",
+          "effects": { "ability": 2, "insight": 2 }
+        },
+        {
+          "id": "opt_watch_jia_a_football",
+          "label": "披上主队球迷围巾，在黑白电视机前为主队疯狂呐喊",
+          "effectDesc": "燃烧青春热血，释放全部情绪",
+          "effects": { "mood": 2, "health": 1 }
+        }
+      ]
+    },
+    {
+      "id": "hist_1997_hongkong_handover",
+      "year": 1997,
+      "eraTag": "90s",
+      "stage": "all_stages",
+      "title": "香港回归祖国",
+      "category": "national_milestone",
+      "headlineNews": "1997年7月1日零时整，中华人民共和国国旗和香港特区区旗在会展中心庄严升起，百年沧桑一朝洗雪！",
+      "description": "漂泊百年的“东方之珠”重回母亲怀抱。天安门广场数万人冒雨彻夜倒计时狂欢，大江南北鞭炮齐鸣，烟花照亮了神州夜空。",
+      "culturalImpact": "《公元一九九七》与《东方之珠》传遍大街小巷，一国两制伟大构想从设想变为生动现实。",
+      "personalEcho": "那一夜全家人围坐在彩电前整夜没睡，当五星红旗伴随嘹亮国歌升上顶端的瞬间，全院子的大人孩子都跳起来欢呼。",
+      "icon": "hongkong_bauhinia_flag",
+      "options": [
+        {
+          "id": "opt_watch_handover_live",
+          "label": "通宵守在电视机前观看现场直播，写下真挚的日记感怀",
+          "effectDesc": "家国情怀满溢，心灵深受震撼",
+          "effects": { "mood": 2, "insight": 1 }
+        },
+        {
+          "id": "opt_collect_commemorative_coins",
+          "label": "排队兑换香港回归纪念币与特种邮票留作珍藏",
+          "effectDesc": "收获极具历史价值的纪念老物件",
+          "effects": { "wealth": 1, "charm": 1 }
+        }
+      ]
+    },
+    {
+      "id": "hist_1998_flood_fighting",
+      "year": 1998,
+      "eraTag": "90s",
+      "stage": "all_stages",
+      "title": "抗击长江松花江特大洪灾",
+      "category": "national_rescue",
+      "headlineNews": "百万军民同仇敌忾，誓死保卫九江大堤、荆江大堤与大庆油田！人在堤在！",
+      "description": "长江、嫩江、松花江流域遭遇百年不遇特大洪灾。数十万子弟兵以血肉之躯筑起钢铁长堤，封堵决口、转移群众，谱写了惊天地泣鬼神的抗洪精神。",
+      "culturalImpact": "《为了谁》唱出了对最可爱的人无限敬意，全社会凝聚力与志愿奉献精神达到空前高度。",
+      "personalEcho": "学校和社区设起了爱心捐赠点，大家纷纷把棉被、衣物和节省下来的零用钱送往灾区援助灾民。",
+      "icon": "anti_flood_lifejacket",
+      "options": [
+        {
+          "id": "opt_donate_to_disaster_area",
+          "label": "毫不犹豫捐出全部零花钱与过冬厚毛衣支援灾区",
+          "effectDesc": "传递人间温情，道德与品格得到升华",
+          "effects": { "moral": 3, "mood": 1 }
+        },
+        {
+          "id": "opt_compose_school_blackboard",
+          "label": "主动承担班级抗洪黑板报绘制，宣传英雄子弟兵事迹",
+          "effectDesc": "才华获得全校表彰，领导力与声誉提升",
+          "effects": { "relationships": 2, "ability": 1 }
+        }
+      ]
+    },
+    {
+      "id": "hist_1999_macao_return_millennium",
+      "year": 1999,
+      "eraTag": "90s",
+      "stage": "all_stages",
+      "title": "澳门回归与跨越千禧年",
+      "category": "national_milestone",
+      "headlineNews": "1999年12月20日澳门回归祖国！全人类屏息迎来公元2000年千禧世纪之交！",
+      "description": "“你可知Macau不是我真姓，我离开你太久了母亲……”容韵琳清澈童声唱响《七子之歌》。岁末，全球各地燃放烟花迎接新世纪。",
+      "culturalImpact": "伴随着“千年虫”危机的虚惊一场与千禧愿望瓶的流行，青年一代充满对21世纪美好未来的无限畅想。",
+      "personalEcho": "在新旧世纪交替的零点钟声敲响时，在露台上放飞孔明灯，许下对二十一世纪的第一个心愿。",
+      "icon": "millennium_clock_lotus",
+      "options": [
+        {
+          "id": "opt_write_millennium_letter",
+          "label": "给十年后的自己写下一封千禧信件，埋入时光胶囊",
+          "effectDesc": "树立长远志向，坚定自我前行方向",
+          "effects": { "insight": 2, "willpower": 2 }
+        },
+        {
+          "id": "opt_celebrate_millennium_night",
+          "label": "与三五挚友在人民广场吹着哨子倒数狂欢迎接新世纪",
+          "effectDesc": "留下一生难以磨灭的青春记忆",
+          "effects": { "mood": 3, "relationships": 2 }
+        }
+      ]
+    },
+    {
+      "id": "hist_2001_olympic_bid_and_wto",
+      "year": 2001,
+      "eraTag": "00s",
+      "stage": "all_stages",
+      "title": "北京申奥成功与加入世贸组织(WTO)",
+      "category": "national_milestone",
+      "headlineNews": "7月13日莫斯科传来捷报：Beijing！同年末，中国正式签署加入世界贸易组织议定书！",
+      "description": "萨马兰奇念出“BEIJING”的一瞬间，四十万人涌上天安门广场通宵欢庆；年底正式入世，中国制造扬帆出海，中国经济全面驶入全球化快车道。",
+      "culturalImpact": "全民掀起“学英语迎奥运”热潮，中国融入世界经济体系，民营外贸与外资企业全面开花。",
+      "personalEcho": "那天晚上整条马路汽车鸣笛响彻云霄，爷爷拿出了珍藏多年的好酒，大人们笑着流下热泪。",
+      "icon": "wto_gavel_bid_logo",
+      "options": [
+        {
+          "id": "opt_learn_english_enthusiastically",
+          "label": "报名疯狂英语与新概念英语，立志当一名奥运志愿者",
+          "effectDesc": "外语水平突飞猛进，获得国际视野",
+          "effects": { "ability": 2, "insight": 2 }
+        },
+        {
+          "id": "opt_study_foreign_trade",
+          "label": "钻研外贸进出口与跨境物流知识，寻找入世商机",
+          "effectDesc": "把握时代红利，商贸技能与财富敏锐度提升",
+          "effects": { "wealth": 2, "practicalSkill": 2 }
+        }
+      ]
+    },
+    {
+      "id": "hist_2003_sars_and_shenzhou_5",
+      "year": 2003,
+      "eraTag": "00s",
+      "stage": "all_stages",
+      "title": "抗击非典与神舟五号载人首飞",
+      "category": "tech_and_health",
+      "headlineNews": "杨利伟搭乘神舟五号飞船巡天21小时凯旋，“我看到我们美丽的地球了，向世界问好”！",
+      "description": "春天，全国上下团结一心打赢非典遭遇战；金秋十月，中国首位航天员飞上太空，中国成为世界上第三个独立掌握载人航天技术的国家。",
+      "culturalImpact": "卫生防护意识深入人心；载人航天英雄杨利伟走进中小学课本，点燃无数青少年的科学飞天梦。",
+      "personalEcho": "学校每天量体温、喝板蓝根、醋熏教室；神五发射时，全班屏息看着电视里火箭划破苍穹的尾焰。",
+      "icon": "shenzhou5_spacesuit",
+      "options": [
+        {
+          "id": "opt_aerospace_model_craft",
+          "label": "亲手制作一枚神舟五号火箭拼装模型，立下航天志向",
+          "effectDesc": "动手能力与科学素养大幅提升",
+          "effects": { "ability": 2, "creativity": 1 }
+        },
+        {
+          "id": "opt_healthy_hygiene_habit",
+          "label": "养成勤洗手、勤通风、规律作息的健康生活习惯",
+          "effectDesc": "身体免疫力与体魄明显改善",
+          "effects": { "health": 2, "willpower": 1 }
+        }
+      ]
+    },
+    {
+      "id": "hist_2005_super_girl_and_blog",
+      "year": 2005,
+      "eraTag": "00s",
+      "stage": "childhood_and_youth",
+      "title": "超级女声选秀风暴与博客元年",
+      "category": "culture_and_internet",
+      "headlineNews": "《2005超级女声》总决选短信投票超千万张，新浪博客引发全民草根写作风潮！",
+      "description": "李宇春、周笔畅、张靓颖引爆全网“玉米”、“笔亲”、“凉粉”阵营PK，大众手握小灵通或诺基亚疯狂发短信投票；徐静蕾、韩寒的博客文章点击量屡破纪录。",
+      "culturalImpact": "大众娱乐由“精英造星”转向“平民草根狂欢”，互联网网络文学与个人博客开启人人皆可发声的时代。",
+      "personalEcho": "班上的女生分成不同阵营互相拉票，放学后第一件事就是去报刊亭买《当代歌坛》杂志和海报。",
+      "icon": "super_girl_phone_vote",
+      "options": [
+        {
+          "id": "opt_write_personal_blog",
+          "label": "在博客上撰写自己的生活随笔与影评，吸引网友关注",
+          "effectDesc": "文笔与网络社交影响力持续增长",
+          "effects": { "creativity": 2, "charm": 2 }
+        },
+        {
+          "id": "opt_organize_fan_cheering",
+          "label": "为喜爱的偶像组织班级后援拉票会，制作应援手幅",
+          "effectDesc": "组织协调能力显著提升",
+          "effects": { "relationships": 2, "leadership": 1 }
+        }
+      ]
+    },
+    {
+      "id": "hist_2006_abolish_agriculture_tax",
+      "year": 2006,
+      "eraTag": "00s",
+      "stage": "all_stages",
+      "title": "全面废止农业税",
+      "category": "reform_economy",
+      "headlineNews": "自2006年1月1日起，国家废止《农业税条例》，延续了2600年的“皇粮国税”从此成为历史！",
+      "description": "国家免除了九亿农民身上延续两千多年的农业税赋，并出台各项种粮补贴政策，社会主义新农村建设迈出历史性关键一步。",
+      "culturalImpact": "极大减轻了农民负担，激发了乡村生产积极性，城乡差距逐步缩小，乡村面貌焕然一新。",
+      "personalEcho": "乡下的爷爷奶奶笑得合不拢嘴，家里把老粮仓腾了出来，买了一台新的彩色大电视庆祝。",
+      "icon": "agriculture_tax_free_memorial",
+      "options": [
+        {
+          "id": "opt_modern_agriculture_support",
+          "label": "回乡推广机械化耕作与新品种蔬菜种植技术",
+          "effectDesc": "造福乡邻，收获极佳声望与家庭收益",
+          "effects": { "wealth": 2, "relationships": 2 }
+        },
+        {
+          "id": "opt_study_rural_economics",
+          "label": "撰写关于农村经济转型的社会调查报告",
+          "effectDesc": "社会洞察力与学术素养大大提高",
+          "effects": { "ability": 2, "insight": 2 }
+        }
+      ]
+    },
+    {
+      "id": "hist_2008_beijing_olympics",
+      "year": 2008,
+      "eraTag": "00s",
+      "stage": "all_stages",
+      "title": "北京奥运会与神七太空漫步",
+      "category": "national_milestone",
+      "headlineNews": "8月8日晚8点，第29届奥林匹克运动会在鸟巢盛大开幕！翟志刚完成中国人首次太空行走！",
+      "description": "二十九个巨大烟花脚印踏过中轴线，梦幻五环与活字印刷惊艳世界，中国代表团斩获金牌榜第一！神七飞船上五星红旗在浩瀚太空中高高飘扬。",
+      "culturalImpact": "“北京欢迎你”传唱每一个角落，民族自豪感与文化自信心空前高涨，“鸟巢一代”志愿者青年走向世界舞台。",
+      "personalEcho": "大街小巷都在播放《北京欢迎你》，大家守在电视机前为刘翔、姚明、林丹、张怡宁呐喊助威。",
+      "icon": "olympic_torch_xiangyun",
+      "options": [
+        {
+          "id": "opt_olympic_volunteer",
+          "label": "戴上蓝白志愿者绶带，在城市站点热情为海内外游客指路",
+          "effectDesc": "获得珍贵志愿证书，魅力与人际圈大拓宽",
+          "effects": { "charm": 2, "relationships": 3, "moral": 2 }
+        },
+        {
+          "id": "opt_watch_all_finals",
+          "label": "记录下中国代表团每一枚金牌的精彩瞬间，剪贴成册",
+          "effectDesc": "留存无价历史记忆，心情大受振奋",
+          "effects": { "mood": 3, "insight": 1 }
+        }
+      ]
+    },
+    {
+      "id": "hist_2010_shanghai_expo_smartphones",
+      "year": 2010,
+      "eraTag": "00s",
+      "stage": "all_stages",
+      "title": "上海世博会与移动互联网初兴",
+      "category": "tech_and_world",
+      "headlineNews": "中国2010年上海世界博览会盛大启幕，“东方之冠”中国馆震撼亮相；安卓与苹果电容触屏智能手机开始走进大众生活！",
+      "description": "7300万人次参观世博会创下历史纪录，“城市，让生活更美好”深入人心；同时，触屏智能机、新浪微博、微信萌芽，传统PC互联网开始向移动端迁徙。",
+      "culturalImpact": "中国人见识了世界最前沿的绿色建筑与未来科技；指尖滑动屏幕改变了人们的信息获取与社交方式。",
+      "personalEcho": "暑假冒着酷暑在世博园排队四小时打卡沙特馆，并在世博护照上盖满了沉甸甸的各国印章。",
+      "icon": "haibao_expo_passport",
+      "options": [
+        {
+          "id": "opt_visit_expo_pavilions",
+          "label": "拿着世博护照走遍各国展馆，收集满本的纪念戳印",
+          "effectDesc": "极大开阔眼界，汲取全球创新灵感",
+          "effects": { "insight": 3, "mood": 2 }
+        },
+        {
+          "id": "opt_develop_mobile_app",
+          "label": "尝试学习安卓或iOS移动应用编程，探索移动端机会",
+          "effectDesc": "搭上移动互联第一波红利，专业技术暴增",
+          "effects": { "ability": 3, "practicalSkill": 2 }
+        }
+      ]
+    },
+    {
+      "id": "hist_2012_liaoning_aircraft_carrier",
+      "year": 2012,
+      "eraTag": "00s",
+      "stage": "all_stages",
+      "title": "首艘航母辽宁舰入列与航母Style",
+      "category": "national_defense",
+      "headlineNews": "我国第一艘航空母舰“辽宁舰”正式交付海军！歼-15舰载机成功起降，“航母style”走红全国！",
+      "description": "中国人百年的“航母梦”终于成真。指挥员坚毅潇洒的起飞指挥手势“走你”瞬间风靡网络，引发全民模仿狂潮。",
+      "culturalImpact": "人民海军正式迈入航母时代，走向深蓝大洋，激发起全民强国强军的澎湃自豪感。",
+      "personalEcho": "下课铃一响，操场上的男孩子们纷纷摆出半蹲伸出食指中指的“走你”姿势，笑作一团。",
+      "icon": "aircraft_carrier_liaoning",
+      "options": [
+        {
+          "id": "opt_hangmu_style_pose",
+          "label": "和朋友们在景点合影摆出最标准的“走你”航母Style",
+          "effectDesc": "收获欢乐与朋友间的默契互动",
+          "effects": { "mood": 2, "relationships": 1 }
+        },
+        {
+          "id": "opt_military_knowledge_study",
+          "label": "购买《舰船知识》与《航空知识》，系统研究现代海军编队",
+          "effectDesc": "国防知识与战略视野大增",
+          "effects": { "insight": 2, "ability": 1 }
+        }
+      ]
+    },
+    {
+      "id": "hist_2014_4g_and_mobile_payment",
+      "year": 2014,
+      "eraTag": "00s",
+      "stage": "youth_and_adult",
+      "title": "4G时代开启与移动支付大普及",
+      "category": "tech_internet",
+      "headlineNews": "中国4G网络商用全面铺开，微信新年红包与移动打车大战点燃移动支付风暴！",
+      "description": "网速迎来质的飞跃，短视频与在线直播崭露头角。扫码支付从一二线城市迅速下沉到街边卖菜小摊，“出门只带手机不带钱包”成为中国人独有的生活日常。",
+      "culturalImpact": "中国在移动支付与数字经济基础设施上实现弯道超车，引领全球无现金便捷生活潮流。",
+      "personalEcho": "除夕夜全家人拿着手机疯狂摇一摇抢红包，连菜市场卖豆腐的阿姨摊位前都贴上了打印好的二维码塑料牌。",
+      "icon": "qr_code_mobile_pay",
+      "options": [
+        {
+          "id": "opt_embrace_digital_wallet",
+          "label": "彻底告别纸币现金，熟练运用移动理财与线上生活缴费",
+          "effectDesc": "生活效率大幅提升，财务管理更加清晰",
+          "effects": { "practicalSkill": 2, "wealth": 1 }
+        },
+        {
+          "id": "opt_explore_ecommerce_livestream",
+          "label": "尝试利用4G高速网络开辟线上社群团购或内容创作",
+          "effectDesc": "把握数字化新风口，收入与知名度增长",
+          "effects": { "wealth": 2, "creativity": 2 }
+        }
+      ]
+    },
+    {
+      "id": "hist_2015_high_speed_railway_network",
+      "year": 2015,
+      "eraTag": "00s",
+      "stage": "all_stages",
+      "title": "中国高铁里程突破世界第一",
+      "category": "national_infrastructure",
+      "headlineNews": "中国高铁运营里程突破1.9万公里，位居世界第一；“八纵八横”高速铁路网宏伟规划全面铺展！",
+      "description": "白色流线型的“和谐号”与“复兴号”穿山越岭，千里江陵一日还。高铁将各大城市群紧密相连，深刻重塑了中国经济地理与百姓出行半径。",
+      "culturalImpact": "中国高铁成为最亮眼的国家名片与“新四大发明”之首，硬币立于窗台不倒的高平稳性享誉海内外。",
+      "personalEcho": "以前回家要坐20多个小时的绿皮硬座慢车，现在高铁只要3小时，周末跨城见好友成为现实。",
+      "icon": "bullet_train_crh",
+      "options": [
+        {
+          "id": "opt_weekend_highspeed_travel",
+          "label": "买一张周五傍晚的高铁票，来一场说走就走的周末双城微旅行",
+          "effectDesc": "身心得到极大放松，增广见闻",
+          "effects": { "mood": 3, "insight": 1, "wealth": -1 }
+        },
+        {
+          "id": "opt_expand_cross_city_business",
+          "label": "依托高铁一小时生活圈，拓展异地业务合作与客户人脉",
+          "effectDesc": "事业版图扩大，人脉网络显著增益",
+          "effects": { "wealth": 2, "relationships": 2 }
+        }
+      ]
+    },
+    {
+      "id": "hist_2018_reform_40_years",
+      "year": 2018,
+      "eraTag": "00s",
+      "stage": "all_stages",
+      "title": "改革开放40周年与大国重器",
+      "category": "national_milestone",
+      "headlineNews": "庆祝改革开放40周年大会在京隆重举行；港珠澳大桥正式通车，国产大型客机C919翱翔蓝天！",
+      "description": "从温饱不足到跃升为世界第二大经济体，四十年风雨兼程创造人类发展史奇迹；一桥连三地、天堑变通途，中国高端制造向全球产业链顶端发起冲锋。",
+      "culturalImpact": "回望峥嵘岁月，感恩几代奋斗者的奉献，全社会形成尊重劳动、崇尚创新实干的浓厚氛围。",
+      "personalEcho": "全家人一起翻看老相册：从当年的粮票、二八大杠自行车，到如今宽敞明亮的高楼与小汽车，感慨万千。",
+      "icon": "hzmb_bridge_monument",
+      "options": [
+        {
+          "id": "opt_drive_across_bridge",
+          "label": "自驾踏上港珠澳大桥，打卡世界最长跨海大桥的壮阔风光",
+          "effectDesc": "胸襟开阔，深受工程奇迹震撼",
+          "effects": { "mood": 2, "insight": 2 }
+        },
+        {
+          "id": "opt_support_domestic_tech",
+          "label": "在工作中优先选用国产自研软硬件与核心元器件",
+          "effectDesc": "助力产业自主创新，获得行业认可",
+          "effects": { "ability": 2, "reputation": 2 }
+        }
+      ]
+    },
+    {
+      "id": "hist_2020_poverty_alleviation_and_change5",
+      "year": 2020,
+      "eraTag": "00s",
+      "stage": "all_stages",
+      "title": "脱贫攻坚大决胜与嫦娥五号揽月归来",
+      "category": "national_milestone",
+      "headlineNews": "全国近一亿农村贫困人口全部脱贫，历史性解决绝对贫困！嫦娥五号携带月球样品成功着陆地球！",
+      "description": "数百万扶贫干部扎根深山，创造了人类减贫史上的奇迹；太空中，嫦娥五号首次实现我国地外天体采样返回，标志着探月工程“绕、落、回”三步走圆满收官。",
+      "culturalImpact": "山乡巨变，全面建成小康社会；千百年来“可上九天揽月”的浪漫梦想化为可触摸的科技现实。",
+      "personalEcho": "老家原本泥泞的山路修成了双向柏油公路，特色农产品通过直播带货直接卖向全国各大城市。",
+      "icon": "change5_lunar_capsule",
+      "options": [
+        {
+          "id": "opt_support_rural_livestream",
+          "label": "购买助农特色农产品并帮乡亲们搭建数字化网店",
+          "effectDesc": "传递善意，收获深厚感恩与社会赞誉",
+          "effects": { "moral": 2, "relationships": 2, "wealth": 1 }
+        },
+        {
+          "id": "opt_visit_planetarium_lunar_soil",
+          "label": "前往国家博物馆参观真正的月球样品，领略深空探测魅力",
+          "effectDesc": "科学热情高涨，眼界与格局大开",
+          "effects": { "insight": 3, "ability": 1 }
+        }
+      ]
+    },
+    {
+      "id": "hist_2022_beijing_winter_olympics",
+      "year": 2022,
+      "eraTag": "00s",
+      "stage": "all_stages",
+      "title": "北京冬奥会与双奥之城",
+      "category": "sports_and_culture",
+      "headlineNews": "北京成为全球首座“双奥之城”！二十四节气倒计时惊艳全球，吉祥物“冰墩墩”一墩难求！",
+      "description": "微火火炬点亮冰雪之约，苏翊鸣、谷爱凌等00后青年健儿大放异彩；憨态可掬的冰墩墩成为现象级顶流文化符号，“带动三亿人参与冰雪运动”成为现实。",
+      "culturalImpact": "中国优秀传统文化与现代冰雪科技完美交融，展示出从容自信、开放包容的中国大国气度。",
+      "personalEcho": "为了给家里小朋友买到一个冰墩墩公仔，在旗舰店小程序刷屏拼手速，成了朋友圈最值得骄傲的战绩。",
+      "icon": "bing_dwendwen_mascot",
+      "options": [
+        {
+          "id": "opt_learn_skiing_snowboarding",
+          "label": "穿上雪服走向滑雪场，体验单板滑雪与速度与激情",
+          "effectDesc": "体能与运动技能跃升，释放压力",
+          "effects": { "health": 2, "mood": 3, "wealth": -1 }
+        },
+        {
+          "id": "opt_create_cultural_craft",
+          "label": "结合国潮与冰雪元素设计手作纪念工艺品，在社交平台爆火",
+          "effectDesc": "艺术创意大获肯定，粉丝关注度飙升",
+          "effects": { "creativity": 3, "charm": 2 }
+        }
+      ]
+    }
+  ]
+}

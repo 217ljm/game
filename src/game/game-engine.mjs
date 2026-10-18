@@ -6,6 +6,9 @@ import { simulateYouthEntry } from "../simulation/youth-entry-simulator.mjs";
 import { simulateAdultLife } from "../simulation/adult-life-simulator.mjs";
 
 export const SESSION_SCHEMA_VERSION = 5;
+export const QUARTER_CADENCE_PROFILE_IDS = Object.freeze({
+  AGE6_1984_QUARTERLY: "age6-1984-quarterly-v1",
+});
 export const STAGE_ORDER = ["childhood", "primary", "adolescence", "youth", "adult"];
 const STAGE_EVENT_CONFIG_KEYS = {
   childhood: "childhoodEvents",
@@ -17,6 +20,12 @@ const STAGE_EVENT_CONFIG_KEYS = {
 
 function clone(value) {
   return structuredClone(value);
+}
+
+function normalizeQuarterCadenceProfile(value) {
+  if (value == null) return null;
+  if (value === QUARTER_CADENCE_PROFILE_IDS.AGE6_1984_QUARTERLY) return value;
+  throw new RangeError(`不支持的季度节奏 profile：${value}`);
 }
 
 export function createGameSession(options = {}) {
@@ -32,6 +41,7 @@ export function createGameSession(options = {}) {
     mortality: options.mortality ?? true,
     characterModelVersion: 1,
     quarterPlanProtocol: "resource-v1",
+    quarterCadenceProfile: normalizeQuarterCadenceProfile(options.quarterCadenceProfile),
     quarterPlans: {},
     quarterAutomation: null,
     randomEventChoices: {},
@@ -102,6 +112,7 @@ export function migrateGameSession(session) {
     migrated.schemaVersion = SESSION_SCHEMA_VERSION;
   }
   if (migrated.schemaVersion === SESSION_SCHEMA_VERSION) {
+    migrated.quarterCadenceProfile ??= null;
     migrated.quarterPlans ??= {};
     migrated.quarterAutomation ??= null;
     migrated.randomEventChoices ??= {};
@@ -126,6 +137,7 @@ export function validateGameSession(session) {
   if (session.quarterPlanProtocol !== "resource-v1") {
     throw new Error("存档季度资源协议版本无效");
   }
+  normalizeQuarterCadenceProfile(session.quarterCadenceProfile);
   if (!session.quarterPlans || typeof session.quarterPlans !== "object") {
     throw new Error("存档缺少逐季度生活安排");
   }
@@ -161,6 +173,12 @@ export function applySessionChoice(session, pendingDecision, optionId) {
     && optionId.type === "quarter.plan"
     ? optionId
     : null;
+  if (quarterPlanPayload && typeof quarterPlanPayload.eventId !== "string") {
+    throw new Error("季度计划缺少当前事件 ID");
+  }
+  if (quarterPlanPayload && quarterPlanPayload.eventId !== pendingDecision.eventId) {
+    throw new Error(`季度计划事件不匹配：${quarterPlanPayload?.eventId ?? "missing"}`);
+  }
   if (quarterPlanPayload && !Array.isArray(quarterPlanPayload.allocations)) {
     throw new Error("季度计划缺少行动投入分配");
   }
@@ -385,6 +403,7 @@ export function runLifeSession(data, session, options = {}) {
   const quarterChoices = {
     ...session.quarterPlans,
     __automation: session.quarterAutomation,
+    __quarterCadenceProfile: session.quarterCadenceProfile ?? null,
     __randomEventChoices: session.randomEventChoices,
     __mainlineChoices: session.mainlineChoices,
   };

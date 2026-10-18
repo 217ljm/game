@@ -1,105 +1,137 @@
-# 《1978—一生》技术架构
+# 《1978—一生》技术架构 v2.0
 
-状态：已决定，后续开发默认遵循。  
-适用范围：Web 原型、最终 TapTap H5 小游戏、PWA、未来 Android/iOS 封装，以及可复用同一模拟核心的其他客户端。
+状态：**游戏优先架构已冻结；后续正式表现层按本文渐进迁移**
 
-## 1. 架构目标
+生效日期：2026-08-24
 
-这是一款以文字选择、季度行动、人物关系和长期因果为主的模拟游戏，不需要为了少量动画引入完整 2D/3D 游戏引擎。技术架构首先保证：
+适用范围：本地开发、TapTap H5、未来 Web/PWA 或其他复用同一模拟 Core 的客户端
 
-1. 同一种子和同一串玩家命令始终产生同一人生结果；
-2. 模拟规则不读取 DOM、浏览器存储、动画或具体页面；
-3. 历史校准数据、虚构玩法内容和程序规则保持可辨认；
-4. 新增人物、事件、行动和美术时，不需要继续扩大单个界面文件；
-5. 长人生不在每次点击后从出生完整重算；
-6. 动画可以跳过、关闭或替换，不改变任何模拟结果；
-7. Web、手机壳和未来其他客户端可以复用模拟核心与内容包。
+## 1. 架构结论
 
-## 2. 已确定技术栈
+《1978—一生》是 2D 竖屏季度回合制人生模拟游戏，不是网页表单或信息仪表盘。
 
-| 层 | 选择 | 不选择/暂缓 |
+正式架构冻结为：
+
+```text
+Deterministic Core
+  → Application / GameGateway / Save
+  → Domain Events + Snapshot
+  → Presentation Cue Mapper
+  → Phaser/Canvas 2D Game Runtime
+  → DOM Utility Layer（仅设置、长记录、调试、导入导出和可访问性）
+```
+
+浏览器和 TapTap H5 只是运行容器。使用 HTML、CSS、JavaScript 或 TypeScript 不会自动把产品变成网页；把主玩法继续写成 DOM 页面、滚动卡片和二次确认表单，才会使它退化为网页。
+
+当前 `public/index.html`、`public/app.mjs`、`public/styles.css` 是遗留原生 ESM/DOM 原型。它们已经证明 Core、路由、存档和调试可以运行，但不代表正式游戏运行时已经完成。从本规范生效起，这三个文件只允许启动兼容、迁移桥接和必要缺陷修复，不再承载新增主玩法。
+
+## 2. 不可破坏的系统资产
+
+以下能力继续保留并通过适配层复用，不做一次性重写：
+
+- `src/simulation/` 的确定性人生模拟；
+- 项目确定性 RNG、稳定 action/event/person ID；
+- 每季度三个月实际执行、事件中断和资源约束；
+- 兴趣、关系、共同记忆、长期因果和未走道路；
+- `GameGateway`、命令校验、存档迁移、恢复和调试回放；
+- 内容与历史校准数据分层；
+- 现有 Node 批量模拟和确定性检查。
+
+同一种子、同一内容版本和同一命令序列必须产生相同人生事实。更换游戏运行时、跳过动画、静音或刷新页面都不能改变模拟结果。
+
+## 3. 正式技术栈
+
+| 层 | 冻结选择 | 禁止继续采用的主路线 |
 | --- | --- | --- |
-| 语言 | TypeScript 严格模式 | 继续扩大无类型的 `.mjs` 接口 |
-| Web 构建 | Vite | 自写静态文件拼装长期扩张 |
-| UI | Vue 3、Composition API、单文件组件 | 把所有页面继续写进 `public/app.mjs` |
-| 页面导航 | Hash 路由；迁移后由 Vue Router 接管 | 页面状态写入模拟存档 |
-| 游戏核心 | 纯 TypeScript 状态机、命令驱动、确定性随机 | Vue store 直接修改人生状态 |
-| 后台计算 | Web Worker，通过类型化消息协议通信 | UI 主线程承担整生重放 |
-| 正式存档 | IndexedDB；设置项可继续使用 localStorage | 把越来越大的完整人生塞入 localStorage |
-| 内容 | JSON 源文件 + Schema 校验 + 构建时内容包 | 页面代码内硬编码事件 |
-| 美术 | SVG、透明 WebP/PNG、CSS 图层 | 目前引入 Unity、Godot、PixiJS |
-| 动画 | CSS Transition/Animation + Web Animations API | 动画回调直接改变属性或随机结果 |
-| 自动测试 | 现有 Node 批量模拟 + 类型检查 + 浏览器回归 | 只靠人工点击测试 |
-| 主发布 | TapTap H5 小游戏；普通 Web/PWA 用于开发和外部测试 | 为首发重写 Canvas 小游戏客户端 |
-| 后续独立移动包 | 验证留存后再用 Capacitor 生成 Android 和 iOS 包 | 现在维护独立 Android/iOS 业务代码 |
+| 语言 | TypeScript 严格模式；现有 `.mjs` 渐进适配 | 继续扩大无类型的跨层接口 |
+| 构建 | Vite | 长期手写静态文件拼装 |
+| 2D 主运行时 | Phaser 3.90，Canvas/WebGL 自动选择 | 用 DOM 卡片承担角色、季度和事件主玩法 |
+| 模拟核心 | 渲染器无关的纯状态机、稳定命令、确定性随机 | 在 Phaser Scene 或 UI 回调中计算人生事实 |
+| 表现 | Snapshot/DomainEvent → PresentationCue → Scene Director | 动画回调直接改属性、关系、现金或 RNG |
+| DOM 工具层 | 设置、长记录、调试、存档导入导出、可访问性入口 | 把 DOM 工具层扩成主游戏舞台 |
+| 内容 | JSON + Schema + 稳定 ID + 内容版本 | 在 Scene、HTML 或中文标题里硬编码事实关联 |
+| 美术 | manifest 管理的 WebP/PNG/SVG、序列帧/精灵、UI 图集 | 让素材文件名成为公共协议 |
+| 存档 | 当前 v5 保持兼容；正式迁移后评估 IndexedDB | 保存 Phaser 对象、DOM 节点或动画状态 |
+| 发布 | TapTap H5 首发，普通浏览器用于开发与验证 | 因为是 H5 就把产品继续做成网页应用 |
 
-Vue 官方建议完整应用采用 Composition API 与单文件组件，且官方脚手架直接提供 Vite 与 TypeScript；Vite 可以把 Worker 编译为独立产物。Capacitor 只作为 Web 客户端成熟后的可选原生容器，不进入模拟核心。
+本项目不需要 3D、自由移动、地图、热点、寻路、碰撞或物理系统。采用 Phaser 是为了游戏屏幕生命周期、显示列表、Tween、输入、音频、资源和表现编排，不是重新引入已否定的轻场景探索方向。
 
-## 3. 总体结构
+## 4. 分层依赖
 
 ```mermaid
 flowchart TD
-    UI["Web / 未来其他客户端"] --> APP["Application：用例与游戏网关"]
-    APP --> WORKER["Worker 协议"]
-    WORKER --> CORE["Core：确定性人生状态机"]
-    CORE --> CONTENT["Content Pack：行动、事件、人物、校准"]
-    CORE --> EVENTS["Domain Events：事实与结果"]
-    EVENTS --> PRESENT["Presentation：ViewModel 与表现提示"]
-    PRESENT --> UI
-    APP --> SAVE["Save Repository"]
-    SAVE --> IDB["IndexedDB / 导入导出 JSON"]
-    PRESENT --> MOTION["Motion Director"]
-    MOTION --> UI
+    INPUT[Touch / Pointer / Keyboard] --> RUNTIME[Phaser Game Runtime]
+    DOM[DOM Utility Layer] --> APP[Application / GameGateway]
+    RUNTIME -->|Stable Command| APP
+    APP --> CORE[Deterministic Core]
+    CORE --> CONTENT[Content Pack]
+    CORE --> EVENTS[Snapshot + Domain Events]
+    EVENTS --> CUES[Presentation Cue Mapper]
+    CUES --> RUNTIME
+    APP --> SAVE[Save Repository]
+    SAVE --> STORAGE[localStorage v5 / future IndexedDB]
 ```
 
-依赖方向只能从外向内。`core` 不允许反向导入 `application`、`presentation`、`platform` 或 `apps`。
+依赖只能从外向内：
 
-## 4. 目标目录
+- Core 不读取 `window`、`document`、localStorage、Phaser、素材路径、动画或当前屏幕；
+- Application 负责命令、决策节点、存档和恢复，不负责画面；
+- Presentation 只把既成事实映射为可丢弃的 cue，不产生游戏事实；
+- Phaser Scene 只显示快照、接收输入、提交命令和播放 cue；
+- DOM 工具层与 Phaser 使用同一个 GameGateway，不能另建一套人生状态；
+- 任何层都不得使用 `Math.random()` 影响游戏事实。
 
-项目逐步迁移为 npm workspaces；不一次性移动全部现有文件。
+## 5. 目标目录
+
+采用渐进迁移，不要求一次移动全部现有文件：
 
 ```text
 apps/
-  web/                       Vue 页面、路由和样式
-  taptap-h5/                复用 web 构建，仅放 TapTap 平台启动与能力适配
-  native-shell/              可选 Capacitor 配置，不放业务规则
+  game/                         Vite + Phaser 正式游戏入口
+  taptap-h5/                   TapTap 生命周期、登录、分享和云存档适配
 packages/
-  contracts/                 跨层 TypeScript 类型和协议
-  core/                      RNG、状态机、阶段模拟和领域事件
-  application/               开始人生、提交命令、读写存档
-  content/                   JSON Schema、加载、校验和内容版本
-  presentation/              页面 ViewModel、文案格式化、表现提示
-  platform-web/              IndexedDB、下载、浏览器能力
-  ui-kit/                    卡片、选项、数值条、人物卡等组件
+  contracts/                   命令、快照、cue、存档、素材 manifest 类型
+  core/                        现有 src/simulation 的渐进目标
+  application/                 GameGateway、用例、存档协调
+  presentation/                DomainEvent → PresentationCue
+  game-runtime/
+    boot/                      Phaser 配置、缩放、资源预加载
+    screens/                   Title、Life、Event、QuarterResult、YearReview、Ending
+    hud/                       年龄、季度、身份、资源、单一推进动作
+    actions/                   模块、行动、季度安排、资源不足反馈
+    actors/                    玩家与持续人物的头像/姿态/状态表现
+    motion/                    Tween、转场、月份/季度/增龄演出
+    audio/                     UI、事件与环境音
+  dom-utility/                 设置、记录、调试、导入导出、可访问性
+  platform-web/                存储、下载、浏览器能力
 data/
-  calibration/               有来源的历史校准数据
-  gameplay/                  虚构场景、行动、人物角色和玩法内容
-art-source/                  可编辑原稿，不打入发布包
-public/assets/               经过压缩、由 manifest 引用的发布素材
-scripts/                     批量模拟、内容检查、构建和回归
-docs/                        系统规则、架构和美术规范
+  calibration/                有来源的历史观测
+  gameplay/                   虚构人物、行动、事件和玩法内容
+public/assets/                 仅由 manifest 引用的发布素材
+scripts/                      模拟、内容、构建、浏览器和发布检查
 ```
 
-当前 `src/simulation` 视为未来 `packages/core` 的来源；`game-application` 是未来 application 层雏形；`presenter` 和 `page-presenter` 迁入 presentation；`browser-platform` 迁入 platform-web。
+目录名可在实施时按现有工程逐步落地，但职责边界不得改变。
 
-## 5. 核心协议
+## 6. 命令、回复与表现 cue
 
-### 5.1 玩家命令
-
-UI 只提交命令，不直接修改快照：
+UI 和 Phaser 只能提交稳定命令：
 
 ```ts
 type GameCommand =
   | { type: "life.start"; config: StartLifeConfig }
-  | { type: "quarter.plan"; eventId: string; activityIds: string[] }
+  | {
+      type: "quarter.plan";
+      eventId: string;
+      allocations: Array<{
+        actionId: string;
+        intensity: "trial" | "regular" | "focus";
+      }>;
+    }
   | { type: "event.choose"; eventId: string; optionId: string }
   | { type: "year.confirm"; year: number }
   | { type: "debug.advance"; target: DebugTarget };
 ```
-
-命令包含稳定 ID，不包含页面元素、显示顺序或中文文案。
-
-### 5.2 引擎回复
 
 ```ts
 interface EngineReply {
@@ -111,171 +143,139 @@ interface EngineReply {
 }
 ```
 
-`DomainEvent` 是已经发生的游戏事实，例如 `quarter.settled`、`interest.changed`、`person.met`、`year.advanced`。界面不能根据动画是否完成决定这些事实是否生效。
-
-### 5.3 表现提示
-
-presentation 层把领域事件映射为可丢弃的提示：
-
 ```ts
 interface PresentationCue {
   id: string;
-  type: "scene.enter" | "choice.resolve" | "stat.delta" |
-        "relationship.change" | "year.advance" | "chapter.complete";
+  type:
+    | "screen.enter"
+    | "action.scheduled"
+    | "action.resolve"
+    | "resource.delta"
+    | "person.react"
+    | "event.interrupt"
+    | "month.advance"
+    | "quarter.complete"
+    | "year.advance";
   priority: "ambient" | "normal" | "key";
   payload: Record<string, unknown>;
 }
 ```
 
-表现提示不写入确定性命令日志。跳过动画、刷新页面或开启“减少动态效果”时，人生结果完全不变。
+cue 不进入确定性命令日志。动画跳过或刷新时，运行时必须直接重建为最新已保存事实。
 
-## 6. 从整生重放改为增量状态机
+## 7. 游戏屏幕和交互边界
 
-当前引擎通过“种子 + 全部选择”从出生重放，优点是容易验证确定性，缺点是人生越长，每次点击越慢。迁移使用绞杀式替换：
+正式主游戏由少量游戏屏幕组成：
 
-1. 先建立 `GameGateway`，现有实现命名为 `ReplayGameGateway`；
-2. Vue 页面只依赖网关，不依赖具体模拟器；
-3. 新建 `IncrementalGameGateway`，一次只推进到下一个等待节点；
-4. 每个自然年结束生成 checkpoint，关键阶段结束额外生成 checkpoint；
-5. 命令日志用于复核与“没有走过的道路”，checkpoint 用于快速继续；
-6. 调试器仍可以从出生重放，用于确定性验收；正式游玩默认从最近 checkpoint 增量推进；
-7. 稳定后把增量网关放入 Worker，UI 只接收结构化克隆结果。
+- `TitleScreen`：继续/新人生；
+- `LifeScreen`：角色、年龄、季度、资源、近期人生记录、生活模块和当前季度安排；
+- `ActionPanel`：具体行动、对象、成本、风险和状态；
+- `EventScreen`：事件发生、选择和人物反应；
+- `QuarterResultScreen`：三个月过程、执行率、资源与因果；
+- `YearReviewScreen`：Q4 回望、增龄和下一年龄入口；
+- `EndingScreen`：关键人生片段与因果复盘。
 
-两种网关在迁移期必须通过同一组“同命令同快照”契约测试，之后才能移除重放网关的正式运行职责。
+DOM 工具页：
 
-## 7. 存档结构
+- 设置；
+- 可展开的长记录/计算解释；
+- 调试台；
+- 存档导入导出；
+- Canvas 等价可访问性入口。
 
-正式存档升级时使用新的 schema 版本，保留 v4 导入：
+交互硬规则：
 
-```ts
-interface LifeSave {
-  schemaVersion: number;
-  engineVersion: string;
-  contentVersion: string;
-  seed: string;
-  commandLog: GameCommand[];
-  latestCheckpoint: SaveCheckpoint;
-  completedLifeSummary?: CompletedLifeSummary;
-  savedAt: string;
-}
-```
+1. 角色、年龄、季度、身份和核心资源持续可见；
+2. 学校/活动/关系/家庭/生活等模块是游戏菜单，不是网站页面；
+3. 点击行动后，行动以令牌、图标或明确条目留在本季度安排中，不得消失；
+4. 行动选择立即显示输入、成本、人物或状态反馈，但最终事实以 Core 结算为准；
+5. 每季度只保留一个明确的结束/推进动作；
+6. 资源不足必须给出可理解的缺口和可返回调整的路径；
+7. 事件打断、三个月推进、季度结算和 Q4 增龄必须有可观察的状态变化与转场；
+8. 不使用自由移动、地图、隐藏热点或背景猜点击来承载行动。
 
-规则：
+## 8. 素材与表现
 
-- IndexedDB 保存正式人生、调试人生和人生画廊；
-- localStorage 只保留音量、动画强度、当前路由等小设置；
-- 每个存档同时记录 `engineVersion` 与 `contentVersion`；
-- 不保存可重新生成的 ViewModel；
-- 支持导出/导入 JSON 与迁移预览；
-- 写入采用临时记录后替换正式记录，避免中途关闭造成半份存档；
-- 存档迁移只能补字段或转换结构，不能暗中重新抽取人生结果。
+- 全部素材通过稳定 manifest key 访问，不由业务代码拼路径；
+- 按 `actors`、`ui`、`events`、`backgrounds`、`fx`、`audio` 分组；
+- 首包只加载当前年龄和当前屏幕需要的资源；
+- 动画、声音和震动只消费 cue，可关闭、可跳过；
+- 支持 `prefers-reduced-motion` 和游戏内完整/减少/关闭设置；
+- 图片或音频失败时不得阻断命令、存档或下一季度；
+- 概念图不能直接宣称为最终实机资产。
 
-## 8. 内容架构
+## 9. 存档边界
 
-内容源分为三类：
+当前 v5 存档继续作为迁移输入。正式存档只保存可序列化的模拟事实和命令，不保存：
 
-1. `calibration`：带来源的历史数据；
-2. `gameplay`：虚构人物、场景、行动和事件文案；
-3. `rules`：公式、阈值、冷却、选择条件和状态变化。
+- Phaser Scene、GameObject、Tween、Texture 或 Camera；
+- DOM 节点、CSS class、当前动画帧；
+- 可由快照重建的 ViewModel；
+- 未经 Core 确认的属性或关系结果。
 
-构建流程：
+迁移到 IndexedDB 只在包体、存档数量或生命周期证据证明有必要时实施。任何 schema 升级都必须有旧存档样例、迁移检查和结果不变证据。
 
-```text
-JSON 源文件 → JSON Schema 校验 → 交叉 ID 检查 → 内容版本哈希
-→ content.pack.json → Core 只读加载
-```
+## 10. 渐进迁移顺序
 
-所有人物、行动、选项、事实和素材使用稳定 ID。内容不能通过文件路径或中文标题互相引用。历史观测、模型假设、未来情景和纯玩法文案继续分别标识。
+### A. 游戏壳与协议
 
-## 9. 页面组件边界
+- 建立 Vite/TypeScript/Phaser 正式入口；
+- 冻结 GameGateway、GameCommand、EngineReply、PresentationCue 和 AssetManifest；
+- 先接现有 ReplayGameGateway，不改模拟事实；
+- 旧 DOM 入口保持可运行，作为对照与回退，不继续加主玩法。
 
-Web 客户端按页面和领域组件拆分：
+### B. 1984 年 6 岁 Q1 灰盒
 
-```text
-views/
-  TitleView.vue
-  NewLifeView.vue
-  LifeView.vue
-  GrowthView.vue
-  RelationsView.vue
-  TimelineView.vue
-  ArchiveView.vue
-  EventFlowView.vue
-  QuarterResultView.vue
-  YearReviewView.vue
-  EndingView.vue
-components/
-  game/ActionPool.vue
-  game/LifeMainline.vue
-  game/QuarterProgress.vue
-  game/ChoiceCard.vue
-  game/PersonCard.vue
-  game/CausalChain.vue
-  art/SceneBackdrop.vue
-  art/CharacterPortrait.vue
-  motion/MotionLayer.vue
-```
+- 只做 `LifeScreen`、四至五个模块、行动留痕、单一季度推进；
+- 接入资源不足、事件打断、月份推进和结果 cue；
+- 在 Chrome 390×844 录制 60～90 秒无剪辑流程；
+- 若仍主要表现为滚动文字、卡片和表单，停止扩内容，先修正游戏交互。
 
-约束：页面不计算模拟公式；组件不直接读取存档；文案格式化不散落在模板；一个组件超出约 300 行时优先按职责拆分。
+### C. Q1～Q4 垂直切片
 
-## 10. 平台与发布
+- 接入现有年龄 6 内容、三名持续人物和六个事件；
+- 完成 Q4 年度回望、7 岁入口、存档恢复；
+- 检查普通路径、资源受限路径和事件中断路径。
 
-开发和封闭测试形态继续是响应式 Web/PWA，最终主发布形态确定为 TapTap H5 小游戏。`apps/taptap-h5` 复用相同 Vue 页面和构建产物，只增加 TapTap 登录、云存档、分享、生命周期等平台适配，平台 API 不得进入 core。
+### D. 工具层与替换
 
-验证留存以后，如需 Android 下载包或 App Store 独立 iOS 版，再加入 Capacitor；如需 Steam，则另建桌面发布适配，不改变模拟核心。若以后制作不兼容 DOM 的其他客户端，只实现新的 UI、platform 和 GameGateway 传输层；`contracts`、`core`、`content` 与大部分 presentation 保持复用。
+- 把记录、设置、调试和导入导出迁入 DOM Utility Layer；
+- 删除对旧 `public/app.mjs` 主生活渲染的正式依赖；
+- 更新 H5 构建，让 Phaser 与正式 manifest 进入发布包；
+- 只有全部回归通过后才移除遗留 DOM 主屏。
 
-服务器在单机 MVP 中不是必需。排行榜、云存档、账号和付费真正进入范围后，再增加后端；不能为了“以后可能用”提前把确定性单机模拟改成联网依赖。
+### E. 后续年龄与性能
+
+- 按 18、30、45、65 岁代表切片验证后再扩全人生；
+- 有真实性能证据后再引入 Worker、增量网关或更复杂缓存；
+- 不用架构迁移代替玩法验证。
 
 ## 11. 质量门槛
 
-每次架构迁移必须满足：
+架构或游戏表现改动必须满足：
 
-- `core` 中不存在 `window`、`document`、`localStorage`、Vue 或素材路径；
+- Core 无 DOM、Phaser、浏览器存储和素材依赖；
 - 同种子、同内容版本、同命令日志产生相同快照；
-- 内容 ID 和素材 manifest 在构建时全部可解析；
-- v4 真实存档样例能迁移且关键事实不改变；
-- Worker 与主线程网关通过同一契约测试；
-- 动画关闭后全部操作仍可完成；
-- 390px 手机宽度无横向滚动；
-- 关键选择、季度结算、年度结算和存档写入均有浏览器回归；
-- 批量人口校准结果在允许误差内保持稳定。
+- Phaser 运行时不直接写模拟事实；
+- 内容 ID 和素材 manifest 全部可解析；
+- 当前真实 v5 存档能恢复，升级时有迁移检查；
+- 动画关闭和 reduced motion 下可以完整操作；
+- 390×844 无横向溢出、遮挡和不可达按钮；
+- Chrome 实机流程覆盖资源不足、事件打断、Q4 增龄和存档恢复；
+- UI/交互改动运行 `npm run ui:check` 与 `npm run browser:check`；
+- 公共模拟、命令、RNG 或存档改动运行 `npm run check`；
+- 60～90 秒无剪辑流程能够让产品负责人看见角色状态、行动留痕、即时反馈、时间推进和结果变化；能启动、背景图或文字卡不算完成。
 
-## 12. 迁移顺序
+## 12. 发布边界
 
-### A. 架构地基
+TapTap H5 复用同一游戏运行时和模拟 Core，只新增平台生命周期、账号、云存档、分享或审核适配。平台 API 不得进入 Core。单机 MVP 不提前增加后端、支付、广告或排行榜。
 
-- 建立 workspaces、TypeScript、Vite、Vue 和类型检查；
-- 添加 contracts、GameGateway、SaveRepository 与 AssetManifest 接口；
-- 用 ReplayGameGateway 包住当前引擎，行为不得变化。
+微信小游戏不是当前首发范围。未来若产品负责人正式改为微信优先，再单独比较 Phaser 适配与 Cocos Creator 迁移成本；不能因为参考《中国式人生》就复制它的平台或工程结构。
 
-### B. 页面迁移
+## 13. 参考
 
-- 先迁移流程页，再迁移五个主页面；
-- 每迁一页都保留现有浏览器回归；
-- `public/app.mjs` 最终只剩启动兼容代码并被移除。
-
-### C. 存档与内容
-
-- IndexedDB repository、v4→v5 迁移和 JSON 导入导出；
-- 建立 Schema、内容构建和素材 manifest。
-
-### D. 增量引擎
-
-- 加 checkpoint、命令协议和增量推进；
-- 对照 ReplayGameGateway 验证后接入 Worker。
-
-### E. 美术与动画
-
-- 接入场景背景、人物剪影、关键事件插图和 Motion Director；
-- 加动画强度、跳过和减少动态效果；
-- 最后再评估音效和音乐，不让它阻塞核心玩法。
-
-## 13. 官方参考
-
-- Vue TypeScript：https://vuejs.org/guide/typescript/overview
-- Vue Composition API：https://vuejs.org/guide/introduction
-- Vite Worker：https://vite.dev/guide/features.html#web-workers
+- Phaser：https://docs.phaser.io/
+- Vite：https://vite.dev/
 - IndexedDB：https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API
 - Web Workers：https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API
-- Capacitor：https://capacitorjs.com/docs
 - TapTap H5 小游戏：https://developer.taptap.cn/minigameapidoc/quick-start/guide/minigames-intro/

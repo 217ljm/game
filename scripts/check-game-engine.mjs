@@ -85,6 +85,7 @@ const focusedAgeOneSession = applySessionChoice(
   ageOnePending.pendingDecision,
   {
     type: "quarter.plan",
+    eventId: ageOnePending.pendingDecision.eventId,
     allocations: [{ actionId: ageOneOptions[0].id, intensity: "focus" }],
   },
 );
@@ -97,9 +98,27 @@ assert.throws(() => applySessionChoice(
   ageOnePending.pendingDecision,
   {
     type: "quarter.plan",
+    eventId: ageOnePending.pendingDecision.eventId,
     allocations: [{ actionId: ageOneOptions[0].id, intensity: "impossible" }],
   },
 ), /投入强度无效/);
+assert.throws(() => applySessionChoice(
+  ageOneSession,
+  ageOnePending.pendingDecision,
+  {
+    type: "quarter.plan",
+    allocations: [{ actionId: ageOneOptions[0].id, intensity: "focus" }],
+  },
+), /季度计划缺少当前事件 ID/);
+assert.throws(() => applySessionChoice(
+  ageOneSession,
+  ageOnePending.pendingDecision,
+  {
+    type: "quarter.plan",
+    eventId: `${ageOnePending.pendingDecision.eventId}:mismatch`,
+    allocations: [{ actionId: ageOneOptions[0].id, intensity: "focus" }],
+  },
+), /季度计划事件不匹配/);
 const firstOptionSession = applySessionChoice(
   ageOneSession,
   ageOnePending.pendingDecision,

@@ -71,7 +71,7 @@ export function resumeLife(data, session) {
  * @param {Record<string, any>} data
  * @param {any} session
  * @param {any} result
- * @param {string | string[] | { type: "quarter.plan", allocations: Array<{ actionId: string, intensity: string }> }} choice
+ * @param {string | string[] | { type: "quarter.plan", eventId: string, allocations: Array<{ actionId: string, intensity: string }> }} choice
  */
 export function submitLifeChoice(data, session, result, choice) {
   const gateway = getGameGateway(data);

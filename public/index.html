@@ -157,7 +157,60 @@
           </div>
         </div>
 
-        <section id="scene-page" class="game-page" data-route="scene">
+        <section id="life-page" class="game-page" data-route="life">
+          <section id="life-simulator-main" class="life-simulator-main" aria-label="季度人生模拟器">
+            <div class="simulator-hud">
+              <div>
+                <p class="eyebrow">正在经历</p>
+                <strong id="simulator-year">1984</strong>
+                <span id="simulator-age">6岁</span>
+              </div>
+              <div class="simulator-hud-context">
+                <b id="simulator-quarter">Q1</b>
+                <span id="simulator-stage">小学前后</span>
+                <small id="simulator-data-status">历史观测范围</small>
+              </div>
+            </div>
+            <section class="simulator-resource-strip" aria-label="本季度资源">
+              <div><span>时间</span><strong id="simulator-time">—</strong></div>
+              <div><span>精力</span><strong id="simulator-energy">—</strong></div>
+              <div><span>现金</span><strong id="simulator-cash">—</strong></div>
+            </section>
+            <section class="simulator-responsibility" aria-label="固定责任">
+              <div class="simulator-section-heading"><div><p class="eyebrow">先要维持的生活</p><strong>固定责任</strong></div><span id="simulator-responsibility-summary">—</span></div>
+              <div id="simulator-responsibility-list" class="simulator-responsibility-list"></div>
+            </section>
+            <section class="simulator-quarter-rail" aria-label="年度季度轨道">
+              <div class="simulator-section-heading"><div><p class="eyebrow">这一年的轨道</p><strong id="simulator-quarter-title">Q1 · 现在</strong></div><span id="simulator-quarter-count">0 / 4 已完成</span></div>
+              <div id="simulator-quarter-list" class="simulator-quarter-list"></div>
+            </section>
+            <section class="simulator-draft" aria-label="本季度草案">
+              <div class="simulator-section-heading"><div><p class="eyebrow">可以改变的部分</p><strong>本季安排</strong></div><span id="simulator-draft-budget">尚未安排</span></div>
+              <div id="simulator-draft-list" class="simulator-draft-list"></div>
+              <p id="simulator-draft-note" class="simulator-draft-note">从生活模块添加一两件具体的事。</p>
+            </section>
+            <section class="simulator-recent" aria-label="最近发生">
+              <div class="simulator-section-heading"><div><p class="eyebrow">人生不会只留下数字</p><strong>最近发生</strong></div><span>最多两条</span></div>
+              <div id="simulator-recent-list" class="simulator-recent-list"></div>
+            </section>
+            <section class="simulator-modules" aria-label="生活模块">
+              <div class="simulator-section-heading"><div><p class="eyebrow">进入生活</p><strong>选择一个模块</strong></div><span>加入本季草案</span></div>
+              <div id="simulator-module-list" class="simulator-module-list"></div>
+            </section>
+            <button id="simulator-primary-action" class="simulator-primary-action" type="button">安排本季度</button>
+          </section>
+
+          <div id="life-action-drawer" class="life-action-drawer" hidden role="dialog" aria-modal="true" aria-labelledby="life-action-drawer-title">
+            <button id="life-action-drawer-backdrop" class="life-action-drawer-backdrop" type="button" aria-label="关闭行动抽屉"></button>
+            <section class="life-action-drawer-sheet">
+              <div class="life-action-drawer-handle" aria-hidden="true"></div>
+              <div class="life-action-drawer-heading"><div><p id="life-action-drawer-kicker" class="eyebrow">生活模块</p><h2 id="life-action-drawer-title">选择一件具体的事</h2></div><button id="life-action-drawer-close" type="button" aria-label="关闭行动抽屉">×</button></div>
+              <p id="life-action-drawer-note" class="life-action-drawer-note">行动会先进入草案，提交季度后才成为 Core 事实。</p>
+              <div id="life-action-drawer-list" class="life-action-drawer-list"></div>
+              <div class="life-action-drawer-footer"><strong id="life-action-drawer-budget">尚未安排</strong><button id="life-action-drawer-done" class="primary-button" type="button">完成选择</button></div>
+            </section>
+          </div>
+
           <article id="life-stage-card" class="life-stage-card" hidden>
             <div class="life-stage-viewport">
               <canvas id="life-stage-canvas" role="img" aria-label="1984年雨后的小学校园，六岁的你正在安排这个季度的课余生活"></canvas>
@@ -229,24 +282,6 @@
             </div>
             <div id="option-list" class="option-list"></div>
             <button id="confirm-plan-button" class="primary-button confirm-plan-button" type="button" hidden>确认这一季度的生活</button>
-          </article>
-        </section>
-
-        <section id="map-page" class="game-page map-page" data-route="map" hidden>
-          <article class="world-map-stage">
-            <div class="world-map-heading">
-              <div><p class="eyebrow">这一岁的活动范围</p><h2 id="world-map-title">当前生活圈</h2></div>
-              <span id="world-map-count">正在整理地点</span>
-            </div>
-            <p id="world-map-subtitle" class="world-map-subtitle"></p>
-            <div id="world-map-board" class="world-map-board" role="list" aria-label="可前往地点"></div>
-          </article>
-          <article id="map-location-panel" class="map-location-panel" aria-live="polite">
-            <div class="map-location-panel-heading"><span id="map-location-icon"><i class="ph-duotone ph-house-line" aria-hidden="true"></i></span><div><small id="map-location-status">当前落脚点</small><h3 id="map-location-title">住处</h3></div></div>
-            <p id="map-location-detail"></p>
-            <div class="map-location-facts"><span id="map-location-travel"></span><span id="map-location-people"></span></div>
-            <div id="map-location-opportunities" class="map-location-opportunities"></div>
-            <p id="map-location-unlock" class="map-location-unlock" hidden></p>
           </article>
         </section>
 
@@ -326,8 +361,7 @@
         </section>
 
         <nav id="main-navigation" class="main-navigation" aria-label="人生主要页面">
-          <button type="button" data-route="scene"><i class="ph-duotone ph-person-simple-run" aria-hidden="true"></i><b>场景</b></button>
-          <button type="button" data-route="map"><i class="ph-duotone ph-map-trifold" aria-hidden="true"></i><b>地图</b></button>
+          <button type="button" data-route="life"><i class="ph-duotone ph-calendar-blank" aria-hidden="true"></i><b>生活</b></button>
           <button type="button" data-route="character"><i class="ph-duotone ph-identification-card" aria-hidden="true"></i><b>人物</b></button>
           <button type="button" data-route="relations"><i class="ph-duotone ph-users-three" aria-hidden="true"></i><b>关系</b></button>
           <button type="button" data-route="records"><i class="ph-duotone ph-book-open-text" aria-hidden="true"></i><b>记录</b></button>
@@ -371,6 +405,10 @@
         </div>
         <article class="quarter-result-summary">
           <strong id="quarter-result-plan"></strong><p id="quarter-result-detail"></p>
+        </article>
+        <article id="quarter-interruption-card" class="quarter-interruption-card" hidden>
+          <div class="quarter-interruption-heading"><p class="eyebrow">计划被现实打断</p><strong>哪些安排受到了影响</strong></div>
+          <div id="quarter-interruption-list" class="quarter-interruption-list"></div>
         </article>
         <article id="quarter-month-card" class="quarter-month-card" hidden>
           <div class="quarter-month-heading"><p class="eyebrow">三个月实际过程</p><strong>计划不是一次点击后瞬间结算</strong></div>

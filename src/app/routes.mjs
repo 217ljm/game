@@ -1,8 +1,7 @@
 export const ROUTES = Object.freeze({
   TITLE: "title",
   NEW_LIFE: "new-life",
-  SCENE: "scene",
-  MAP: "map",
+  LIFE: "life",
   CHARACTER: "character",
   RELATIONS: "relations",
   RECORDS: "records",
@@ -15,8 +14,7 @@ export const ROUTES = Object.freeze({
 });
 
 export const MAIN_ROUTES = Object.freeze([
-  ROUTES.SCENE,
-  ROUTES.MAP,
+  ROUTES.LIFE,
   ROUTES.CHARACTER,
   ROUTES.RELATIONS,
   ROUTES.RECORDS,
@@ -32,7 +30,8 @@ export const FLOW_ROUTES = Object.freeze([
 
 const VALID_ROUTES = new Set(Object.values(ROUTES));
 const LEGACY_ROUTES = Object.freeze({
-  life: ROUTES.SCENE,
+  scene: ROUTES.LIFE,
+  map: ROUTES.LIFE,
   growth: ROUTES.CHARACTER,
   timeline: ROUTES.RECORDS,
   archive: ROUTES.RECORDS,
@@ -61,18 +60,17 @@ export function isMainRoute(route) {
 }
 
 export function routeForPending(pending) {
-  if (!pending) return ROUTES.SCENE;
+  if (!pending) return ROUTES.LIFE;
   if (["random_life_event", "mainline_event"].includes(pending.kind)) return ROUTES.RANDOM_EVENT;
   if (pending.kind === "year_review") return ROUTES.YEAR_REVIEW;
-  return ROUTES.SCENE;
+  return ROUTES.LIFE;
 }
 
 export function routeTitle(route) {
   return {
     [ROUTES.TITLE]: "1978—一生",
     [ROUTES.NEW_LIFE]: "人生起点",
-    [ROUTES.SCENE]: "生活场景",
-    [ROUTES.MAP]: "生活地图",
+    [ROUTES.LIFE]: "季度生活",
     [ROUTES.CHARACTER]: "我的人物",
     [ROUTES.RELATIONS]: "人物关系",
     [ROUTES.RECORDS]: "人生记录",

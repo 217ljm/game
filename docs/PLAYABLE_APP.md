@@ -1,4 +1,6 @@
-# 可玩版本说明
+# 旧 DOM 验证原型说明
+
+> **文档状态：迁移期运行说明。** 本文只说明当前 `public/index.html`、`public/app.mjs`、`public/styles.css` 原型怎样启动和验证确定性 Core、存档与调试；它不是正式游戏 UI，也不是继续扩展 DOM 主玩法的依据。正式方向以 [`QUARTERLY_LIFE_SIMULATOR_MASTER_PLAN.md`](QUARTERLY_LIFE_SIMULATOR_MASTER_PLAN.md) 和 [`TECHNICAL_ARCHITECTURE.md`](TECHNICAL_ARCHITECTURE.md) 为准。
 
 ## 启动
 

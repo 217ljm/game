@@ -207,6 +207,96 @@
           "growthChanges": { "school_confidence": 2, "practical_independence": 2 },
           "statChanges": { "ability": 2 },
           "experience": { "actorRole": "caregiver", "setting": "家中桌面或平整的一角", "process": ["先挑出最想记住的几个字或数量", "把纸片裁成能保存的小块，危险步骤由大人处理", "打乱顺序后自己重新认了一遍"], "responses": ["家人补上了你不会写的部分，其余让你自己画。", "对方发现其中一张容易弄混，和你一起改了标记。"], "outcomes": ["这些卡片在之后几周仍能继续使用。", "你第一次自己做出了学习材料。"] }
+        },
+        {
+          "id": "child_age6_ask_teacher_about_school",
+          "label": "向准老师问一个关于学校的问题",
+          "description": "把听说过的学校、课堂或入学准备拿去问一位能够解释的人，不把还没确认的事情当成已经发生。",
+          "category": "learning",
+          "hoursPerWeek": 3,
+          "cashCostYuan": 0,
+          "interestTags": ["reading_language", "storytelling_media"],
+          "growthChanges": { "school_confidence": 2, "interest_exploration": 1 },
+          "statChanges": { "ability": 1, "relationships": 1 },
+          "experience": {
+            "actorRole": "teacher",
+            "setting": "附近学校、教学点门口或家人带你去问情况的地方",
+            "process": ["先把自己真正不明白的一件事说出来", "听对方用身边的例子解释上课、作业或求助方式", "把仍然不确定的部分记住，回家再和照看你的人核对"],
+            "responses": ["对方没有保证所有孩子都会遇到同样的安排，而是先问你住得多远、家里怎样准备。", "对方把一个大问题拆成几步讲清，也承认有些事情要等真正入学后才知道。"],
+            "outcomes": ["学校不再只是大人嘴里的名字，你知道了一个可以继续追问的具体问题。", "下次遇到不会的事情时，你更愿意先找可信任的大人求助。"]
+          }
+        },
+        {
+          "id": "child_age6_make_and_change_game_rules",
+          "label": "和伙伴一起定规则，再改一次玩法",
+          "description": "和附近的孩子把一项熟悉的游戏说清楚，遇到争议时尝试调整一次规则，而不是只争输赢。",
+          "category": "social",
+          "hoursPerWeek": 4,
+          "cashCostYuan": 0,
+          "interestTags": ["social_organizing", "sports_movement"],
+          "growthChanges": { "peer_bond": 2, "healthy_rhythm": 1 },
+          "statChanges": { "mood": 1, "relationships": 1, "ability": 1 },
+          "experience": {
+            "actorRole": "friend",
+            "setting": "住处附近允许孩子一起活动的空地",
+            "process": ["先听每个人怎样理解轮流、边界和输赢", "玩过几轮后指出一处让人总是争起来的地方", "和伙伴试着改一条规则，再看大家是否愿意继续"],
+            "responses": ["有人觉得改规则麻烦，但熟悉的伙伴愿意先试一轮再决定。", "你们为一次判定争了几句，最后约定由当时在场的人一起确认。"],
+            "outcomes": ["你记住了规则不是只能接受，也可以和一起玩的人商量修改。", "下一次有人开始这个游戏时，会先来问你要不要一起把规则说清楚。"]
+          }
+        },
+        {
+          "id": "child_age6_draw_and_compare_objects",
+          "label": "把身边的物件画下来再比较",
+          "description": "用能够找到并被允许使用的纸片、粉笔或其他材料，画下两三样日常物件，再比较它们哪里相同、哪里不同。",
+          "category": "exploration",
+          "hoursPerWeek": 4,
+          "cashCostYuan": 0,
+          "interestTags": ["visual_art", "numbers_logic", "nature_observation"],
+          "growthChanges": { "interest_exploration": 2, "practical_independence": 1 },
+          "statChanges": { "ability": 1, "mood": 1 },
+          "experience": {
+            "actorRole": "self",
+            "settingByResidence": { "urban": "家中桌面、楼道边或住处附近能留下痕迹的地方", "rural": "家中平整的一角、院子或屋前空地" },
+            "process": ["先挑出安全、允许拿来比较的两三样物件", "画下最容易认出的轮廓和大小差别", "换一种标准重新看一遍，分开看见的部分和猜测的部分"],
+            "responses": ["家里人不一定马上看懂，但会问你为什么把这些物件放在一起。", "有人提醒你别拿走正在使用的东西，并给你留出一小块可以反复尝试的地方。"],
+            "outcomes": ["你发现同一个物件可以从形状、大小和用途几个方面来比较。", "下一次观察时，你会主动记住一个具体差别，而不只说‘不一样’。"]
+          }
+        },
+        {
+          "id": "child_age6_run_jump_ball_game",
+          "label": "和伙伴反复玩跑跳或小球游戏",
+          "description": "选择附近实际能进行的跑跳、踢小物件或小球游戏，按身体状态加入、停下和再加入。",
+          "category": "health",
+          "hoursPerWeek": 5,
+          "cashCostYuan": 0,
+          "interestTags": ["sports_movement", "social_organizing"],
+          "growthChanges": { "healthy_rhythm": 2, "peer_bond": 1 },
+          "statChanges": { "health": 1, "mood": 1, "relationships": 1 },
+          "experience": {
+            "actorRole": "friend",
+            "setting": "住处附近允许孩子活动的空地、院子或路边较安全的一段",
+            "process": ["先跟着伙伴看懂轮流、边界和停下的信号", "跑跳几轮后根据自己的呼吸和疲劳调整强度", "累了就在旁边看一会儿，恢复后再决定要不要加入"],
+            "responses": ["熟悉的孩子给你留了位置，也会在你跑得太远时提醒你回来。", "有人想一直加快速度，你们重新约好累了可以先停一轮。"],
+            "outcomes": ["你开始分得出‘还想玩’和‘身体需要休息’不是一回事。", "下一次有人组织类似游戏时，你知道怎样先看规则和自己的状态。"]
+          }
+        },
+        {
+          "id": "child_age6_tell_school_day_at_home",
+          "label": "回家把学校的一天讲给照看你的人听",
+          "description": "把听到或经历的上学准备、课堂想象和担心的事情讲给家里人，允许其中一些内容仍未确认。",
+          "category": "family",
+          "hoursPerWeek": 3,
+          "cashCostYuan": 0,
+          "interestTags": ["storytelling_media", "reading_language"],
+          "growthChanges": { "family_participation": 2, "school_confidence": 1 },
+          "statChanges": { "relationships": 1, "mood": 1, "ability": 1 },
+          "experience": {
+            "actorRole": "caregiver",
+            "setting": "晚饭后、做家务的间隙或临睡前",
+            "process": ["先讲一件自己记得最清楚的学校相关事情", "说到不确定的地方时，听照看你的人补充或纠正", "把仍然想知道的问题留下，约好之后再问"],
+            "responses": ["对方一边忙手里的事一边听完，并告诉你哪些是已经确认的安排。", "家里人没有现成答案，就和你一起把问题拆开，说明要找谁才能问清楚。"],
+            "outcomes": ["你知道家里的谈话可以帮助整理学校期待，也不会自动把想象变成事实。", "照看你的人记住了你的一个担心，之后准备时会再回来确认。"]
+          }
         }
       ]
     },

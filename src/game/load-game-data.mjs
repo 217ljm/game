@@ -1,4 +1,5 @@
 const DATA_FILES = {
+  quarterlyAge6: "data/gameplay/quarterly_age6_1984.json",
   annualOperations: "data/annual_life_operations.json",
   quarterlyLife: "data/quarterly_life_content.json",
   childhoodPlay: "data/childhood_play_content.json",

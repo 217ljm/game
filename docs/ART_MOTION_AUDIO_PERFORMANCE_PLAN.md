@@ -2,7 +2,7 @@
 
 状态：阶段 F 已完成首轮实现与验收  
 生效日期：2026-08-23  
-上位规范：`docs/FULL_GAME_REBUILD_V2.md`
+上位规范：`docs/QUARTERLY_LIFE_SIMULATOR_MASTER_PLAN.md`、`docs/TECHNICAL_ARCHITECTURE.md`
 
 ## 1. 阶段目标
 

@@ -1,0 +1,151 @@
+{
+  "schemaVersion": "age6-blind-manifest-v1",
+  "studyId": "life.age6.p2.exploratory",
+  "batchId": "age6-p2-20260824-b01",
+  "status": "invalidated-before-human-sessions",
+  "protocolVersion": "P2-v2",
+  "baselineDocument": "docs/QUARTERLY_LIFE_SIMULATOR_MASTER_PLAN.md",
+  "baselineSections": [
+    "13.4",
+    "18.3"
+  ],
+  "protocolDocument": "docs/AGE6_QUARTERLY_SIMULATOR_BLIND_TEST.md",
+  "sliceId": "life.slice.1984.age6",
+  "contentVersion": "age6-1984-p2-v1",
+  "entryRoute": "#/life",
+  "plannedParticipantIds": [
+    "P01",
+    "P02",
+    "P03",
+    "P04",
+    "P05",
+    "P06"
+  ],
+  "assignments": [
+    {
+      "participantId": "P01",
+      "seed": "age6-blind-p2-v1",
+      "draftCondition": "resource_shortage",
+      "eventCondition": "rainy_day_inside",
+      "motionMode": "full",
+      "sound": "on",
+      "saveRestoreTask": false,
+      "recordsTask": true,
+      "launchPath": "/public/playtest/age6.html?batch=age6-p2-20260824-b01&participant=P01&draft=resource_shortage&event=rainy_day_inside&motion=full&sound=on&build=e8dd0ed147ba9bf4f235a3f4cbe681071bdf740a3ac586220b00bf73e4ee76a5"
+    },
+    {
+      "participantId": "P02",
+      "seed": "age6-blind-p2-v1",
+      "draftCondition": "resource_shortage",
+      "eventCondition": "minor_play_injury",
+      "motionMode": "reduced",
+      "sound": "on",
+      "saveRestoreTask": false,
+      "recordsTask": true,
+      "launchPath": "/public/playtest/age6.html?batch=age6-p2-20260824-b01&participant=P02&draft=resource_shortage&event=minor_play_injury&motion=reduced&sound=on&build=e8dd0ed147ba9bf4f235a3f4cbe681071bdf740a3ac586220b00bf73e4ee76a5"
+    },
+    {
+      "participantId": "P03",
+      "seed": "age6-blind-p2-v1",
+      "draftCondition": "resource_shortage",
+      "eventCondition": "rainy_day_inside",
+      "motionMode": "full",
+      "sound": "off",
+      "saveRestoreTask": false,
+      "recordsTask": true,
+      "launchPath": "/public/playtest/age6.html?batch=age6-p2-20260824-b01&participant=P03&draft=resource_shortage&event=rainy_day_inside&motion=full&sound=off&build=e8dd0ed147ba9bf4f235a3f4cbe681071bdf740a3ac586220b00bf73e4ee76a5"
+    },
+    {
+      "participantId": "P04",
+      "seed": "age6-blind-p2-v1",
+      "draftCondition": "empty",
+      "eventCondition": "natural",
+      "motionMode": "full",
+      "sound": "on",
+      "saveRestoreTask": true,
+      "recordsTask": true,
+      "launchPath": "/public/playtest/age6.html?batch=age6-p2-20260824-b01&participant=P04&draft=empty&event=natural&motion=full&sound=on&build=e8dd0ed147ba9bf4f235a3f4cbe681071bdf740a3ac586220b00bf73e4ee76a5"
+    },
+    {
+      "participantId": "P05",
+      "seed": "age6-blind-p2-v1",
+      "draftCondition": "empty",
+      "eventCondition": "natural",
+      "motionMode": "full",
+      "sound": "on",
+      "saveRestoreTask": false,
+      "recordsTask": true,
+      "launchPath": "/public/playtest/age6.html?batch=age6-p2-20260824-b01&participant=P05&draft=empty&event=natural&motion=full&sound=on&build=e8dd0ed147ba9bf4f235a3f4cbe681071bdf740a3ac586220b00bf73e4ee76a5"
+    },
+    {
+      "participantId": "P06",
+      "seed": "age6-blind-p2-v1",
+      "draftCondition": "empty",
+      "eventCondition": "natural",
+      "motionMode": "full",
+      "sound": "on",
+      "saveRestoreTask": false,
+      "recordsTask": true,
+      "launchPath": "/public/playtest/age6.html?batch=age6-p2-20260824-b01&participant=P06&draft=empty&event=natural&motion=full&sound=on&build=e8dd0ed147ba9bf4f235a3f4cbe681071bdf740a3ac586220b00bf73e4ee76a5"
+    }
+  ],
+  "environment": {
+    "primaryViewport": {
+      "width": 390,
+      "height": 844
+    },
+    "touchPreferred": true,
+    "debugUiVisible": false,
+    "candidatePath": "/dist/#/life"
+  },
+  "buildFingerprint": {
+    "version": "0.1.0",
+    "releaseGeneratedAt": "2026-08-23T18:23:56.041Z",
+    "releaseContentSha256": "e8dd0ed147ba9bf4f235a3f4cbe681071bdf740a3ac586220b00bf73e4ee76a5",
+    "releaseFileCount": 77,
+    "releaseBytes": 4326044,
+    "gitHead": null,
+    "gitDirty": true,
+    "gitStatusSha256": "7d197ab612250e9e67b88250b84189ada8f5c82b807c21b864b85d9494c6f829",
+    "gitDiffSha256": "7d197ab612250e9e67b88250b84189ada8f5c82b807c21b864b85d9494c6f829",
+    "packageJsonSha256": "7303ed55ce63874a1611b0555a23c9b02b993a5a8980af97252a27f09d7c4aab",
+    "packageLockSha256": "6b3ef4aff35c4bffcd5dfe332105d6d80f3770092c7ce7d558e8887bf0fe9d92"
+  },
+  "automationEvidence": {
+    "requiredCommands": [
+      "npm run check",
+      "npm run ui:check",
+      "npm run browser:check",
+      "npm run h5:check",
+      "npm run age6:blind:browser:check"
+    ],
+    "checks": [
+      {
+        "command": "npm run check",
+        "exitCode": 1,
+        "startedAt": "2026-08-23T18:24:43.886Z",
+        "finishedAt": "2026-08-23T18:24:43.889Z",
+        "logPath": "checks/npm-run-check.log",
+        "logSha256": "be26fd8a6f7018351a72c75c50c90ade0ce6bc53ca57b28fbf8d4086443eea65"
+      }
+    ],
+    "phoneScreenshotReviewed": null,
+    "desktopScreenshotReviewed": null,
+    "reviewerId": "",
+    "reviewedAt": ""
+  },
+  "privacy": {
+    "realNamesStored": false,
+    "contactDataStored": false,
+    "identityMapOutsideRepository": true,
+    "recordingsRequireConsent": true
+  },
+  "createdAt": "2026-08-23T18:24:06.706Z",
+  "createdBy": "",
+  "exclusions": [
+    {
+      "scope": "entire_batch",
+      "reason": "自动证据捕获器在 Windows 上直接 spawn npm.cmd 返回 EINVAL；无人参与，批次作废并由修复后的新批次替代。"
+    }
+  ]
+}

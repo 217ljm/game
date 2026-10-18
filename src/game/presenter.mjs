@@ -129,6 +129,28 @@ const OPTION_CONFIG_KEYS = [
   "adultEvents",
 ];
 
+const AGE6_ROLE_LABELS = {
+  caregiver: "照看者",
+  neighborhood_friend: "附近同伴",
+  primary_teacher: "准老师/老师",
+};
+
+const AGE6_MODULE_FALLBACKS = {
+  learning: "life.module.learning",
+  education: "life.module.learning",
+  social: "life.module.relationships",
+  relationships: "life.module.relationships",
+  family: "life.module.family",
+  household: "life.module.family",
+  health: "life.module.daily",
+  recovery: "life.module.daily",
+  sports_movement: "life.module.daily",
+  daily: "life.module.daily",
+  entertainment: "life.module.interests",
+  exploration: "life.module.interests",
+  creative: "life.module.interests",
+};
+
 const ERA_LABELS = {
   reform_opening_start: "改革开放进入新的历史时期",
   compulsory_education_law: "《义务教育法》开始实施",
@@ -199,7 +221,116 @@ export function buildOptionIndex(data) {
   for (const event of data.quarterlyLife?.randomEvents ?? []) {
     for (const option of event.options ?? []) index.set(option.id, option.label ?? option.id);
   }
+  for (const action of data.quarterlyAge6?.actions ?? []) {
+    if (!index.has(action.id)) index.set(action.id, action.label ?? action.id);
+  }
   return index;
+}
+
+function age6ActionIndex(registry) {
+  return new Map((registry?.actions ?? []).map((action) => [action.id, action]));
+}
+
+function age6ModuleIndex(registry) {
+  return new Map((registry?.modules ?? []).map((module) => [module.id, module]));
+}
+
+function age6ActionMeta(option, registry, optionIndex) {
+  const action = age6ActionIndex(registry).get(option.id);
+  const moduleId = action?.moduleId ?? AGE6_MODULE_FALLBACKS[option.category] ?? null;
+  const module = age6ModuleIndex(registry).get(moduleId);
+  const roleId = action?.targetRoleId ?? option.targetRoleId ?? null;
+  const reasons = [option.unavailableReason, option.resourceBlockedReason].filter(Boolean);
+  const longTermParts = [];
+  if ((option.interestTags ?? []).length > 0) longTermParts.push("会为兴趣留下后续线索");
+  if (Object.keys(option.growthChanges ?? {}).length > 0) {
+    longTermParts.push("会推进成长路径，可能影响后续可用行动");
+  }
+  if (option.repetitionLabel) longTermParts.push("重复投入会写入共同记忆与季度记录");
+  if (option.effectSummary) longTermParts.push(option.effectSummary);
+  if (longTermParts.length === 0) longTermParts.push("结果会写入季度记录，后续行动与事件可能读取这段经历");
+  return {
+    registryActionId: action?.id ?? null,
+    moduleId,
+    moduleLabel: module?.label ?? option.categoryLabel ?? option.category ?? "其他",
+    targetRoleId: roleId,
+    targetRoleLabel: roleId ? AGE6_ROLE_LABELS[roleId] ?? roleId : null,
+    longTermPrompt: longTermParts.join("；"),
+    lockReason: reasons.length > 0 ? reasons.join("；") : null,
+    optionLabel: optionIndex?.get(option.id) ?? option.label ?? option.text ?? option.id,
+  };
+}
+
+function age6IsActive(result, registry) {
+  const slice = registry?.slice;
+  const record = latestRecord(result);
+  return Boolean(
+    slice && record
+      && record.calendarYear === slice.calendarYear
+      && record.age === slice.age
+      && result.stage === slice.stage,
+  );
+}
+
+/** Registry metadata is presentation-only and never changes simulation facts. */
+export function buildAge6SliceView(result, data, pending = result.pendingDecision, mainline = null) {
+  const registry = data.quarterlyAge6;
+  if (!registry) return null;
+  const active = age6IsActive(result, registry);
+  const optionIndex = buildOptionIndex(data);
+  const actions = registry.actions ?? [];
+  const pendingOptions = pending?.options ?? [];
+  const currentActions = active && pending?.kind === "quarter_plan"
+    ? pendingOptions.map((option) => ({
+    ...clone(option),
+    ...age6ActionMeta(option, registry, optionIndex),
+    available: option.available !== false,
+    isLocked: option.available === false,
+    meta: optionMeta(option),
+    effects: actionEffectView(option, data, mainline ?? buildLifeMainline(result)),
+      }))
+    : [];
+  const modules = (registry.modules ?? []).map((module) => {
+    const registered = actions.filter((action) => action.moduleId === module.id);
+    const current = currentActions.filter((action) => action.moduleId === module.id);
+    return {
+      ...clone(module),
+      actionIds: registered.map((action) => action.id),
+      count: registered.length,
+      availableCount: current.filter((action) => action.available).length,
+      lockedCount: current.filter((action) => action.isLocked).length,
+      currentActionIds: current.map((action) => action.id),
+    };
+  });
+  return {
+    id: registry.slice?.id ?? "life.slice.1984.age6",
+    contentVersion: registry.contentVersion,
+    active,
+    slice: clone(registry.slice),
+    modules,
+    moduleCounts: Object.fromEntries(modules.map((module) => [module.id, module.count])),
+    persistentRoles: (registry.persistentRoleIds ?? []).map((id) => ({
+      id,
+      label: AGE6_ROLE_LABELS[id] ?? id,
+      present: currentPeople(result).some((person) => person.roleId === id || person.role === id),
+    })),
+    registeredActions: actions.map((action) => ({
+      ...clone(action),
+      moduleLabel: age6ModuleIndex(registry).get(action.moduleId)?.label ?? action.moduleId,
+      targetRoleLabel: action.targetRoleId ? AGE6_ROLE_LABELS[action.targetRoleId] ?? action.targetRoleId : null,
+    })),
+    currentActions,
+    currentModuleCounts: Object.fromEntries(modules.map((module) => [
+      module.id,
+      currentActions.filter((action) => action.moduleId === module.id).length,
+    ])),
+    randomEvents: clone(registry.randomEventIds ?? []),
+    interruptingEvents: clone(registry.interruptingEventIds ?? []),
+    causalityEvidence: clone(registry.causalityEvidence ?? []),
+    pendingEventId: pending?.eventId ?? null,
+    activePlanningQuarters: clone(registry.slice?.activePlanningQuarters ?? []),
+    continuationQuarters: clone(registry.slice?.continuationQuarters ?? []),
+  };
 }
 
 function statValues(state) {
@@ -492,6 +623,7 @@ function currentPeople(result) {
       const age = (member.ageAtBirth ?? 0) + Math.max(0, state.currentAge ?? 0);
       people.push({
         id: member.id,
+        roleId: ["mother", "father"].includes(member.relation) ? "caregiver" : null,
         name: FAMILY_RELATION_LABELS[member.relation],
         role: ["mother", "father"].includes(member.relation) ? "原生家庭" : "共同生活的家人",
         detail: `${age}岁 · ${member.job?.occupationLabel ? `从事${member.job.occupationLabel}` : "与家庭共同生活"}`,
@@ -543,6 +675,7 @@ function currentPeople(result) {
     .slice(0, 4)) {
     people.push({
       id: person.id,
+      roleId: person.roleId ?? null,
       name: person.displayName,
       role: person.roleLabel,
       detail: [
@@ -850,6 +983,22 @@ export function presentGame(result, data) {
   const pending = result.pendingDecision;
   const dataStatus = record?.dataStatus === "scenario" ? "scenario" : "history";
   const mainline = buildLifeMainline(result);
+  const age6 = buildAge6SliceView(result, data, pending, mainline);
+  const pendingView = pending
+    ? {
+        ...pending,
+        options: pending.options.map((option) => ({
+          ...option,
+          ...(age6?.active && pending?.kind === "quarter_plan"
+            ? age6ActionMeta(option, data.quarterlyAge6, optionIndex)
+            : {}),
+          meta: optionMeta(option).filter((entry) => (
+            pending.kind !== "mainline_event" || entry !== option.effectSummary
+          )),
+          effects: actionEffectView(option, data, mainline),
+        })),
+      }
+    : null;
   return {
     status: result.status,
     stage: result.stage,
@@ -883,18 +1032,8 @@ export function presentGame(result, data) {
         : []),
       ...currentFactLines(record),
     ].slice(0, 6),
-    pending: pending
-      ? {
-          ...pending,
-          options: pending.options.map((option) => ({
-            ...option,
-            meta: optionMeta(option).filter((entry) => (
-              pending.kind !== "mainline_event" || entry !== option.effectSummary
-            )),
-            effects: actionEffectView(option, data, mainline),
-          })),
-        }
-      : null,
+    age6,
+    pending: pendingView,
     latestDecision: latestDecisionView(result, optionIndex),
     mainline,
     lifeReview: result.lifeReview

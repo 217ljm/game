@@ -1,0 +1,92 @@
+[
+  {
+    "id": "beijing",
+    "name": "北京",
+    "tier": "tier_1",
+    "tierName": "一线直辖市",
+    "examDifficulty": 0.85,
+    "baseEconomy": 1.5,
+    "desc": "全国政治文化中心，名校云集，竞争激烈但本地录取率高"
+  },
+  {
+    "id": "shanghai",
+    "name": "上海",
+    "tier": "tier_1",
+    "tierName": "一线直辖市",
+    "examDifficulty": 0.85,
+    "baseEconomy": 1.6,
+    "desc": "国际经济金融中心，海派文化，商业与金融机会极其丰富"
+  },
+  {
+    "id": "guangdong",
+    "name": "广东 (广州/深圳)",
+    "tier": "tier_1",
+    "tierName": "沿海经济大省",
+    "examDifficulty": 1,
+    "baseEconomy": 1.4,
+    "desc": "改革开放前沿阵地，务实创新，商贸与互联网产业发达"
+  },
+  {
+    "id": "jiangsu",
+    "name": "江苏 (南京/苏州)",
+    "tier": "tier_2",
+    "tierName": "江南文脉强省",
+    "examDifficulty": 1.2,
+    "baseEconomy": 1.3,
+    "desc": "崇文重教，苏南实体经济繁荣，高考难度号称全国前列"
+  },
+  {
+    "id": "zhejiang",
+    "name": "浙江 (杭州/宁波)",
+    "tier": "tier_2",
+    "tierName": "民营经济强省",
+    "examDifficulty": 1.15,
+    "baseEconomy": 1.35,
+    "desc": "电商之都与民营之乡，敢为人先，商业氛围极其浓厚"
+  },
+  {
+    "id": "shandong",
+    "name": "山东 (济南/青岛)",
+    "tier": "tier_2",
+    "tierName": "齐鲁高考大省",
+    "examDifficulty": 1.3,
+    "baseEconomy": 1,
+    "desc": "孔孟之乡，体制文化与重工业底蕴深厚，考学极其内卷"
+  },
+  {
+    "id": "henan",
+    "name": "河南 (郑州/洛阳)",
+    "tier": "tier_3",
+    "tierName": "中原人口大省",
+    "examDifficulty": 1.4,
+    "baseEconomy": 0.85,
+    "desc": "百万考生过独木桥，中原腹地，勤劳坚韧走遍天下"
+  },
+  {
+    "id": "sichuan",
+    "name": "四川 (成都/绵阳)",
+    "tier": "tier_2",
+    "tierName": "天府之国",
+    "examDifficulty": 1.05,
+    "baseEconomy": 1.05,
+    "desc": "巴适悠闲与电子信息产业并进，美食与文创极具特色"
+  },
+  {
+    "id": "hubei",
+    "name": "湖北 (武汉)",
+    "tier": "tier_2",
+    "tierName": "九省通衢科教强省",
+    "examDifficulty": 1.15,
+    "baseEconomy": 1.05,
+    "desc": "百所高校云集，光谷科技蓬勃，教育底蕴扎实"
+  },
+  {
+    "id": "shaanxi",
+    "name": "陕西 (西安)",
+    "tier": "tier_3",
+    "tierName": "西北科教枢纽",
+    "examDifficulty": 1.1,
+    "baseEconomy": 0.95,
+    "desc": "十三朝古都，军工与高校实力雄厚，文化底蕴深远"
+  }
+]

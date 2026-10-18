@@ -14,12 +14,22 @@ if (path.dirname(distRoot) !== projectRoot || path.basename(distRoot) !== "dist"
 fs.rmSync(distRoot, { recursive: true, force: true });
 fs.mkdirSync(distRoot, { recursive: true });
 
+const archivedRuntimeFiles = new Set([
+  path.join(projectRoot, "src", "game", "light-scene-contract.mjs"),
+  path.join(projectRoot, "src", "game", "light-scene-core-bridge.mjs"),
+  path.join(projectRoot, "data", "gameplay", "light_scene_yard_1984.json"),
+].map((entry) => path.resolve(entry)));
 for (const directory of ["src", "data"]) {
-  fs.cpSync(path.join(projectRoot, directory), path.join(distRoot, directory), { recursive: true });
+  fs.cpSync(path.join(projectRoot, directory), path.join(distRoot, directory), {
+    recursive: true,
+    filter: (source) => !archivedRuntimeFiles.has(path.resolve(source)),
+  });
 }
 const publicRoot = path.join(projectRoot, "public");
 const developmentOnlyPublicRoots = [
+  path.join(publicRoot, "light-scene"),
   path.join(publicRoot, "spikes"),
+  path.join(publicRoot, "playtest"),
   path.join(publicRoot, "vendor", "phaser"),
 ];
 fs.cpSync(publicRoot, path.join(distRoot, "public"), {

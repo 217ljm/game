@@ -1,0 +1,179 @@
+{
+  "schemaVersion": "age6-blind-manifest-v1",
+  "studyId": "life.age6.p2.exploratory",
+  "batchId": "age6-p2-20260824-b02",
+  "status": "scheduled",
+  "protocolVersion": "P2-v2",
+  "baselineDocument": "docs/QUARTERLY_LIFE_SIMULATOR_MASTER_PLAN.md",
+  "baselineSections": [
+    "13.4",
+    "18.3"
+  ],
+  "protocolDocument": "docs/AGE6_QUARTERLY_SIMULATOR_BLIND_TEST.md",
+  "sliceId": "life.slice.1984.age6",
+  "contentVersion": "age6-1984-p2-v1",
+  "entryRoute": "#/life",
+  "plannedParticipantIds": [
+    "P01",
+    "P02",
+    "P03",
+    "P04",
+    "P05",
+    "P06"
+  ],
+  "assignments": [
+    {
+      "participantId": "P01",
+      "seed": "age6-blind-p2-v1",
+      "draftCondition": "resource_shortage",
+      "eventCondition": "rainy_day_inside",
+      "motionMode": "full",
+      "sound": "on",
+      "saveRestoreTask": false,
+      "recordsTask": true,
+      "launchPath": "/public/playtest/age6.html?batch=age6-p2-20260824-b02&participant=P01&draft=resource_shortage&event=rainy_day_inside&motion=full&sound=on&build=e8dd0ed147ba9bf4f235a3f4cbe681071bdf740a3ac586220b00bf73e4ee76a5"
+    },
+    {
+      "participantId": "P02",
+      "seed": "age6-blind-p2-v1",
+      "draftCondition": "resource_shortage",
+      "eventCondition": "minor_play_injury",
+      "motionMode": "reduced",
+      "sound": "on",
+      "saveRestoreTask": false,
+      "recordsTask": true,
+      "launchPath": "/public/playtest/age6.html?batch=age6-p2-20260824-b02&participant=P02&draft=resource_shortage&event=minor_play_injury&motion=reduced&sound=on&build=e8dd0ed147ba9bf4f235a3f4cbe681071bdf740a3ac586220b00bf73e4ee76a5"
+    },
+    {
+      "participantId": "P03",
+      "seed": "age6-blind-p2-v1",
+      "draftCondition": "resource_shortage",
+      "eventCondition": "rainy_day_inside",
+      "motionMode": "full",
+      "sound": "off",
+      "saveRestoreTask": false,
+      "recordsTask": true,
+      "launchPath": "/public/playtest/age6.html?batch=age6-p2-20260824-b02&participant=P03&draft=resource_shortage&event=rainy_day_inside&motion=full&sound=off&build=e8dd0ed147ba9bf4f235a3f4cbe681071bdf740a3ac586220b00bf73e4ee76a5"
+    },
+    {
+      "participantId": "P04",
+      "seed": "age6-blind-p2-v1",
+      "draftCondition": "empty",
+      "eventCondition": "natural",
+      "motionMode": "full",
+      "sound": "on",
+      "saveRestoreTask": true,
+      "recordsTask": true,
+      "launchPath": "/public/playtest/age6.html?batch=age6-p2-20260824-b02&participant=P04&draft=empty&event=natural&motion=full&sound=on&build=e8dd0ed147ba9bf4f235a3f4cbe681071bdf740a3ac586220b00bf73e4ee76a5"
+    },
+    {
+      "participantId": "P05",
+      "seed": "age6-blind-p2-v1",
+      "draftCondition": "empty",
+      "eventCondition": "natural",
+      "motionMode": "full",
+      "sound": "on",
+      "saveRestoreTask": false,
+      "recordsTask": true,
+      "launchPath": "/public/playtest/age6.html?batch=age6-p2-20260824-b02&participant=P05&draft=empty&event=natural&motion=full&sound=on&build=e8dd0ed147ba9bf4f235a3f4cbe681071bdf740a3ac586220b00bf73e4ee76a5"
+    },
+    {
+      "participantId": "P06",
+      "seed": "age6-blind-p2-v1",
+      "draftCondition": "empty",
+      "eventCondition": "natural",
+      "motionMode": "full",
+      "sound": "on",
+      "saveRestoreTask": false,
+      "recordsTask": true,
+      "launchPath": "/public/playtest/age6.html?batch=age6-p2-20260824-b02&participant=P06&draft=empty&event=natural&motion=full&sound=on&build=e8dd0ed147ba9bf4f235a3f4cbe681071bdf740a3ac586220b00bf73e4ee76a5"
+    }
+  ],
+  "environment": {
+    "primaryViewport": {
+      "width": 390,
+      "height": 844
+    },
+    "touchPreferred": true,
+    "debugUiVisible": false,
+    "candidatePath": "/dist/#/life"
+  },
+  "buildFingerprint": {
+    "version": "0.1.0",
+    "releaseGeneratedAt": "2026-08-23T18:23:56.041Z",
+    "releaseContentSha256": "e8dd0ed147ba9bf4f235a3f4cbe681071bdf740a3ac586220b00bf73e4ee76a5",
+    "releaseFileCount": 77,
+    "releaseBytes": 4326044,
+    "gitHead": "c3471cd3b21bb02de7932bc751a391b17f983ef0",
+    "gitDirty": true,
+    "gitStatusSha256": "13706f3b6177330c432ba95121134813a7b8e9087aaff03a1d27dcf20ce72483",
+    "gitDiffSha256": "f37128bfafe4edc4a9d020c81bad28bcf1c49a67c51bca8a8ebd9ad083095b28",
+    "packageJsonSha256": "7303ed55ce63874a1611b0555a23c9b02b993a5a8980af97252a27f09d7c4aab",
+    "packageLockSha256": "6b3ef4aff35c4bffcd5dfe332105d6d80f3770092c7ce7d558e8887bf0fe9d92"
+  },
+  "automationEvidence": {
+    "requiredCommands": [
+      "npm run check",
+      "npm run ui:check",
+      "npm run browser:check",
+      "npm run h5:check",
+      "npm run age6:blind:browser:check"
+    ],
+    "checks": [
+      {
+        "command": "npm run check",
+        "exitCode": 0,
+        "startedAt": "2026-08-23T18:27:11.981Z",
+        "finishedAt": "2026-08-23T18:34:40.677Z",
+        "logPath": "checks/npm-run-check.log",
+        "logSha256": "01a754a4770ee4b4c5e88f1687d0a99c8df757537de73fbbaef4f0bd67e74811"
+      },
+      {
+        "command": "npm run ui:check",
+        "exitCode": 0,
+        "startedAt": "2026-08-23T18:34:40.679Z",
+        "finishedAt": "2026-08-23T18:34:41.137Z",
+        "logPath": "checks/npm-run-ui-check.log",
+        "logSha256": "00ca21cd59b897b2751d484b87569a63834769bd25283f7b5f010c5c2116572b"
+      },
+      {
+        "command": "npm run browser:check",
+        "exitCode": 0,
+        "startedAt": "2026-08-23T18:34:41.138Z",
+        "finishedAt": "2026-08-23T18:35:00.686Z",
+        "logPath": "checks/npm-run-browser-check.log",
+        "logSha256": "64e754bbf60e278bb2b5a8b5f35357558f0ca7f36f47bb3a3c7a2c7b687bcce1"
+      },
+      {
+        "command": "npm run h5:check",
+        "exitCode": 0,
+        "startedAt": "2026-08-23T18:35:00.687Z",
+        "finishedAt": "2026-08-23T18:35:01.082Z",
+        "logPath": "checks/npm-run-h5-check.log",
+        "logSha256": "42508f1032457030ee82d532fb6827b3305608dba68965847a5a44d09b72541d"
+      },
+      {
+        "command": "npm run age6:blind:browser:check",
+        "exitCode": 0,
+        "startedAt": "2026-08-23T18:35:01.082Z",
+        "finishedAt": "2026-08-23T18:35:04.291Z",
+        "logPath": "checks/npm-run-age6-blind-browser-check.log",
+        "logSha256": "5476da52195d3260d8bb14c54b30abefbc11016bb012d71663f06eca0491c227"
+      }
+    ],
+    "phoneScreenshotReviewed": true,
+    "desktopScreenshotReviewed": true,
+    "reviewerId": "codex-root-manual-visual-review",
+    "reviewedAt": "2026-08-24T14:17:50.0992826+08:00",
+    "capturedAt": "2026-08-23T18:35:04.292Z"
+  },
+  "privacy": {
+    "realNamesStored": false,
+    "contactDataStored": false,
+    "identityMapOutsideRepository": true,
+    "recordingsRequireConsent": true
+  },
+  "createdAt": "2026-08-23T18:26:56.410Z",
+  "createdBy": "",
+  "exclusions": []
+}

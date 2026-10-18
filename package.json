@@ -2,7 +2,7 @@
   "name": "people-life",
   "private": true,
   "version": "0.1.0",
-  "description": "基于历史校准数据的文字人生模拟原型",
+  "description": "中文竖屏季度回合制人生模拟游戏",
   "type": "module",
   "scripts": {
     "birth:sample": "node scripts/simulate-births.mjs --count 1 --seed demo",
@@ -20,6 +20,14 @@
     "childhood:batch": "node scripts/simulate-childhood.mjs --count 10000 --seed batch",
     "childhood:check": "node scripts/check-childhood-simulator.mjs",
     "childhood:play:check": "node scripts/check-childhood-play.mjs",
+    "age6:p2:check": "node scripts/check-quarterly-age6-p2.mjs",
+    "age6:blind:init": "node scripts/create-age6-blind-test-batch.mjs",
+    "age6:blind:readiness": "node scripts/check-age6-blind-test-readiness.mjs",
+    "age6:blind:serve": "node scripts/serve-age6-blind-test.mjs",
+    "age6:blind:session:start": "node scripts/start-age6-blind-session.mjs",
+    "age6:blind:browser:check": "node scripts/check-age6-blind-test-launcher-browser.mjs",
+    "age6:blind:capture-checks": "node scripts/capture-age6-blind-test-checks.mjs",
+    "age6:blind:check": "node scripts/check-age6-blind-test.mjs",
     "primary:sample": "node scripts/simulate-primary-education.mjs --count 1 --seed demo",
     "primary:batch": "node scripts/simulate-primary-education.mjs --count 10000 --seed batch",
     "primary:check": "node scripts/check-primary-education-simulator.mjs",
@@ -53,14 +61,32 @@
     "h5:build": "node scripts/build-h5-release.mjs",
     "h5:check": "node scripts/check-h5-release.mjs",
     "h5:browser:check": "node scripts/check-h5-browser.mjs",
-    "release:check": "npm run check && npm run browser:check && npm run light-scene:g1:browser:check && npm run h5:build && npm run h5:check && npm run h5:browser:check",
+    "release:check": "npm run check && npm run browser:check && npm run h5:build && npm run h5:check && npm run h5:browser:check",
+    "game:play": "vite --config apps/game/vite.config.ts",
+    "game:build": "vite build --config apps/game/vite.config.ts",
+    "game:preview": "vite preview --config apps/game/vite.config.ts",
+    "game:typecheck": "tsc -p apps/game/tsconfig.json",
+    "esports:check": "node --experimental-strip-types scripts/check-esports-career-system.mjs && node --experimental-strip-types scripts/check-lol-esports-ecosystem.mjs && node --experimental-strip-types scripts/check-avatar-and-lol-career.mjs",
+    "esports:lol:check": "node --experimental-strip-types scripts/check-lol-esports-ecosystem.mjs && node --experimental-strip-types scripts/check-avatar-and-lol-career.mjs",
+    "education:check": "node --experimental-strip-types scripts/check-gaokao-education-system.mjs && node --experimental-strip-types scripts/check-gaokao-modal.mjs",
+    "education:modal:check": "node --experimental-strip-types scripts/check-gaokao-modal.mjs",
+    "game:foundation:check": "node scripts/check-game-runtime-foundation.mjs",
+    "game:browser:check": "node scripts/check-game-runtime-browser.mjs",
+    "game:startup:browser:check": "node scripts/check-game-startup-browser.mjs",
+    "game:birth:browser:check": "node scripts/check-game-birth-browser.mjs",
+    "game:p1:browser:check": "node scripts/check-game-p1-browser.mjs",
+    "game:p2:browser:check": "node scripts/check-game-p2-browser.mjs",
+    "game:check": "npm run game:typecheck && npm run game:foundation:check && npm run game:build && npm run game:startup:browser:check && npm run game:birth:browser:check && npm run game:browser:check && npm run game:p1:browser:check && npm run game:p2:browser:check",
     "play": "node scripts/serve-game.mjs",
-    "check": "npm run birth:check && npm run foundation:check && npm run process:check && npm run map:check && npm run events:check && npm run variety:check && npm run presentation:check && npm run recovery:check && npm run balance:check && npm run childhood:check && npm run childhood:play:check && npm run primary:check && npm run adolescence:check && npm run youth:check && npm run adult:check && npm run annual:check && npm run social:check && npm run timeline:check && npm run causality:check && npm run mainline:check && npm run youth-mainline:check && npm run light-scene:g1:check && npm run engine:check && npm run gateway:check && npm run debug:check && npm run ui:check"
+    "check": "npm run birth:check && npm run foundation:check && npm run process:check && npm run map:check && npm run events:check && npm run variety:check && npm run presentation:check && npm run recovery:check && npm run balance:check && npm run childhood:check && npm run childhood:play:check && npm run age6:p2:check && npm run primary:check && npm run adolescence:check && npm run youth:check && npm run adult:check && npm run annual:check && npm run social:check && npm run timeline:check && npm run causality:check && npm run mainline:check && npm run youth-mainline:check && npm run engine:check && npm run gateway:check && npm run debug:check && npm run ui:check"
   },
   "dependencies": {
     "@phosphor-icons/web": "^2.1.2"
   },
   "devDependencies": {
-    "phaser": "^3.90.0"
+    "@types/node": "^26.2.0",
+    "phaser": "^3.90.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.2.2"
   }
 }

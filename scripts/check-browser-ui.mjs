@@ -3,12 +3,12 @@ import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
+import { DATA_FILES } from "../src/game/load-game-data.mjs";
+import { replayDebugToTarget } from "../src/game/debug-tools.mjs";
 import { createGameServer } from "./serve-game.mjs";
 
 async function loadPlaywright() {
-  try {
-    return await import("playwright");
-  } catch {
+  try { return await import("playwright"); } catch {
     const candidates = [
       process.env.PEOPLE_LIFE_PLAYWRIGHT_PATH,
       path.join(os.homedir(), ".cache", "codex-runtimes", "codex-primary-runtime", "dependencies", "node", "node_modules", "playwright", "index.mjs"),
@@ -33,6 +33,31 @@ function browserExecutable() {
 
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const screenshotDirectory = path.join(projectRoot, "artifacts", "ui-regression");
+const gameData = Object.fromEntries(Object.entries(DATA_FILES).map(([key, relativePath]) => [
+  key,
+  JSON.parse(fs.readFileSync(path.join(projectRoot, relativePath), "utf8")),
+]));
+const formalAge6Fixture = replayDebugToTarget(gameData, {
+  seed: "age6-formal-save",
+  birthYear: 1978,
+  targetAge: 6,
+  targetPoint: "q1",
+  mortality: false,
+  routePreset: "balanced",
+  familyPreset: "natural",
+  pressurePreset: "ordinary",
+  randomMode: "normal",
+  forcedEventId: null,
+});
+const formalAge6Session = structuredClone(formalAge6Fixture.session);
+delete formalAge6Session.debug;
+const forcedEventAge6Session = structuredClone(formalAge6Fixture.session);
+forcedEventAge6Session.debug.randomEvents = {
+  mode: "forced",
+  forcedEventId: "rainy_day_inside",
+  activationYear: 1984,
+  activationQuarter: 1,
+};
 fs.mkdirSync(screenshotDirectory, { recursive: true });
 const server = createGameServer(projectRoot);
 await new Promise((resolve, reject) => {
@@ -42,473 +67,426 @@ await new Promise((resolve, reject) => {
 const port = server.address().port;
 const { chromium } = await loadPlaywright();
 const browser = await chromium.launch({ headless: true, executablePath: browserExecutable() });
+const baseUrl = `http://127.0.0.1:${port}`;
+
+async function seedFormalSession(targetPage, savedSession) {
+  await targetPage.goto(`${baseUrl}/#/title`, { waitUntil: "networkidle" });
+  await targetPage.evaluate(() => localStorage.clear());
+  await targetPage.evaluate((value) => {
+    localStorage.setItem("people-life:active:v5", JSON.stringify(value));
+    localStorage.setItem("people-life:ui:v1", JSON.stringify({ route: "life", params: {} }));
+  }, savedSession);
+  await targetPage.goto(`${baseUrl}/?restore=1#/life`, { waitUntil: "networkidle" });
+  await targetPage.locator("#game-screen").waitFor({ state: "visible" });
+}
+
+async function addDistinctModuleActions(targetPage, minimum = 2) {
+  const selected = [];
+  const modules = targetPage.locator("#simulator-module-list .simulator-module");
+  for (let index = 0; index < await modules.count() && selected.length < minimum; index += 1) {
+    await modules.nth(index).scrollIntoViewIfNeeded();
+    await modules.nth(index).click();
+    const rows = targetPage.locator("#life-action-drawer .simulator-action-row:not(.unavailable)");
+    let added = null;
+    for (let rowIndex = 0; rowIndex < await rows.count(); rowIndex += 1) {
+      const row = rows.nth(rowIndex);
+      const toggle = row.locator(".simulator-action-toggle");
+      if (await toggle.isEnabled() && (await toggle.textContent()).includes("加入")) {
+        added = {
+          actionId: await row.getAttribute("data-action-id"),
+          moduleId: await row.getAttribute("data-module-id"),
+        };
+        await toggle.click();
+        break;
+      }
+    }
+    await targetPage.locator("#life-action-drawer-done").click();
+    if (added) selected.push(added);
+  }
+  assert.ok(selected.length >= minimum, `正式季度至少应能从不同模块加入${minimum}项行动`);
+  assert.equal(new Set(selected.map((entry) => entry.actionId)).size, selected.length, "正式季度行动 ID 不得重复");
+  assert.equal(new Set(selected.map((entry) => entry.moduleId)).size, selected.length, "正式季度至少两项行动必须来自不同模块");
+  const primary = targetPage.locator("#simulator-primary-action");
+  assert.equal(await primary.isVisible(), true, "达到最少行动数后固定季度按钮必须出现");
+  assert.equal(await primary.isDisabled(), false, "不同模块的普通草案应可提交");
+  const draft = await targetPage.evaluate(() => JSON.parse(localStorage.getItem("people-life:quarter-draft:v1")));
+  assert.match(draft?.eventId ?? "", /^quarter:1984:Q[13]$/, "正式草案必须绑定当前稳定 eventId");
+  assert.deepEqual(
+    new Set(draft.allocations.map((entry) => entry.actionId)),
+    new Set(selected.map((entry) => entry.actionId)),
+    "正式草案必须保存实际加入的 actionId",
+  );
+  await primary.click();
+  return { selected, eventId: draft.eventId };
+}
+
+async function settleVisibleEventIfNeeded(targetPage) {
+  await targetPage.waitForFunction(() => {
+    const event = document.querySelector("#random-event-screen");
+    const result = document.querySelector("#quarter-result-screen");
+    return (event && !event.hidden) || (result && !result.hidden);
+  });
+  if (await targetPage.locator("#random-event-screen").isVisible()) {
+    const option = targetPage.locator("#random-event-option-list .option-button:not(:disabled)").first();
+    const eventId = await targetPage.locator("#random-event-screen").getAttribute("data-event-id");
+    await option.click();
+    await targetPage.locator("#quarter-result-screen").waitFor({ state: "visible" });
+    return eventId ?? "natural-event";
+  }
+  return null;
+}
 
 try {
-  const page = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  const context = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const page = await context.newPage();
   const pageErrors = [];
   page.on("pageerror", (error) => pageErrors.push(String(error)));
-
-  async function chooseActivities(count, intensityLabel = null) {
-    const options = page.locator("#option-list .activity-option:not(:disabled)");
-    assert.ok(await options.count() >= count, `至少需要${count}个可执行活动`);
-    for (let index = 0; index < count; index += 1) await options.nth(index).click();
-    assert.equal(await page.locator("#plan-intensity-list .plan-intensity-row").count(), count);
-    if (intensityLabel) {
-      await page.locator("#plan-intensity-list .plan-intensity-row").first()
-        .getByRole("button", { name: new RegExp(intensityLabel) })
-        .click();
-    }
-    assert.equal(await page.locator("#life-stage-intensity-list .plan-intensity-row").count(), count);
-    if (intensityLabel) assert.ok(await page.locator("#life-stage-intensity-list .plan-intensity-choices button.active", { hasText: intensityLabel }).count());
-    assert.match(await page.locator("#plan-budget-hours").textContent(), /格.*精力/);
-    assert.equal(await page.locator("#confirm-plan-button").isEnabled(), true);
-    await page.locator("#confirm-plan-button").click();
-  }
-
-  async function resolveRandomEventIfPresent() {
-    if (await page.locator("#random-event-screen").isVisible()) {
-      const option = page.locator("#random-event-option-list .option-button:not(:disabled)").first();
-      assert.ok(await option.count(), "随机事件必须有可执行选择");
-      await option.click();
-    }
-  }
-
-  async function reachYearReview(limit = 12) {
-    for (let index = 0; index < limit; index += 1) {
-      if (await page.locator("#year-review-screen").isVisible()) return;
-      if (await page.locator("#quarter-result-screen").isVisible()) {
-        await page.locator("#quarter-result-continue").click();
-      } else if (await page.locator("#random-event-screen").isVisible()) {
-        await page.locator("#random-event-option-list .option-button:not(:disabled)").first().click();
-      } else if (await page.locator("#game-screen").isVisible()) {
-        if (await page.locator("#confirm-plan-button").isVisible()) await chooseActivities(1);
-        else await page.locator("#option-list .option-button:not(:disabled)").first().click();
+  async function shot(name, target = null) {
+    await page.evaluate(() => {
+      document.body.classList.remove("debug-drawer-open");
+      const toggle = document.querySelector("#debug-drawer-toggle");
+      if (toggle) {
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.style.visibility = "hidden";
+        const label = toggle.querySelector("span");
+        if (label) label.textContent = "开发工具";
       }
-      await page.waitForTimeout(30);
+    });
+    if (target) await page.locator(target).scrollIntoViewIfNeeded();
+    else await page.evaluate(() => window.scrollTo(0, 0));
+    await page.waitForTimeout(120);
+    await page.screenshot({ path: path.join(screenshotDirectory, `p0-p2-${name}-390.png`) });
+    await page.locator("#debug-drawer-toggle").evaluate((element) => element.style.removeProperty("visibility"));
+  }
+  async function assertPhone(label) {
+    assert.equal(pageErrors.length, 0, `${label} 出现 pageerror：${pageErrors.join(" | ")}`);
+    assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true, `${label} 横向溢出`);
+  }
+  async function setDebug({ seed = "age6-rain", birthYear = 1978, targetAge = 6, targetPoint = "q1", randomMode = "normal", eventId = null } = {}) {
+    const debugToggle = page.locator("#debug-drawer-toggle");
+    if (await debugToggle.getAttribute("aria-expanded") !== "true") await debugToggle.click();
+    await page.locator("#debug-seed").fill(seed);
+    await page.locator("#debug-birth-year").selectOption(String(birthYear));
+    await page.locator("#debug-target-age").fill(String(targetAge));
+    await page.locator("#debug-target-point").selectOption(targetPoint);
+    await page.locator("#debug-random-mode").selectOption(randomMode);
+    if (eventId) await page.locator("#debug-event-select").selectOption(eventId);
+    await page.locator("#debug-jump-button").click();
+    await page.locator(targetPoint === "review" ? "#year-review-screen" : "#game-screen").waitFor({ state: "visible" });
+    await page.waitForTimeout(30);
+    if (await debugToggle.getAttribute("aria-expanded") === "true") await debugToggle.click();
+  }
+  async function armForcedEvent(eventId) {
+    const debugToggle = page.locator("#debug-drawer-toggle");
+    if (await debugToggle.getAttribute("aria-expanded") !== "true") await debugToggle.click();
+    await page.locator("#debug-random-mode").selectOption("forced");
+    await page.locator("#debug-event-select").selectOption(eventId);
+    if (await debugToggle.getAttribute("aria-expanded") === "true") await debugToggle.click();
+  }
+  async function openModuleAndAdd(moduleIndex = 0) {
+    const modules = page.locator("#simulator-module-list .simulator-module");
+    assert.ok(await modules.count() >= 5, "主屏必须显示五个生活模块");
+    await modules.nth(moduleIndex).click();
+    const rows = page.locator("#life-action-drawer .simulator-action-row:not(.unavailable)");
+    for (let index = 0; index < await rows.count(); index += 1) {
+      const toggle = rows.nth(index).locator(".simulator-action-toggle");
+      if (await toggle.isEnabled() && (await toggle.textContent()).includes("加入")) {
+        await toggle.click();
+        await closeDrawer();
+        return true;
+      }
     }
-    assert.fail(`在${limit}次交互内没有到达年度结算`);
+    await closeDrawer();
+    return false;
+  }
+  async function closeDrawer() {
+    if (await page.locator("#life-action-drawer").isVisible()) await page.locator("#life-action-drawer-done").click();
+  }
+  async function countAge6Actions() {
+    let total = 0;
+    const modules = page.locator("#simulator-module-list .simulator-module");
+    for (let index = 0; index < await modules.count(); index += 1) {
+      await modules.nth(index).click();
+      total += await page.locator("#life-action-drawer .simulator-action-row").count();
+      await closeDrawer();
+    }
+    return total;
+  }
+  async function planOneAndSubmit() {
+    for (let index = 0; index < 5; index += 1) {
+      if (await page.locator("#simulator-draft-list .simulator-draft-chip").count() >= 2) break;
+      await openModuleAndAdd(index);
+    }
+    await closeDrawer();
+    assert.ok(await page.locator("#simulator-draft-list .simulator-draft-chip").count() >= 2, "6岁季度计划至少需要两项行动");
+    assert.equal(await page.locator("#simulator-primary-action").isDisabled(), false, "达到最小行动数且资源足够时主按钮应可用");
+    await page.locator("#simulator-primary-action").click();
   }
 
-  await page.goto(`http://127.0.0.1:${port}/#/title`, { waitUntil: "networkidle" });
-  await page.locator("#start-screen").waitFor({ state: "visible" });
-  assert.equal(await page.locator("#header-title").textContent(), "1978—一生");
-  assert.equal(await page.locator("#new-life-button").isVisible(), true);
-  await page.screenshot({ path: path.join(screenshotDirectory, "multi-page-title.png"), fullPage: true });
-
-  await page.locator("#new-life-button").click();
-  await page.locator("#new-life-screen").waitFor({ state: "visible" });
-  assert.equal(await page.locator("#header-title").textContent(), "人生起点");
-  assert.equal(await page.locator("#header-back-button").isVisible(), true);
-  await page.screenshot({ path: path.join(screenshotDirectory, "multi-page-new-life.png"), fullPage: true });
-  await page.locator('input[name="birth-year"][value="1978"]').check({ force: true });
-  await page.locator("#mortality-toggle").uncheck({ force: true });
-  await page.locator("#start-button").click();
-
-  await page.locator("#year-review-screen").waitFor({ state: "visible" });
-  assert.equal(await page.locator("#header-title").textContent(), "年度回望");
-  assert.match(await page.locator("#year-review-title").textContent(), /1978年/);
-  assert.equal(await page.locator("#year-review-ledger-list > div").count(), 4);
-  assert.match(await page.locator("#year-review-fact-list").textContent(), /出生健康基础.*不是临床/);
-  assert.equal(await page.locator("#year-review-mainline-card").isVisible(), true);
-  assert.equal(await page.locator("#year-review-mainline-list > div").count(), 3);
-  assert.equal(await page.locator("#main-navigation").isVisible(), false);
-  await page.screenshot({ path: path.join(screenshotDirectory, "multi-page-year-review.png"), fullPage: true });
-
-  await page.locator("#year-review-option-list .option-button:not(:disabled)").first().click();
-  await page.locator("#game-screen").waitFor({ state: "visible" });
-  await page.waitForFunction(() => document.querySelector("#life-stage-action-list")?.classList.contains("ready"));
-  assert.equal(await page.locator("#current-age").textContent(), "1岁");
-  assert.equal(await page.locator("#current-year").textContent(), "1979");
-  assert.equal(await page.locator("#main-navigation button").count(), 5);
-  assert.match(await page.locator("#event-stage").textContent(), /1岁.*第三季度/);
-  assert.match(await page.locator("#event-prompt").textContent(), /我只回应此刻能看到、听到和够到的事物/);
-  assert.match(await page.locator("#quarter-progress-count").textContent(), /2 \/ 4/);
-  assert.equal(await page.locator("#life-stage-card").isVisible(), true);
-  assert.equal(await page.locator("#life-stage-card").getAttribute("data-life-stage"), "infant");
-  assert.equal(await page.locator("#life-stage-action-list .life-stage-action").count(), 3);
-  assert.equal(await page.locator("#life-stage-action-list img").count(), 0);
-  assert.equal(await page.locator("#life-stage-action-list .life-stage-action-icon").count(), 3);
-  await page.screenshot({ path: path.join(screenshotDirectory, "multi-page-life.png"), fullPage: true });
-  await page.locator("#life-stage-more-actions").click();
-  assert.equal(await page.locator("#action-pool-card").isVisible(), true);
-  assert.equal(await page.locator("#mainline-card").isVisible(), false);
-  assert.ok(await page.locator("#action-pool-categories button").count() >= 4);
-  assert.ok(await page.locator("#option-list .activity-option").count() >= 6);
-  assert.match(await page.locator("#option-list .activity-option").first().textContent(), /主线.*属性|主线.*兴趣/s);
-  await page.locator("#action-pool-categories button", { hasText: "观察与探索" }).click();
-  assert.ok(await page.locator("#option-list .activity-option").count() >= 2);
-  await page.locator("#action-pool-categories button", { hasText: "全部" }).click();
-  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true);
-  await page.locator("#life-stage-context-toggle").click();
-  assert.equal(await page.locator("#mainline-card").isVisible(), true);
-  assert.equal(await page.locator("#mainline-quest-list .mainline-quest").count(), 3);
-  assert.match(await page.locator("#mainline-card").textContent(), /眼下要维持.*正在积累.*想要靠近/s);
-
-  await chooseActivities(1, "重点投入");
-  await page.waitForTimeout(30);
-  await resolveRandomEventIfPresent();
-  await page.locator("#quarter-result-screen").waitFor({ state: "visible" });
-  assert.equal(await page.locator("#header-title").textContent(), "季度收获");
-  assert.match(await page.locator("#quarter-result-meta").textContent(), /1979年.*1岁/);
-  assert.ok((await page.locator("#quarter-result-plan").textContent()).length > 0);
-  assert.equal(await page.locator("#quarter-impact-card").isVisible(), true);
-  assert.match(await page.locator("#quarter-impact-list").textContent(), /人生主线/);
-  assert.match(await page.locator("#quarter-impact-list").textContent(), /兴趣|属性/);
-  assert.ok(await page.locator("#quarter-impact-list .impact-item").count() >= 1);
-  assert.equal(await page.locator("#quarter-result-visual").isVisible(), true);
-  assert.equal(await page.locator("#quarter-month-card").isVisible(), true);
-  const resolvedMonthCount = await page.locator("#quarter-month-list .quarter-month-item").count();
-  assert.ok(resolvedMonthCount >= 3 && resolvedMonthCount % 3 === 0);
-  assert.match(await page.locator("#quarter-month-list").textContent(), /月.*已执行.*精力/s);
-  if (await page.locator("#childhood-experience-card").isVisible()) {
-    assert.match(await page.locator("#childhood-experience-list").textContent(), /实际.*小时/);
-  }
-  assert.equal(await page.locator("#main-navigation").isVisible(), false);
-  await page.screenshot({ path: path.join(screenshotDirectory, "multi-page-quarter-result.png"), fullPage: true });
-
-  await reachYearReview();
-  assert.match(await page.locator("#year-review-title").textContent(), /1979年/);
-  await page.locator("#year-review-option-list .option-button:not(:disabled)").first().click();
-  await page.locator("#game-screen").waitFor({ state: "visible" });
-  assert.equal(await page.locator("#current-age").textContent(), "2岁");
-
-  await page.locator('#main-navigation button[data-route="map"]').click();
-  await page.locator("#map-page").waitFor({ state: "visible" });
-  await page.waitForTimeout(350);
-  assert.equal(await page.locator("#world-map-board .world-map-node").count(), 6);
-  assert.equal(await page.locator("#world-map-board .world-map-node.current").count(), 1);
-  assert.ok(await page.locator("#world-map-board .world-map-node.locked").count() >= 2);
-  assert.match(await page.locator("#map-location-panel").textContent(), /住处.*出行.*人物/s);
-  await page.locator("#world-map-board .world-map-node").nth(1).click();
-  assert.match(await page.locator("#map-location-panel").textContent(), /机会|同伴|邻里|周围/);
-  await page.screenshot({ path: path.join(screenshotDirectory, "multi-page-map.png"), fullPage: true });
-
-  await page.locator('#main-navigation button[data-route="character"]').click();
-  await page.locator("#character-page").waitFor({ state: "visible" });
-  await page.waitForTimeout(350);
-  assert.equal(await page.locator("#header-title").textContent(), "我的人物");
-  assert.equal(await page.locator("#stats-row .stat").count(), 6);
-  assert.match(await page.locator("#stats-row").textContent(), /体能/);
-  assert.match(await page.locator("#stats-row").textContent(), /智力/);
-  assert.match(await page.locator("#stats-row").textContent(), /外表/);
-  assert.match(await page.locator("#stats-row").textContent(), /社交/);
-  assert.match(await page.locator("#stats-row").textContent(), /意志/);
-  assert.equal(await page.locator("#character-state-row .character-state").count(), 4);
-  assert.match(await page.locator("#character-state-row").textContent(), /心情.*压力.*疲劳.*身体状态/s);
-  assert.equal(await page.locator("#character-portrait").getAttribute("data-age-band"), "child");
-  assert.match(await page.locator("#character-portrait").evaluate((element) => getComputedStyle(element).backgroundImage), /character-age-atlas-v1\.webp/);
-  const healthValue = Number(await page.locator("#stats-row .stat", { hasText: "健康" }).locator("strong").textContent());
-  assert.ok(healthValue >= 52, "新生儿健康储备不应显示为默认半血");
-  assert.equal(await page.locator("#latest-growth-card").isVisible(), true);
-  assert.match(await page.locator("#latest-growth-list").textContent(), /兴趣|属性/);
-  await page.screenshot({ path: path.join(screenshotDirectory, "multi-page-character.png"), fullPage: true });
-  await page.locator('[data-character-tab="growth"]').click();
-  assert.equal(await page.locator("#character-growth-panel").isVisible(), true);
-  assert.ok(await page.locator("#life-direction-list .direction-item").count() >= 5);
-  assert.match(await page.locator("#life-direction-list .direction-item").first().textContent(), /当前方向/);
-  await page.locator('[data-character-tab="status"]').click();
-  assert.match(page.url(), /#\/character$/);
+  await page.goto(`${baseUrl}/?debug=1#/title`, { waitUntil: "networkidle" });
+  await page.evaluate(() => localStorage.clear());
   await page.reload({ waitUntil: "networkidle" });
-  await page.locator("#character-page").waitFor({ state: "visible" });
-  assert.equal(await page.locator('#main-navigation button[data-route="character"]').getAttribute("aria-current"), "page");
+  await page.locator("#start-screen").waitFor({ state: "visible" });
+  await setDebug({ targetAge: 6, targetPoint: "q1" });
+  assert.equal(await page.locator("#simulator-year").textContent(), "1984");
+  assert.equal(await page.locator("#simulator-age").textContent(), "6岁");
+  assert.match(await page.locator("#simulator-quarter").textContent(), /Q1/);
+  assert.ok(await page.locator("#simulator-quarter-list .simulator-quarter-item").count() === 4);
+  assert.equal(await page.locator("#main-navigation button").count(), 4, "正式底部导航必须只有四个主页面");
+  assert.equal(await page.locator("#simulator-primary-action").isVisible(), false, "尚未达到最少行动数时不得用固定按钮覆盖模块");
+  const initialModuleSafeArea = await page.evaluate(() => {
+    const module = document.querySelector("#simulator-module-list .simulator-module");
+    const navigation = document.querySelector("#main-navigation");
+    if (!module || !navigation) return false;
+    const moduleBox = module.getBoundingClientRect();
+    const navigationBox = navigation.getBoundingClientRect();
+    return moduleBox.top >= 0 && moduleBox.bottom <= navigationBox.top;
+  });
+  assert.equal(initialModuleSafeArea, true, "390×844 首屏模块首排必须完整位于底部导航上方");
+  const firstModuleHit = await page.locator("#simulator-module-list .simulator-module").first().evaluate((element) => {
+    const box = element.getBoundingClientRect();
+    const target = document.elementFromPoint(box.left + box.width / 2, box.top + box.height / 2);
+    return target === element || element.contains(target);
+  });
+  assert.equal(firstModuleHit, true, "首个生活模块中心点不得被固定 CTA 或底部导航抢占");
+  assert.ok(await countAge6Actions() >= 8, "主动季度至少应提供8个候选行动");
+  await page.locator("#simulator-module-list .simulator-module").first().click();
+  await page.locator("#life-action-drawer").waitFor({ state: "visible" });
+  assert.match(await page.locator("#life-action-drawer-list").textContent(), /现在：/);
+  assert.match(await page.locator("#life-action-drawer-list").textContent(), /长期：/);
+  assert.match(await page.locator("#life-action-drawer-list").textContent(), /\d格.*\d精力/);
+  await shot("action-drawer");
+  await closeDrawer();
+  await assertPhone("1984 Q1 主屏");
+  await shot("age6-q1");
 
-  await page.locator('#main-navigation button[data-route="relations"]').click();
-  await page.locator("#relations-page").waitFor({ state: "visible" });
-  await page.waitForTimeout(350);
-  assert.ok(await page.locator("#people-list .person-list-button").count() >= 1);
-  await page.screenshot({ path: path.join(screenshotDirectory, "multi-page-relations.png"), fullPage: true });
-  await page.locator("#people-list .person-list-button").first().click();
-  await page.locator("#person-detail-screen").waitFor({ state: "visible" });
-  await page.waitForTimeout(350);
-  assert.equal(await page.locator("#header-title").textContent(), "共同记忆");
-  assert.equal(await page.locator("#header-back-button").isVisible(), true);
-  await page.screenshot({ path: path.join(screenshotDirectory, "multi-page-person.png"), fullPage: true });
-  await page.locator("#header-back-button").click();
-  await page.locator("#relations-page").waitFor({ state: "visible" });
+  // Deliberately over-allocate the draft at focus intensity; the primary action must block.
+  for (let index = 0; index < 5; index += 1) await openModuleAndAdd(index);
+  await page.locator("#simulator-module-list .simulator-module").first().click();
+  const selectedRows = page.locator("#life-action-drawer .simulator-action-row.selected");
+  for (let index = 0; index < await selectedRows.count(); index += 1) {
+    const focus = selectedRows.nth(index).locator(".simulator-intensity-bar button", { hasText: "重点" });
+    if (await focus.count()) await focus.click();
+  }
+  await closeDrawer();
+  assert.equal(await page.locator("#simulator-primary-action").isDisabled(), true, "资源超限时不得允许提交");
+  assert.match(await page.locator("#simulator-draft-note").textContent(), /时间|精力|现金/);
+  await assertPhone("资源不足路径");
+  await shot("resource-blocked", "#simulator-draft-note");
 
-  await page.locator('#main-navigation button[data-route="records"]').click();
-  await page.locator("#records-page").waitFor({ state: "visible" });
-  await page.waitForTimeout(350);
-  assert.equal(await page.locator("#records-timeline-panel").isVisible(), true);
-  assert.ok(await page.locator("#timeline-list .timeline-year-group").count() >= 2);
-  assert.match(await page.locator("#timeline-list").textContent(), /季度明细/);
-  await page.screenshot({ path: path.join(screenshotDirectory, "multi-page-records.png"), fullPage: true });
+  // Refresh must keep the draft as UI state, while the simulation remains unchanged.
+  const beforeRefresh = await page.locator("#simulator-draft-list").textContent();
+  await page.reload({ waitUntil: "networkidle" });
+  assert.equal(await page.locator("#simulator-draft-list").textContent(), beforeRefresh, "未提交草案刷新后应恢复");
+  await assertPhone("草案刷新恢复");
 
-  await page.locator('[data-record-tab="profile"]').click();
-  assert.equal(await page.locator("#records-profile-panel").isVisible(), true);
-  assert.match(await page.locator("#archive-current-point").textContent(), /2岁/);
-  assert.ok((await page.locator("#archive-seed").textContent()).startsWith("life-"));
-  await page.locator("#open-settings-button").click();
-  assert.equal(await page.locator("#settings-dialog").isVisible(), true);
-  assert.match(await page.locator("#save-status").textContent(), /已自动保存/);
-  assert.equal(await page.locator("#motion-mode-select").inputValue(), "full");
-  assert.equal(await page.locator("#sound-toggle").isChecked(), true);
-  assert.equal(await page.locator("#haptic-toggle").isChecked(), true);
-  await page.locator("#motion-mode-select").selectOption("off");
-  await page.locator("#sound-toggle").uncheck();
-  await page.locator("#haptic-toggle").uncheck();
-  assert.equal(await page.locator("body").getAttribute("data-motion"), "off");
-  assert.equal(await page.locator("#character-portrait").evaluate((element) => getComputedStyle(element).animationName), "none");
-  const disabledPresentation = await page.evaluate(() => JSON.parse(localStorage.getItem("people-life:presentation:v1")));
-  assert.deepEqual(disabledPresentation, { schemaVersion: 1, motionMode: "off", soundEnabled: false, hapticEnabled: false });
-  await page.screenshot({ path: path.join(screenshotDirectory, "multi-page-settings.png"), fullPage: true });
-  await page.locator("#motion-mode-select").selectOption("full");
-  await page.locator("#sound-toggle").check();
-  await page.locator("#haptic-toggle").check();
-  await page.locator("#close-settings-button").click();
-  const saved = await page.evaluate(() => JSON.parse(localStorage.getItem("people-life:active:v5")));
-  assert.equal(saved.schemaVersion, 5);
-  assert.ok(Object.values(saved.quarterPlans).some((plan) => (
-    plan.allocations?.some((allocation) => allocation.intensity === "focus")
-  )));
-  assert.equal(saved.yearReviews["review:1978"], true);
-  assert.equal(saved.yearReviews["review:1979"], true);
-  assert.deepEqual(pageErrors, []);
+  // Remove until a valid plan can be submitted, then check the three-month result surface.
+  while (await page.locator("#simulator-primary-action").isDisabled()) {
+    const chips = page.locator("#simulator-draft-list .simulator-draft-chip");
+    assert.ok(await chips.count() > 0, "资源不足时应能通过草案移除恢复");
+    await chips.first().getByRole("button", { name: "移除" }).click();
+  }
+  await planOneAndSubmit();
+  if (await page.locator("#random-event-screen").isVisible()) await page.locator("#random-event-option-list .option-button:not(:disabled)").first().click();
+  await page.locator("#quarter-result-screen").waitFor({ state: "visible" });
+  assert.ok(await page.locator("#quarter-month-list .quarter-month-item").count() >= 3, "季度结果必须显示三个月执行");
+  await shot("quarter-result");
 
-  await page.setViewportSize({ width: 1280, height: 900 });
-  await page.locator('#main-navigation button[data-route="records"]').click();
-  await page.locator("#records-page").waitFor({ state: "visible" });
-  assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true);
-  await page.screenshot({ path: path.join(screenshotDirectory, "multi-page-desktop-records.png"), fullPage: true });
+  // Forced rainy-day event: interruption must resolve inside the same quarter.
+  await setDebug({ targetAge: 6, targetPoint: "q1", randomMode: "normal" });
+  await armForcedEvent("rainy_day_inside");
+  await planOneAndSubmit();
+  await page.locator("#random-event-screen").waitFor({ state: "visible" });
+  assert.match(await page.locator("#random-event-screen").textContent(), /雨|室内|打断/);
+  assert.ok(await page.locator("#random-event-option-list .option-button:not(:disabled)").count() >= 2, "打断事件必须在选择前显示至少两个具体选项");
+  await shot("event-choice-rainy-day", "#random-event-screen");
+  await page.locator("#random-event-option-list .option-button:not(:disabled)").first().click();
+  await page.locator("#quarter-result-screen").waitFor({ state: "visible" });
+  assert.equal(await page.locator("#game-toast").isVisible(), false, "事件结算正文不得被通用 toast 覆盖");
+  assert.ok(await page.locator("#quarter-month-list .quarter-month-item").count() >= 3);
+  await page.locator("#quarter-interruption-card").waitFor({ state: "visible" });
+  assert.match(await page.locator("#quarter-interruption-card").textContent(), /持续降雨|受影响行动|受影响范围/);
+  assert.match(await page.locator("#quarter-interruption-card").textContent(), /事件后剩余.*按调整后的计划继续/);
+  const interruptionTiming = /事件前已执行(\d)个月；事件后剩余(\d)个月/.exec(
+    await page.locator("#quarter-interruption-card").textContent(),
+  );
+  assert.ok(interruptionTiming, "事件结算必须区分事件前已执行月份和事件后剩余计划");
+  assert.equal(Number(interruptionTiming[1]) + Number(interruptionTiming[2]), 2, "打断发生月之外的前后月份应合计2个月");
+  await assertPhone("事件打断路径");
+  await shot("event-interrupted", "#quarter-interruption-card");
 
-  const debugPage = await browser.newPage({ viewport: { width: 390, height: 844 }, acceptDownloads: true });
-  const debugErrors = [];
-  debugPage.on("pageerror", (error) => debugErrors.push(String(error)));
-  async function setDebugDrawer(open) {
-    const expanded = await debugPage.locator("#debug-drawer-toggle").getAttribute("aria-expanded") === "true";
-    if (expanded !== open) {
-      await debugPage.locator("#debug-drawer-toggle").click();
-      await debugPage.waitForFunction((expected) => (
-        document.body.classList.contains("debug-drawer-open") === expected
-      ), open);
-      await debugPage.waitForTimeout(320);
+  // A hidden forced-event fixture must still use the formal UI and survive a result-page reload.
+  const forcedContext = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const forced = await forcedContext.newPage();
+  const forcedErrors = [];
+  forced.on("pageerror", (error) => forcedErrors.push(String(error)));
+  await seedFormalSession(forced, forcedEventAge6Session);
+  assert.equal(await forced.locator("#debug-drawer-toggle").isVisible(), false, "真人强制事件条件不得暴露调试 UI");
+  const forcedPlan = await addDistinctModuleActions(forced);
+  await forced.locator("#random-event-screen").waitFor({ state: "visible" });
+  assert.match(await forced.locator("#random-event-screen").textContent(), /雨|室内|打断/);
+  const forcedOptions = await forced.locator("#random-event-option-list .option-button:not(:disabled)").allTextContents();
+  assert.ok(forcedOptions.length >= 2, "正式强制事件必须提供至少两个选择");
+  await forced.screenshot({ path: path.join(screenshotDirectory, "p0-p2-formal-event-choice-390.png") });
+  await forced.locator("#random-event-option-list .option-button:not(:disabled)").first().click();
+  await forced.locator("#quarter-result-screen").waitFor({ state: "visible" });
+  await forced.locator("#quarter-interruption-card").waitFor({ state: "visible" });
+  assert.equal(await forced.locator("#game-toast").isVisible(), false, "正式事件结果不得被 toast 覆盖");
+  const forcedResult = await forced.locator("#quarter-interruption-card").textContent();
+  const forcedSave = await forced.evaluate(() => JSON.parse(localStorage.getItem("people-life:active:v5")));
+  assert.equal(forcedSave.schemaVersion, 5);
+  await forced.reload({ waitUntil: "networkidle" });
+  await forced.locator("#quarter-result-screen").waitFor({ state: "visible" });
+  assert.equal(await forced.locator("#quarter-interruption-card").textContent(), forcedResult, "事件选择后的正式存档刷新不得改变打断事实");
+  assert.equal(forcedErrors.length, 0, `正式强制事件流程出现 pageerror：${forcedErrors.join(" | ")}`);
+  await forced.screenshot({ path: path.join(screenshotDirectory, "p0-p2-formal-event-restore-390.png") });
+  await forcedContext.close();
+
+  // Formal (non-debug) Q1→Q2→Q3→Q4 flow: plans, results, review, age-up, records and people.
+  const formalContext = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const formal = await formalContext.newPage();
+  const formalErrors = [];
+  formal.on("pageerror", (error) => formalErrors.push(String(error)));
+  await seedFormalSession(formal, formalAge6Session);
+  assert.equal(await formal.locator("#simulator-year").textContent(), "1984");
+  assert.equal(await formal.locator("#simulator-age").textContent(), "6岁");
+  const formalPoint = await formal.locator("#simulator-quarter-title").textContent();
+  assert.equal(await formal.evaluate(() => JSON.parse(localStorage.getItem("people-life:active:v5")).schemaVersion), 5);
+  await formal.reload({ waitUntil: "networkidle" });
+  assert.equal(await formal.locator("#simulator-quarter-title").textContent(), formalPoint, "正式 v5 存档刷新后应恢复年龄6同一季度节点");
+
+  const q1Plan = await addDistinctModuleActions(formal);
+  await settleVisibleEventIfNeeded(formal);
+  await formal.locator("#quarter-result-screen").waitFor({ state: "visible" });
+  assert.match(await formal.locator("#quarter-result-title").textContent(), /Q1.*Q2|Q1—Q2/);
+  assert.ok(await formal.locator("#quarter-month-list .quarter-month-item").count() >= 6, "Q1 计划与 Q2 自动延续必须各留下三个月事实");
+  assert.equal(await formal.locator("#game-toast").isVisible(), false, "季度结果正文不得被 toast 覆盖");
+  const q1ResultText = await formal.locator("#quarter-result-screen").textContent();
+  await formal.reload({ waitUntil: "networkidle" });
+  assert.equal(await formal.locator("#quarter-result-screen").textContent(), q1ResultText, "Q1–Q2 结果刷新后不得改变");
+  await formal.locator("#quarter-result-continue").click();
+  await formal.locator("#game-screen").waitFor({ state: "visible" });
+  assert.match(await formal.locator("#simulator-quarter").textContent(), /Q3/);
+  assert.match(await formal.locator("#simulator-quarter-title").textContent(), /Q3/);
+  const q3Point = await formal.locator("#simulator-quarter-title").textContent();
+  await formal.reload({ waitUntil: "networkidle" });
+  assert.equal(await formal.locator("#simulator-quarter-title").textContent(), q3Point, "Q3 主动节点必须可从正式存档恢复");
+
+  const q3Plan = await addDistinctModuleActions(formal);
+  await settleVisibleEventIfNeeded(formal);
+  await formal.locator("#quarter-result-screen").waitFor({ state: "visible" });
+  const q34ResultTitles = [];
+  let q34MonthCount = 0;
+  for (let step = 0; step < 5; step += 1) {
+    if (await formal.locator("#quarter-result-screen").isVisible()) {
+      q34ResultTitles.push(await formal.locator("#quarter-result-title").textContent());
+      q34MonthCount += await formal.locator("#quarter-month-list .quarter-month-item").count();
+      await formal.locator("#quarter-result-continue").click();
+    }
+    await formal.waitForFunction(() => ["random-event-screen", "quarter-result-screen", "year-review-screen", "game-screen"]
+      .some((id) => !document.getElementById(id)?.hidden));
+    if (await formal.locator("#year-review-screen").isVisible()) break;
+    if (await formal.locator("#random-event-screen").isVisible()) {
+      await formal.locator("#random-event-option-list .option-button:not(:disabled)").first().click();
+      await formal.locator("#quarter-result-screen").waitFor({ state: "visible" });
+      continue;
+    }
+    if (await formal.locator("#game-screen").isVisible()) {
+      assert.equal(await formal.locator("#life-simulator-main").isVisible(), false, "阶段关键选择出现时不得残留旧季度草案壳");
+      assert.equal(await formal.locator("#event-card").isVisible(), true, "Q4 后的年龄阶段关键选择必须使用正式事件卡");
+      assert.match(await formal.locator("#event-title").textContent(), /入学前的准备/);
+      assert.ok(await formal.locator("#option-list .option-button:not(:disabled)").count() >= 2, "入学准备必须提供真实取舍选项");
+      await formal.evaluate(() => window.scrollTo(0, 0));
+      await formal.screenshot({ path: path.join(screenshotDirectory, "p0-p2-age6-school-preparation-390.png") });
+      await formal.locator("#option-list .option-button:not(:disabled)").first().click();
+      continue;
     }
   }
-  await debugPage.goto(`http://127.0.0.1:${port}/?debug=1#/title`, { waitUntil: "networkidle" });
-  assert.equal(await debugPage.locator("#debug-drawer-toggle").isVisible(), true);
-  assert.equal(await debugPage.locator("#debug-drawer-toggle").getAttribute("aria-expanded"), "false");
-  await setDebugDrawer(true);
-  assert.equal(await debugPage.locator("#debug-quick-ages button").count(), 20);
-  assert.equal(await debugPage.evaluate(() => localStorage.getItem("people-life:active:v5")), null);
-  await debugPage.locator("#debug-quick-ages button", { hasText: "3岁" }).click();
-  await debugPage.waitForFunction(() => document.querySelector("#current-age")?.textContent === "3岁", null, { timeout: 30000 });
-  await setDebugDrawer(false);
-  await debugPage.locator("#life-stage-more-actions").click();
-  assert.equal(await debugPage.locator("#action-pool-next").isVisible(), true);
-  const firstBatchAction = await debugPage.locator("#option-list .activity-option strong").first().textContent();
-  await debugPage.locator("#action-pool-next").click();
-  assert.notEqual(await debugPage.locator("#option-list .activity-option strong").first().textContent(), firstBatchAction);
-  await setDebugDrawer(true);
-  await debugPage.locator('#debug-quick-ages button[data-age="6"]').click();
-  await debugPage.waitForFunction(() => document.querySelector("#current-age")?.textContent === "6岁", null, { timeout: 30000 });
-  await setDebugDrawer(false);
-  await debugPage.locator("#life-stage-card").waitFor({ state: "visible" });
-  assert.match(await debugPage.locator("#life-stage-time").textContent(), /1984.*6岁/);
-  assert.equal(await debugPage.locator("#life-stage-action-list .life-stage-action").count(), 3);
-  assert.equal(await debugPage.locator("#scene-page").evaluate((element) => element.classList.contains("visual-stage-active")), true);
-  assert.ok(await debugPage.locator("#life-stage-canvas").evaluate((canvas) => canvas.width > 300 && canvas.toDataURL().length > 1000));
-  await debugPage.waitForFunction(() => [...document.querySelectorAll("#life-stage-action-list img")].every((image) => image.complete && image.naturalWidth > 0));
-  await debugPage.waitForFunction(() => document.querySelector("#life-stage-action-list")?.classList.contains("ready"));
-  await debugPage.locator("#life-stage-card").screenshot({ path: path.join(screenshotDirectory, "life-stage-age6-base.png") });
-  const animationFrames = await debugPage.evaluate(() => new Promise((resolve) => {
-    let count = 0;
-    const started = performance.now();
-    const tick = (time) => {
-      count += 1;
-      if (time - started >= 500) resolve(count);
-      else requestAnimationFrame(tick);
-    };
-    requestAnimationFrame(tick);
-  }));
-  assert.ok(animationFrames >= 15, `Canvas场景500ms内只绘制了${animationFrames}帧`);
-  await debugPage.locator("#life-stage-action-list .life-stage-action").nth(0).click();
-  await debugPage.locator("#life-stage-action-list .life-stage-action").nth(1).click();
-  assert.equal(await debugPage.locator("#life-stage-confirm").isEnabled(), true);
-  assert.notEqual(await debugPage.locator("#life-stage-card").getAttribute("data-scene"), "base");
-  await debugPage.locator("#life-stage-confirm").evaluate((element) => element.scrollIntoView({ block: "center" }));
-  await debugPage.waitForTimeout(80);
-  const confirmBox = await debugPage.locator("#life-stage-confirm").boundingBox();
-  const navigationBox = await debugPage.locator("#main-navigation").boundingBox();
-  assert.ok(
-    confirmBox && navigationBox && confirmBox.y + confirmBox.height <= navigationBox.y + 2,
-    `季度主按钮不能被底部导航遮挡：buttonBottom=${confirmBox ? confirmBox.y + confirmBox.height : "missing"} navTop=${navigationBox?.y ?? "missing"}`,
-  );
-  await debugPage.locator("#life-stage-card").screenshot({ path: path.join(screenshotDirectory, "life-stage-age6.png") });
-  await debugPage.locator("#life-stage-confirm").click();
-  await debugPage.locator("#quarter-result-screen").waitFor({ state: "visible", timeout: 30000 });
-  assert.equal(await debugPage.locator("#quarter-result-visual").isVisible(), true);
-  assert.match(await debugPage.locator("#quarter-result-visual-caption").textContent(), /认字|数数|玩/);
-  assert.ok(await debugPage.locator("#quarter-impact-list .impact-item").count() >= 3);
-  await debugPage.locator("#quarter-result-visual").screenshot({ path: path.join(screenshotDirectory, "life-stage-age6-result.png") });
-  await setDebugDrawer(true);
-  await debugPage.locator("#debug-stage-event-select").selectOption("payoff_age6_someone_notices");
-  await debugPage.locator("#debug-find-stage-event").click();
-  await debugPage.locator("#random-event-screen").waitFor({ state: "visible", timeout: 30000 });
-  await setDebugDrawer(false);
-  assert.equal(await debugPage.locator("#header-title").textContent(), "人生事件");
-  assert.match(await debugPage.locator("#random-event-eyebrow").textContent(), /过去做过的事.*机会与代价/);
-  assert.equal(await debugPage.locator("#mainline-event-evidence").isVisible(), true);
-  assert.match(await debugPage.locator("#mainline-event-evidence").textContent(), /当前连续方向.*累计约.*小时/s);
-  assert.ok(await debugPage.locator("#random-event-option-list .gain-impact").count() >= 1);
-  assert.ok(await debugPage.locator("#random-event-option-list .cost-impact").count() >= 1);
-  await debugPage.screenshot({ path: path.join(screenshotDirectory, "multi-page-youth-mainline-event.png"), fullPage: true });
-  await setDebugDrawer(true);
-  await debugPage.locator('#debug-quick-ages button[data-age="18"]').click();
-  await debugPage.waitForFunction(() => document.querySelector("#current-age")?.textContent === "18岁", null, { timeout: 30000 });
-  await setDebugDrawer(false);
-  await debugPage.locator("#life-stage-card").waitFor({ state: "visible" });
-  assert.equal(await debugPage.locator("#life-stage-card").getAttribute("data-life-stage"), "adult");
-  assert.match(await debugPage.locator("#life-stage-time").textContent(), /1996.*18岁/);
-  assert.match(await debugPage.locator("#life-stage-action-list").textContent(), /本季新可能|爱好延续/);
-  const adultConfirmBox = await debugPage.locator("#life-stage-confirm").boundingBox();
-  const adultNavigationBox = await debugPage.locator("#main-navigation").boundingBox();
-  assert.ok(
-    adultConfirmBox && adultNavigationBox && adultConfirmBox.y + adultConfirmBox.height <= adultNavigationBox.y + 2,
-    "390×844下推荐行动与季度提交按钮必须位于底部导航上方",
-  );
-  await debugPage.screenshot({ path: path.join(screenshotDirectory, "life-stage-age18.png"), fullPage: true });
-  await debugPage.locator("#life-stage-action-list .life-stage-action").nth(0).click();
-  await debugPage.locator("#life-stage-action-list .life-stage-action").nth(1).click();
-  assert.equal(await debugPage.locator("#life-stage-confirm").isEnabled(), true);
-  await debugPage.locator("#life-stage-confirm").click();
-  if (await debugPage.locator("#random-event-screen").isVisible()) {
-    await debugPage.locator("#random-event-option-list .option-button:not(:disabled)").first().click();
-  }
-  await debugPage.locator("#quarter-result-screen").waitFor({ state: "visible", timeout: 30000 });
-  assert.equal(await debugPage.locator("#childhood-experience-card").isVisible(), true);
-  const age18ExperienceItems = debugPage.locator("#childhood-experience-list .childhood-experience-item");
-  assert.ok(await age18ExperienceItems.count() >= 2);
-  assert.equal(await age18ExperienceItems.evaluateAll((entries) => entries.every((entry) => !entry.hasAttribute("open"))), true);
-  assert.match(await age18ExperienceItems.locator("summary").first().textContent(), /实际.*小时.*：/s);
-  assert.match(await debugPage.locator("#childhood-experience-list").textContent(), /实际.*小时.*对方回应/s);
-  assert.ok(await debugPage.locator("#childhood-experience-list .experience-context").evaluateAll((entries) => (
-    entries.some((entry) => !entry.textContent.includes("你自己"))
-  )), "18岁季度过程至少应有一项具名NPC参与");
-  if (await debugPage.locator("#quarter-unchosen-card").isVisible()) {
-    assert.equal(await debugPage.locator("#quarter-unchosen-card").getAttribute("open"), null);
-  }
-  await debugPage.screenshot({ path: path.join(screenshotDirectory, "life-stage-age18-result.png"), fullPage: true });
-  await setDebugDrawer(true);
-  await debugPage.locator("#debug-quick-ages button", { hasText: "30岁" }).click();
-  await debugPage.waitForFunction(() => document.querySelector("#current-age")?.textContent === "30岁", null, { timeout: 30000 });
-  await setDebugDrawer(false);
-  assert.equal(await debugPage.locator("#game-screen").isVisible(), true);
-  assert.match(await debugPage.locator("#debug-status").textContent(), /30岁.*自动处理/);
-  assert.match(await debugPage.locator("#mainline-chapter").textContent(), /第五章/);
-  assert.equal(await debugPage.locator("#mainline-quest-list .mainline-quest").count(), 3);
-  await debugPage.screenshot({ path: path.join(screenshotDirectory, "multi-page-mainline-age30.png"), fullPage: true });
-  await debugPage.locator('#main-navigation button[data-route="character"]').click();
-  await debugPage.locator("#character-page").waitFor({ state: "visible" });
-  assert.equal(await debugPage.locator("#character-portrait").getAttribute("data-age-band"), "adult");
-  await debugPage.locator('[data-character-tab="growth"]').click();
-  assert.equal(await debugPage.locator("#chapter-history-list .chapter-history-item").count(), 4);
-  assert.equal(await debugPage.locator("#youth-payoff-review-card").isVisible(), true);
-  assert.equal(await debugPage.locator("#youth-payoff-chain-list > section").count(), 5);
-  assert.match(await debugPage.locator("#youth-payoff-review-card").textContent(), /0—18岁主线复盘.*关键兑现.*此前依据/s);
-  await debugPage.screenshot({ path: path.join(screenshotDirectory, "multi-page-youth-mainline-review.png"), fullPage: true });
-  await debugPage.locator('#main-navigation button[data-route="scene"]').click();
-  const debugSaved = await debugPage.evaluate(() => JSON.parse(localStorage.getItem("people-life:debug:v1")));
-  assert.equal(debugSaved.debug.enabled, true);
-  assert.equal(debugSaved.debug.minimumSurvivalAge, 30);
-  await setDebugDrawer(true);
-  await debugPage.locator('#debug-quick-ages button[data-age="60"]').click();
-  await debugPage.waitForFunction(() => document.querySelector("#current-age")?.textContent === "60岁", null, { timeout: 30000 });
-  await setDebugDrawer(false);
-  await debugPage.locator('#main-navigation button[data-route="character"]').click();
-  await debugPage.locator("#character-page").waitFor({ state: "visible" });
-  assert.equal(await debugPage.locator("#character-portrait").getAttribute("data-age-band"), "elder");
-  await debugPage.waitForTimeout(350);
-  await debugPage.screenshot({ path: path.join(screenshotDirectory, "character-age60.png"), fullPage: true });
-  await debugPage.locator('#main-navigation button[data-route="scene"]').click();
-  await setDebugDrawer(true);
-  await debugPage.locator("#debug-random-mode").selectOption("forced");
-  await debugPage.locator("#debug-event-select").selectOption("unexpected_fever");
-  for (let index = 0; index < 12 && !(await debugPage.locator("#random-event-screen").isVisible()); index += 1) {
-    await debugPage.locator("#debug-next-node").click();
-    await debugPage.waitForTimeout(80);
-  }
-  assert.equal(await debugPage.locator("#random-event-screen").isVisible(), true, "指定随机事件应在后续合法节点出现");
-  await setDebugDrawer(false);
-  assert.match(await debugPage.locator("#random-event-title").textContent(), /身体突然不舒服/);
-  assert.match(await debugPage.locator("#random-event-stage").textContent(), /第\d季度/);
-  assert.match(await debugPage.locator("#random-event-option-list").textContent(), /原计划预计完成70%/);
-  assert.equal(await debugPage.locator("#main-navigation").isVisible(), false);
-  await debugPage.screenshot({ path: path.join(screenshotDirectory, "multi-page-random-event-debug.png"), fullPage: true });
-  await debugPage.locator("#random-event-option-list .option-button:not(:disabled)").first().click();
-  await debugPage.locator("#quarter-result-screen").waitFor({ state: "visible", timeout: 30000 });
-  assert.equal(await debugPage.locator("#quarter-month-card").isVisible(), true);
-  assert.equal(await debugPage.locator("#quarter-month-list .quarter-month-item.interrupted").count(), 1);
-  assert.match(await debugPage.locator("#quarter-month-list").textContent(), /发生变化/);
-  assert.match(await debugPage.locator("#quarter-impact-list").textContent(), /突发事件.*身体突然不舒服.*健康-1/s);
-  await debugPage.screenshot({ path: path.join(screenshotDirectory, "multi-page-month-interruption.png"), fullPage: true });
-  await setDebugDrawer(true);
-  await debugPage.locator("#debug-quick-ages button", { hasText: "结局" }).click({ timeout: 60000 });
-  await debugPage.locator("#ending-screen").waitFor({ state: "visible", timeout: 60000 });
-  await setDebugDrawer(false);
-  assert.equal(await debugPage.locator("#ending-mainline-card").isVisible(), true);
-  assert.match(await debugPage.locator("#ending-mainline-card").textContent(), /一生仍然守住.*曾经靠近又放下.*走过的人生章节/s);
-  await debugPage.screenshot({ path: path.join(screenshotDirectory, "multi-page-mainline-ending.png"), fullPage: true });
-  assert.equal(await debugPage.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true);
-  assert.deepEqual(debugErrors, []);
-  await debugPage.close();
+  assert.ok(q34ResultTitles.some((title) => /第三季度|Q3/.test(title)), "正式全年流程必须展示 Q3 结果");
+  assert.ok(q34MonthCount >= 6, "Q3 计划与 Q4 自动延续必须各留下三个月事实");
+  await formal.locator("#year-review-screen").waitFor({ state: "visible" });
+  assert.match(await formal.locator("#year-review-title").textContent(), /1984/);
+  assert.equal(await formal.locator("#game-toast").isVisible(), false, "年度回望正文不得被 toast 覆盖");
+  await formal.evaluate(() => window.scrollTo(0, 0));
+  await formal.screenshot({ path: path.join(screenshotDirectory, "p0-p2-q4-review-age6-390.png") });
+  const reviewText = await formal.locator("#year-review-screen").textContent();
+  await formal.reload({ waitUntil: "networkidle" });
+  assert.equal(await formal.locator("#year-review-screen").textContent(), reviewText, "Q4 年度回望待确认状态必须可恢复");
+  await formal.locator("#year-review-option-list .option-button:not(:disabled)").first().click();
+  await formal.locator("#game-screen").waitFor({ state: "visible" });
+  assert.equal(await formal.locator("#simulator-year").textContent(), "1985");
+  assert.equal(await formal.locator("#simulator-age").textContent(), "7岁");
+  assert.match(await formal.locator("#simulator-stage").textContent(), /小学/);
+  assert.equal(await formal.locator("#game-toast").isVisible(), false, "7 岁入口不得被年度 toast 覆盖");
+  await formal.reload({ waitUntil: "networkidle" });
+  assert.equal(await formal.locator("#simulator-age").textContent(), "7岁", "Q4 增龄后的正式存档刷新必须仍为7岁");
+  await formal.evaluate(() => window.scrollTo(0, 0));
+  await formal.screenshot({ path: path.join(screenshotDirectory, "p0-p2-age7-primary-entry-390.png") });
 
+  await formal.locator('#main-navigation [data-route="records"]').click();
+  await formal.locator("#records-page").waitFor({ state: "visible" });
+  const year1984 = formal.locator(".timeline-year-group", { hasText: "1984" }).first();
+  await year1984.waitFor({ state: "visible" });
+  assert.match(await year1984.locator(":scope > summary").textContent(), /4条季度记录/);
+  if ((await year1984.getAttribute("open")) === null) await year1984.locator(":scope > summary").click();
+  const quarterDetails = year1984.locator(".timeline-quarter-details");
+  if ((await quarterDetails.getAttribute("open")) === null) await quarterDetails.locator("summary").click();
+  assert.equal(await quarterDetails.locator("p").count(), 4, "记录页必须展开1984年四个季度事实");
+  await formal.screenshot({ path: path.join(screenshotDirectory, "p0-p2-records-four-quarters-390.png") });
+
+  await formal.locator('#main-navigation [data-route="character"]').click();
+  await formal.locator("#character-page").waitFor({ state: "visible" });
+  assert.ok(await formal.locator("#interest-list .interest-item").count() > 0, "全年行动后人物页必须显示兴趣积累");
+  await formal.locator('#main-navigation [data-route="relations"]').click();
+  await formal.locator("#relations-page").waitFor({ state: "visible" });
+  assert.ok(await formal.locator("#people-list .person-list-button").count() >= 3, "年龄6切片后关系页必须保留至少3名持续人物");
+  await formal.locator("#people-list .person-list-button").first().click();
+  await formal.locator("#person-detail-screen").waitFor({ state: "visible" });
+  assert.ok((await formal.locator("#person-memory").textContent()).trim().length > 0, "人物详情必须给出共同记忆或明确记录状态");
+  await formal.screenshot({ path: path.join(screenshotDirectory, "p0-p2-person-memory-390.png") });
+
+  assert.notEqual(q1Plan.eventId, q3Plan.eventId, "Q1 与 Q3 草案必须绑定不同稳定 eventId");
+  assert.equal(formalErrors.length, 0, `正式存档流程出现 pageerror：${formalErrors.join(" | ")}`);
+  assert.equal(await formal.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true);
+  await formal.screenshot({ path: path.join(screenshotDirectory, "p0-p2-formal-save-restore-390.png") });
+  await formalContext.close();
+
+  const desktopContext = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  const desktop = await desktopContext.newPage();
+  const desktopErrors = [];
+  desktop.on("pageerror", (error) => desktopErrors.push(String(error)));
+  await desktop.emulateMedia({ reducedMotion: "reduce" });
+  await desktop.goto(`${baseUrl}/#/title`, { waitUntil: "networkidle" });
+  await desktop.evaluate(() => localStorage.clear());
+  await desktop.evaluate((savedSession) => {
+    localStorage.setItem("people-life:active:v5", JSON.stringify(savedSession));
+  }, formalAge6Session);
+  assert.equal(await desktop.evaluate(() => matchMedia("(prefers-reduced-motion: reduce)").matches), true, "应覆盖 reduced-motion 浏览器流程");
+  await desktop.goto(`${baseUrl}/?desktop=1#/life`, { waitUntil: "networkidle" });
+  await desktop.locator("#game-screen").waitFor({ state: "visible" });
+  assert.equal(await desktop.locator("#simulator-year").textContent(), "1984");
+  assert.equal(await desktop.locator("#simulator-age").textContent(), "6岁");
+  assert.equal(desktopErrors.length, 0, `1280x900 life 流程出现 pageerror：${desktopErrors.join(" | ")}`);
+  assert.equal(await desktop.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), true, "1280x900 life 横向溢出");
+  await desktop.screenshot({ path: path.join(screenshotDirectory, "p0-p2-life-desktop-1280x900.png") });
+  await desktopContext.close();
+  await context.close();
   console.log(JSON.stringify({
     ok: true,
-    viewports: ["390x844", "1280x900"],
+    viewport: "390x844",
     screenshots: [
-      "artifacts/ui-regression/multi-page-title.png",
-      "artifacts/ui-regression/multi-page-new-life.png",
-      "artifacts/ui-regression/multi-page-year-review.png",
-      "artifacts/ui-regression/multi-page-life.png",
-      "artifacts/ui-regression/multi-page-quarter-result.png",
-      "artifacts/ui-regression/multi-page-map.png",
-      "artifacts/ui-regression/multi-page-character.png",
-      "artifacts/ui-regression/multi-page-relations.png",
-      "artifacts/ui-regression/multi-page-person.png",
-      "artifacts/ui-regression/multi-page-records.png",
-      "artifacts/ui-regression/multi-page-settings.png",
-      "artifacts/ui-regression/life-stage-age6-base.png",
-      "artifacts/ui-regression/life-stage-age6.png",
-      "artifacts/ui-regression/life-stage-age6-result.png",
-      "artifacts/ui-regression/multi-page-mainline-age30.png",
-      "artifacts/ui-regression/multi-page-youth-mainline-event.png",
-      "artifacts/ui-regression/life-stage-age18.png",
-      "artifacts/ui-regression/life-stage-age18-result.png",
-      "artifacts/ui-regression/multi-page-youth-mainline-review.png",
-      "artifacts/ui-regression/character-age60.png",
-      "artifacts/ui-regression/multi-page-desktop-records.png",
-      "artifacts/ui-regression/multi-page-random-event-debug.png",
-      "artifacts/ui-regression/multi-page-month-interruption.png",
-      "artifacts/ui-regression/multi-page-mainline-ending.png",
+      "p0-p2-age6-q1-390.png", "p0-p2-resource-blocked-390.png", "p0-p2-quarter-result-390.png",
+      "p0-p2-action-drawer-390.png", "p0-p2-event-choice-rainy-day-390.png", "p0-p2-event-interrupted-390.png",
+      "p0-p2-formal-event-choice-390.png", "p0-p2-formal-event-restore-390.png",
+      "p0-p2-age6-school-preparation-390.png", "p0-p2-q4-review-age6-390.png", "p0-p2-age7-primary-entry-390.png",
+      "p0-p2-records-four-quarters-390.png", "p0-p2-person-memory-390.png",
+      "p0-p2-formal-save-restore-390.png", "p0-p2-life-desktop-1280x900.png",
     ],
     checks: [
-      "title_and_new_life_route",
-      "year_review_flow_without_bottom_navigation",
-      "scene_page_and_quarter_plan",
-      "age_action_pool_category_filter_and_effect_preview",
-      "dynamic_life_mainline_three_quests_and_action_links",
-      "quarter_result_flow",
-      "immediate_stat_interest_and_growth_feedback",
-      "five_main_pages_and_active_navigation",
-      "dynamic_world_map_locations_access_people_and_opportunities",
-      "character_stats_and_birth_health_calibration",
-      "emergent_directions_and_completed_chapter_reviews",
-      "relationship_to_person_detail_and_back",
-      "records_natural_year_timeline_and_profile_tabs",
-      "settings_flow_save_identity",
-      "presentation_motion_sound_haptic_persistence_and_character_age_portrait",
-      "child_youth_adult_and_elder_character_visual_stages",
-      "hash_route_refresh_recovery",
-      "mobile_and_desktop_no_horizontal_overflow",
-      "debug_independent_save_and_forced_random_event_flow",
-      "forced_health_event_interrupts_month_execution",
-      "age6_canvas_action_selection_and_visual_result",
-      "age18_scene_month_actor_feedback_and_result_vertical_slice",
-      "cross_quarter_action_variety_label_surface",
-      "youth_mainline_event_evidence_gain_and_tradeoff_flow",
-      "age_18_traceable_causal_review_surface",
-      "ending_mainline_kept_laid_down_and_chapter_review",
-      "no_page_errors",
+      "no_horizontal_overflow", "no_pageerror", "unobscured_module_hit_target", "action_drawer_immediate_and_long_term_feedback",
+      "resource_shortage", "event_choice_before_resolution", "event_interruption", "formal_event_result_restore",
+      "formal_q1_q2_q3_q4_flow", "age6_stage_event_surface", "q4_review_to_age7", "formal_v5_save_restore", "records_four_quarters",
+      "persistent_people_and_memory", "interest_visibility", "reduced_motion", "desktop_life_1280x900",
     ],
   }, null, 2));
 } finally {

@@ -8,6 +8,7 @@ import {
   type RuntimeActionOption,
 } from "../contracts";
 import { bindInteractiveFeedback, DEFAULT_FONT_FAMILY, text } from "../ui/game-text";
+import { VerticalStack } from "../ui/vertical-stack";
 import { GamePresentationDirector, ProceduralGameFeedback, type MotionLevel } from "../presentation";
 import { HAPTIC_ENABLED_REGISTRY_KEY, MOTION_LEVEL_REGISTRY_KEY, REDUCED_MOTION_REGISTRY_KEY, SOUND_ENABLED_REGISTRY_KEY } from "./boot-scene";
 import { AudioManager } from "../audio/audio-manager";
@@ -3784,8 +3785,11 @@ export class LifeScene extends Phaser.Scene {
   private activeModal: ActiveModal = null;
   private collectedShuihuCardIds: Set<string> = new Set(["shi_qian", "sun_erniang"]);
   private activeCardSlapGame: CardSlapMiniGame | null = null;
+  private isCardSlapTutorialConfirmed: boolean = false;
   private activeMarblesGame: MarblesMiniGame | null = null;
+  private isMarblesTutorialConfirmed: boolean = false;
   private activeExamQuizGame: ExamQuizMiniGame | null = null;
+  private isExamQuizTutorialConfirmed: boolean = false;
   private lastDrawnCard: ShuihuCard | null = null;
   private activeZhongkao: ZhongkaoManager | null = null;
   private activeEsportsCareer: EsportsCareerManager | null = null;
@@ -4213,14 +4217,54 @@ export class LifeScene extends Phaser.Scene {
   private renderHomeTab(s: GameRuntimeSnapshot): void {
     // 1. 中央核心：【沉浸生活活体舞台】(Y: 126 ~ 434)
     this.renderLivingStage(s);
-    // 2. 时代人生奋斗目标栏 (Y: 440 ~ 504)
-    this.renderLifeQuests(s);
-    // 3. 核心日常行动快捷卡片栏 (Y: 510 ~ 640)
+    // 2. 步骤任务引导横幅 (Step Banner) (Y: 436 ~ 468)
+    this.renderStepBanner(s);
+    // 3. 核心日常行动快捷卡片栏 (Y: 476 ~ 636)
     this.renderQuickActionDeck(s);
     // 4. 底部核心大推进按钮——【 下一年 ▶ 】(Y: 648 ~ 708)
     this.renderAdvanceButton(s);
     // 5. 底部系统辅助按钮与大事记回忆录入口 (Y: 716 ~ 746)
     this.renderFooterUtilities();
+  }
+
+  // 步骤任务引导横幅 (Step Banner)
+  private renderStepBanner(s: GameRuntimeSnapshot): void {
+    const stats = this.getEffectiveStats(s);
+    const bannerX = 14;
+    const bannerY = 436;
+    const bannerW = 362;
+    const bannerH = 32;
+
+    const isReadyForNextYear = stats.availableEnergy < 10;
+    const bannerG = this.add.graphics();
+    bannerG.fillStyle(isReadyForNextYear ? 0x2e1a06 : 0x091e28, 0.95).fillRoundedRect(bannerX, bannerY, bannerW, bannerH, 8);
+    bannerG.lineStyle(1.5, isReadyForNextYear ? 0xf59e0b : 0x38bdf8, 0.9).strokeRoundedRect(bannerX, bannerY, bannerW, bannerH, 8);
+    bannerG.setDepth(5);
+    this.view.add(bannerG);
+
+    const bannerTextStr = isReadyForNextYear
+      ? "✨ 本年安排已妥当！请点击下方【 下一年 ▶ 】开启新生活"
+      : `💡 当前步骤：请安排生活行动或大院社交 (精力 ${stats.availableEnergy}/100)`;
+
+    const bannerText = this.add.text(bannerX + bannerW / 2, bannerY + bannerH / 2, bannerTextStr, {
+      fontFamily: FONT_FAMILY,
+      fontSize: "12px",
+      fontStyle: "bold",
+      color: isReadyForNextYear ? "#fde68a" : "#7dd3fc",
+      padding: { x: 2, y: 2 },
+    }).setOrigin(0.5).setDepth(6);
+    this.view.add(bannerText);
+
+    if (isReadyForNextYear) {
+      this.tweens.add({
+        targets: bannerText,
+        alpha: { from: 0.65, to: 1 },
+        duration: 750,
+        yoyo: true,
+        repeat: -1,
+        ease: Phaser.Math.Easing.Sine.InOut,
+      });
+    }
   }
 
   // 1. 沉浸式活体生活舞台 (Living Stage)
@@ -4489,17 +4533,13 @@ export class LifeScene extends Phaser.Scene {
     this.view.add(hit);
   }
 
-  // 3. 核心日常行动快捷卡片栏 (Quick Actions Dock)
+  // 3. 核心日常行动快捷卡片栏 (Quick Actions Dock - 二级立体交互卡片)
   private renderQuickActionDeck(s: GameRuntimeSnapshot): void {
     const stats = this.getEffectiveStats(s);
     const deckX = 14;
-    const deckY = 512;
-    const deckW = 362;
-    const deckH = 130;
-
-    // 4 张生活行动卡片 (2 列 × 2 行)
+    const deckY = 476;
     const cardW = 176;
-    const cardH = 58;
+    const cardH = 74;
     const gapX = 10;
     const gapY = 8;
 
@@ -4600,54 +4640,73 @@ export class LifeScene extends Phaser.Scene {
       const cx = deckX + col * (cardW + gapX);
       const cy = deckY + row * (cardH + gapY);
 
+      // 二级立体底座阴影 (4px 底部阴影)
+      const shadowG = this.add.graphics();
+      shadowG.fillStyle(0x061116, 1).fillRoundedRect(cx, cy + 4, cardW, cardH, 8);
+      shadowG.setDepth(4);
+      this.view.add(shadowG);
+
+      const cardContainer = this.add.container(cx, cy);
+      cardContainer.setDepth(5);
+      this.view.add(cardContainer);
+
       const cardBg = this.add.graphics();
-      cardBg.fillStyle(act.color, 0.98).fillRoundedRect(cx, cy, cardW, cardH, 8);
-      cardBg.lineStyle(1.5, act.border, 0.85).strokeRoundedRect(cx, cy, cardW, cardH, 8);
-      cardBg.setDepth(5);
-      this.view.add(cardBg);
+      cardBg.fillStyle(act.color, 0.98).fillRoundedRect(0, 0, cardW, cardH - 2, 8);
+      cardBg.lineStyle(1.5, act.border, 0.85).strokeRoundedRect(0, 0, cardW, cardH - 2, 8);
+      cardContainer.add(cardBg);
 
       // 真实 AI 行动插图挂载（右侧半透明融合，富有时代美术质感）
       if (act.textureKey && this.textures.exists(act.textureKey)) {
-        const texImg = this.add.image(cx + cardW - 30, cy + cardH / 2, act.textureKey);
-        texImg.setDisplaySize(54, cardH - 8);
+        const texImg = this.add.image(cardW - 30, (cardH - 2) / 2, act.textureKey);
+        texImg.setDisplaySize(54, cardH - 12);
         texImg.setAlpha(0.38);
-        texImg.setDepth(6);
-        this.view.add(texImg);
+        cardContainer.add(texImg);
       }
 
-      const iconTxt = this.add.text(cx + 20, cy + 22, act.icon, { fontSize: "22px" }).setOrigin(0.5).setDepth(7);
-      this.view.add(iconTxt);
+      const iconTxt = this.add.text(20, 24, act.icon, { fontSize: "22px" }).setOrigin(0.5);
+      cardContainer.add(iconTxt);
 
-      const titleTxt = this.add.text(cx + 40, cy + 10, act.title, {
+      const titleTxt = this.add.text(40, 10, act.title, {
         fontFamily: FONT_FAMILY,
         fontSize: "13px",
         fontStyle: "bold",
         color: "#ffffff",
-      }).setDepth(7);
-      this.view.add(titleTxt);
+      });
+      cardContainer.add(titleTxt);
 
-      const costTxt = this.add.text(cx + 40, cy + 32, act.cost, {
+      const descTxt = this.add.text(40, 30, act.desc, {
+        fontFamily: FONT_FAMILY,
+        fontSize: "10.5px",
+        color: "#94a3b8",
+      });
+      cardContainer.add(descTxt);
+
+      const costTxt = this.add.text(40, 48, act.cost, {
         fontFamily: FONT_FAMILY,
         fontSize: "11px",
+        fontStyle: "bold",
         color: "#ffd8a1",
-      }).setDepth(7);
-      this.view.add(costTxt);
+      });
+      cardContainer.add(costTxt);
 
-      const hit = this.add.rectangle(cx + cardW / 2, cy + cardH / 2, cardW, cardH, 0x000000, 0);
-      hit.setInteractive({ useHandCursor: true }).setDepth(8);
+      const hit = this.add.rectangle(cardW / 2, cardH / 2, cardW, cardH, 0x000000, 0);
+      hit.setInteractive({ useHandCursor: true });
+      cardContainer.add(hit);
+
       hit.on("pointerdown", () => {
-        this.tweens.add({
-          targets: iconTxt,
-          scale: 1.25,
-          duration: 100,
-          yoyo: true,
-        });
+        cardContainer.y = cy + 3;
+      });
+      hit.on("pointerup", () => {
+        cardContainer.y = cy;
         act.action();
       });
-      this.view.add(hit);
+      hit.on("pointerout", () => {
+        cardContainer.y = cy;
+      });
     });
   }
 
+  // 4. 底部一级主行动推进按钮 (Primary CTA - 全屏唯一呼吸发光大按钮)
   private renderAdvanceButton(s: GameRuntimeSnapshot): void {
     const stats = this.getEffectiveStats(s);
     const btnX = 14;
@@ -4657,30 +4716,62 @@ export class LifeScene extends Phaser.Scene {
 
     const nextAge = stats.age + 1;
     const nextYear = stats.calendarYear + 1;
+    const isReady = stats.availableEnergy < 10;
 
+    const btnContainer = this.add.container(btnX + btnW / 2, btnY + btnH / 2);
+    btnContainer.setDepth(9);
+    this.view.add(btnContainer);
+
+    // 立体底座阴影 (4px)
+    const shadowG = this.add.graphics();
+    shadowG.fillStyle(0x421808, 1).fillRoundedRect(-btnW / 2, -btnH / 2 + 4, btnW, btnH, 12);
+    btnContainer.add(shadowG);
+
+    // 主按钮底板 (琥珀金/丹砂红渐变高饱和)
     const btnG = this.add.graphics();
-    btnG.fillStyle(0xb55a3c, 0.98).fillRoundedRect(btnX, btnY, btnW, btnH, 12);
-    btnG.lineStyle(2, 0xffd8a1, 1).strokeRoundedRect(btnX, btnY, btnW, btnH, 12);
-    btnG.setDepth(8);
-    this.view.add(btnG);
+    const fillColor = isReady ? 0xd97706 : 0xb55a3c;
+    const strokeColor = isReady ? 0xfde68a : 0xffd8a1;
+    btnG.fillStyle(fillColor, 1).fillRoundedRect(-btnW / 2, -btnH / 2, btnW, btnH - 2, 12);
+    btnG.lineStyle(2, strokeColor, 1).strokeRoundedRect(-btnW / 2, -btnH / 2, btnW, btnH - 2, 12);
+    btnContainer.add(btnG);
 
     const btnText = this.add.text(
-      btnX + btnW / 2,
-      btnY + btnH / 2,
+      0,
+      -1,
       `【 下一年 ▶ (${nextYear} 年 · ${nextAge} 岁) 】`,
       {
         fontFamily: FONT_FAMILY,
         fontSize: "17px",
         fontStyle: "bold",
         color: "#ffffff",
-        padding: { x: 2, y: 2 },
+        stroke: "#221105",
+        strokeThickness: 2,
+        padding: { x: 4, y: 2 },
       },
-    ).setOrigin(0.5).setDepth(9);
-    this.view.add(btnText);
+    ).setOrigin(0.5);
+    btnContainer.add(btnText);
 
-    const hit = this.add.rectangle(btnX + btnW / 2, btnY + btnH / 2, btnW, btnH, 0x000000, 0);
-    hit.setInteractive({ useHandCursor: true }).setDepth(10);
+    // 一级主按钮持续呼吸微动效果（全屏唯一 Primary CTA）
+    const duration = isReady ? 900 : 1800;
+    this.tweens.add({
+      targets: btnContainer,
+      scaleX: 1.025,
+      scaleY: 1.025,
+      duration,
+      yoyo: true,
+      repeat: -1,
+      ease: Phaser.Math.Easing.Sine.InOut,
+    });
+
+    const hit = this.add.rectangle(0, 0, btnW, btnH, 0x000000, 0);
+    hit.setInteractive({ useHandCursor: true });
+    btnContainer.add(hit);
+
     hit.on("pointerdown", () => {
+      btnContainer.y = btnY + btnH / 2 + 3;
+    });
+    hit.on("pointerup", () => {
+      btnContainer.y = btnY + btnH / 2;
       AudioManager.getInstance().playSfx("quarter_tick");
       const settlement = this.calculateYearSettlement(s);
       this.pendingSettlement = settlement;
@@ -4704,7 +4795,9 @@ export class LifeScene extends Phaser.Scene {
         },
       });
     });
-    this.view.add(hit);
+    hit.on("pointerout", () => {
+      btnContainer.y = btnY + btnH / 2;
+    });
   }
 
   private renderFooterUtilities(): void {
@@ -6085,8 +6178,8 @@ export class LifeScene extends Phaser.Scene {
   // 5. 模态弹窗系统 (Modals)
   // ==========================================
   private renderModal(s: GameRuntimeSnapshot): void {
-    // 全屏遮罩
-    const modalMask = this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 0x000000, 0.88);
+    // 全屏 88% 强深色阻断遮罩（阻断底层文字与点击穿透，色值规范 0x050b0e）
+    const modalMask = this.add.rectangle(GAME_WIDTH / 2, GAME_HEIGHT / 2, GAME_WIDTH, GAME_HEIGHT, 0x050b0e, 0.88);
     modalMask.setInteractive().setDepth(20);
     this.view.add(modalMask);
 
@@ -6628,61 +6721,76 @@ export class LifeScene extends Phaser.Scene {
     }).setDepth(22);
     this.view.add(title);
 
-    // 2. 情景叙事卡片
-    const storyBg = this.add.graphics();
-    storyBg.fillStyle(0x0e2430, 0.98).fillRoundedRect(x + 14, y + 48, w - 28, 104, 10);
-    storyBg.lineStyle(1.5, 0x3d606d, 0.8).strokeRoundedRect(x + 14, y + 48, w - 28, 104, 10);
-    storyBg.setDepth(22);
-    this.view.add(storyBg);
-
-    const storyIcon = this.add.text(x + 32, y + 70, evt.icon, { fontSize: "24px" }).setOrigin(0.5).setDepth(23);
-    this.view.add(storyIcon);
-
-    const storyText = this.add.text(x + 50, y + 58, evt.narrative, {
+    // 2. 情景叙事卡片（高度流式自适应）
+    const storyTextW = w - 74;
+    const storyText = this.add.text(x + 50, y + 56, evt.narrative, {
       fontFamily: FONT_FAMILY,
       fontSize: "13px",
-      lineSpacing: 6,
-      wordWrap: { width: w - 74, useAdvancedWrap: true },
+      lineSpacing: 5,
+      wordWrap: { width: storyTextW, useAdvancedWrap: true },
       color: "#e2e8f0",
       padding: { x: 1, y: 1 },
     }).setDepth(23);
     this.view.add(storyText);
 
-    // 3. 抉择选项列表
-    let optY = y + 162;
-    evt.options.forEach((opt, idx) => {
-      const optBg = this.add.graphics();
-      optBg.fillStyle(0x13303d, 0.98).fillRoundedRect(x + 14, optY, w - 28, 98, 10);
-      optBg.lineStyle(1.5, 0xd4a359, 0.9).strokeRoundedRect(x + 14, optY, w - 28, 98, 10);
-      optBg.setDepth(22);
-      this.view.add(optBg);
+    const storyH = Math.max(76, Math.ceil(storyText.height + 24));
+    const storyBg = this.add.graphics();
+    storyBg.fillStyle(0x0e2430, 0.98).fillRoundedRect(x + 14, y + 46, w - 28, storyH, 10);
+    storyBg.lineStyle(1.5, 0x3d606d, 0.8).strokeRoundedRect(x + 14, y + 46, w - 28, storyH, 10);
+    storyBg.setDepth(22);
+    this.view.add(storyBg);
 
-      const optLabel = this.add.text(x + 24, optY + 12, `选项 ${idx + 1}：${opt.label}`, {
+    const storyIcon = this.add.text(x + 32, y + 46 + storyH / 2, evt.icon, { fontSize: "24px" }).setOrigin(0.5).setDepth(23);
+    this.view.add(storyIcon);
+
+    // 3. 抉择选项列表（使用 VerticalStack 流式纵向排版）
+    const stack = new VerticalStack(x + 14, y + 46 + storyH + 12, 10);
+    evt.options.forEach((opt, idx) => {
+      const optY = stack.getY();
+      const textMaxW = w - 124;
+
+      const optLabel = this.add.text(x + 24, optY + 10, `选项 ${idx + 1}：${opt.label}`, {
         fontFamily: FONT_FAMILY,
-        fontSize: "15px",
+        fontSize: "14px",
         fontStyle: "bold",
         color: "#ffffff",
+        wordWrap: { width: textMaxW, useAdvancedWrap: true },
         padding: { x: 1, y: 1 },
       }).setDepth(23);
       this.view.add(optLabel);
 
-      const optHint = this.add.text(x + 24, optY + 36, `【倾向】${opt.hint}`, {
+      const hintY = optY + 12 + Math.ceil(optLabel.height) + 4;
+      const optHint = this.add.text(x + 24, hintY, `【倾向】${opt.hint}`, {
         fontFamily: FONT_FAMILY,
         fontSize: "12px",
         fontStyle: "bold",
         color: "#8be5d1",
+        wordWrap: { width: textMaxW, useAdvancedWrap: true },
         padding: { x: 1, y: 1 },
       }).setDepth(23);
       this.view.add(optHint);
 
+      const cardH = Math.max(76, Math.ceil(optLabel.height + optHint.height + 26));
+
+      const optBg = this.add.graphics();
+      optBg.fillStyle(0x13303d, 0.98).fillRoundedRect(x + 14, optY, w - 28, cardH, 10);
+      optBg.lineStyle(1.5, 0xd4a359, 0.9).strokeRoundedRect(x + 14, optY, w - 28, cardH, 10);
+      optBg.setDepth(22);
+      this.view.add(optBg);
+
       // 选择按钮
+      const btnW = 76;
+      const btnH = 38;
+      const btnX = x + w - 94;
+      const btnY = optY + Math.round((cardH - btnH) / 2);
+
       const optBtn = this.add.graphics();
-      optBtn.fillStyle(0xb55a3c, 1).fillRoundedRect(x + w - 94, optY + 28, 76, 42, 8);
-      optBtn.lineStyle(1.5, 0xffd8a1, 1).strokeRoundedRect(x + w - 94, optY + 28, 76, 42, 8);
+      optBtn.fillStyle(0xb55a3c, 1).fillRoundedRect(btnX, btnY, btnW, btnH, 8);
+      optBtn.lineStyle(1.5, 0xffd8a1, 1).strokeRoundedRect(btnX, btnY, btnW, btnH, 8);
       optBtn.setDepth(23);
       this.view.add(optBtn);
 
-      const btnText = this.add.text(x + w - 56, optY + 49, "做出抉择", {
+      const btnText = this.add.text(btnX + btnW / 2, btnY + btnH / 2, "做出抉择", {
         fontFamily: FONT_FAMILY,
         fontSize: "13px",
         fontStyle: "bold",
@@ -6691,7 +6799,7 @@ export class LifeScene extends Phaser.Scene {
       }).setOrigin(0.5).setDepth(24);
       this.view.add(btnText);
 
-      const hit = this.add.rectangle(x + (w - 28) / 2 + 14, optY + 49, w - 28, 98, 0x000000, 0);
+      const hit = this.add.rectangle(x + (w - 28) / 2 + 14, optY + cardH / 2, w - 28, cardH, 0x000000, 0);
       hit.setInteractive({ useHandCursor: true }).setDepth(25);
       hit.on("pointerdown", () => {
         // 应用效果
@@ -6736,7 +6844,7 @@ export class LifeScene extends Phaser.Scene {
       });
       this.view.add(hit);
 
-      optY += 108;
+      stack.addSpacing(cardH);
     });
   }
 
@@ -6755,26 +6863,23 @@ export class LifeScene extends Phaser.Scene {
     }).setDepth(22);
     this.view.add(title);
 
-    // 2. 时代大事件播报卡片
-    const newsBg = this.add.graphics();
-    newsBg.fillStyle(0x0e2430, 0.98).fillRoundedRect(x + 14, y + 46, w - 28, 86, 8);
-    newsBg.lineStyle(1.5, 0xd4a359, 0.9).strokeRoundedRect(x + 14, y + 46, w - 28, 86, 8);
-    newsBg.setDepth(22);
-    this.view.add(newsBg);
+    // 2. 纵向流式容器组织内容
+    const stack = new VerticalStack(x + 14, y + 46, 8);
 
-    const newsIcon = this.add.text(x + 28, y + 62, "📻", { fontSize: "20px" }).setOrigin(0.5).setDepth(23);
-    this.view.add(newsIcon);
-
-    const newsTitle = this.add.text(x + 44, y + 54, `【时代纪事】${st.historicalHeadline}`, {
+    // 时代大事件播报卡片（高度流式自适应）
+    const newsY = stack.getY();
+    const newsTitle = this.add.text(x + 44, newsY + 8, `【时代纪事】${st.historicalHeadline}`, {
       fontFamily: FONT_FAMILY,
       fontSize: "13px",
       fontStyle: "bold",
       color: "#ffd8a1",
+      wordWrap: { width: w - 74, useAdvancedWrap: true },
       padding: { x: 1, y: 1 },
     }).setDepth(23);
     this.view.add(newsTitle);
 
-    const newsDetail = this.add.text(x + 44, y + 74, st.historicalDetail, {
+    const newsDetailY = newsY + 10 + Math.ceil(newsTitle.height);
+    const newsDetail = this.add.text(x + 44, newsDetailY, st.historicalDetail, {
       fontFamily: FONT_FAMILY,
       fontSize: "12px",
       lineSpacing: 4,
@@ -6784,31 +6889,44 @@ export class LifeScene extends Phaser.Scene {
     }).setDepth(23);
     this.view.add(newsDetail);
 
+    const newsCardH = Math.max(72, Math.ceil(newsTitle.height + newsDetail.height + 22));
+    const newsBg = this.add.graphics();
+    newsBg.fillStyle(0x0e2430, 0.98).fillRoundedRect(x + 14, newsY, w - 28, newsCardH, 8);
+    newsBg.lineStyle(1.5, 0xd4a359, 0.9).strokeRoundedRect(x + 14, newsY, w - 28, newsCardH, 8);
+    newsBg.setDepth(22);
+    this.view.add(newsBg);
+
+    const newsIcon = this.add.text(x + 28, newsY + 22, "📻", { fontSize: "20px" }).setOrigin(0.5).setDepth(23);
+    this.view.add(newsIcon);
+    stack.addSpacing(newsCardH);
+
     // 3. 身体发育行
+    const bodyY = stack.getY();
     const bodyBg = this.add.graphics();
-    bodyBg.fillStyle(0x112732, 0.98).fillRoundedRect(x + 14, y + 140, w - 28, 46, 8);
-    bodyBg.lineStyle(1.5, 0x3d606d, 0.8).strokeRoundedRect(x + 14, y + 140, w - 28, 46, 8);
+    bodyBg.fillStyle(0x112732, 0.98).fillRoundedRect(x + 14, bodyY, w - 28, 42, 8);
+    bodyBg.lineStyle(1.5, 0x3d606d, 0.8).strokeRoundedRect(x + 14, bodyY, w - 28, 42, 8);
     bodyBg.setDepth(22);
     this.view.add(bodyBg);
 
     const bodyText = this.add.text(
       x + 24,
-      y + 154,
+      bodyY + 12,
       `🌱 身高: +${st.heightGainCm}cm (现${st.totalHeightCm}cm) · 体重: +${st.weightGainKg}kg (现${st.totalWeightKg}kg)`,
       {
         fontFamily: FONT_FAMILY,
-        fontSize: "13px",
+        fontSize: "12.5px",
         fontStyle: "bold",
         color: "#8be5d1",
         padding: { x: 1, y: 1 },
       },
     ).setDepth(23);
     this.view.add(bodyText);
+    stack.addSpacing(42);
 
     // 4. 核心四大属性成长网格
-    const statGridY = y + 194;
-    const cardW = (w - 36) / 2;
-    const cardH = 50;
+    const statGridY = stack.getY();
+    const cardW = Math.floor((w - 36) / 2);
+    const cardH = 46;
 
     const statsConfig = [
       { label: "😊 快乐", gain: st.happinessGain, note: "爱笑逗人喜欢", color: 0xf6ad55 },
@@ -6821,7 +6939,7 @@ export class LifeScene extends Phaser.Scene {
       const col = idx % 2;
       const row = Math.floor(idx / 2);
       const cardX = x + 14 + col * (cardW + 8);
-      const cY = statGridY + row * (cardH + 8);
+      const cY = statGridY + row * (cardH + 6);
 
       const card = this.add.graphics();
       card.fillStyle(0x0c1e26, 0.98).fillRoundedRect(cardX, cY, cardW, cardH, 8);
@@ -6829,58 +6947,54 @@ export class LifeScene extends Phaser.Scene {
       card.setDepth(22);
       this.view.add(card);
 
-      const cardTitle = this.add.text(cardX + 10, cY + 8, cfg.label, {
+      const cardTitle = this.add.text(cardX + 10, cY + 6, cfg.label, {
         fontFamily: FONT_FAMILY,
-        fontSize: "13px",
+        fontSize: "12px",
         fontStyle: "bold",
         color: "#ffffff",
         padding: { x: 1, y: 1 },
       }).setDepth(23);
       this.view.add(cardTitle);
 
-      const gainPill = this.add.text(cardX + cardW - 10, cY + 8, `+${cfg.gain} ▲`, {
+      const gainPill = this.add.text(cardX + cardW - 10, cY + 6, `+${cfg.gain} ▲`, {
         fontFamily: FONT_FAMILY,
-        fontSize: "13px",
+        fontSize: "12px",
         fontStyle: "bold",
         color: "#8be5d1",
         padding: { x: 1, y: 1 },
       }).setOrigin(1, 0).setDepth(23);
       this.view.add(gainPill);
 
-      const noteText = this.add.text(cardX + 10, cY + 28, cfg.note, {
+      const noteText = this.add.text(cardX + 10, cY + 26, cfg.note, {
         fontFamily: FONT_FAMILY,
-        fontSize: "11px",
+        fontSize: "10.5px",
         color: "#94a3b8",
         padding: { x: 1, y: 1 },
       }).setDepth(23);
       this.view.add(noteText);
     });
+    stack.addSpacing(cardH * 2 + 6);
 
     // 5. 财富收支与精力恢复
+    const moneyY = stack.getY();
+    const moneyH = 76;
     const moneyBg = this.add.graphics();
-    moneyBg.fillStyle(0x112732, 0.98).fillRoundedRect(x + 14, y + 312, w - 28, 86, 8);
-    moneyBg.lineStyle(1.5, 0xd4a359, 0.8).strokeRoundedRect(x + 14, y + 312, w - 28, 86, 8);
+    moneyBg.fillStyle(0x112732, 0.98).fillRoundedRect(x + 14, moneyY, w - 28, moneyH, 8);
+    moneyBg.lineStyle(1.5, 0xd4a359, 0.8).strokeRoundedRect(x + 14, moneyY, w - 28, moneyH, 8);
     moneyBg.setDepth(22);
     this.view.add(moneyBg);
 
-    const cashTitle = this.add.text(x + 24, y + 322, `💰 压岁零花: +¥${st.cashGain.toFixed(2)} 元`, {
+    const cashTitle = this.add.text(x + 24, moneyY + 8, `💰 压岁零花: +¥${st.cashGain.toFixed(2)} 元 · ${st.cashGainReason}`, {
       fontFamily: FONT_FAMILY,
-      fontSize: "13px",
+      fontSize: "12.5px",
       fontStyle: "bold",
       color: "#ffd8a1",
+      wordWrap: { width: w - 48, useAdvancedWrap: true },
       padding: { x: 1, y: 1 },
     }).setDepth(23);
     this.view.add(cashTitle);
 
-    const cashDesc = this.add.text(x + 24, y + 342, st.cashGainReason, {
-      fontFamily: FONT_FAMILY,
-      fontSize: "12px",
-      color: "#c1d0ce",
-      padding: { x: 1, y: 1 },
-    }).setDepth(23);
-    this.view.add(cashDesc);
-
-    const energyDesc = this.add.text(x + 24, y + 368, "⚡ 精力点数已恢复满格 (100/100) · 充满干劲！", {
+    const energyDesc = this.add.text(x + 24, moneyY + 36, "⚡ 精力点数已恢复满格 (100/100) · 充满干劲！", {
       fontFamily: FONT_FAMILY,
       fontSize: "12px",
       fontStyle: "bold",
@@ -6888,10 +7002,11 @@ export class LifeScene extends Phaser.Scene {
       padding: { x: 1, y: 1 },
     }).setDepth(23);
     this.view.add(energyDesc);
+    stack.addSpacing(moneyH + 4);
 
     // 6. 底部开启新岁按钮
-    const enterBtnY = y + 414;
-    const enterBtnH = 54;
+    const enterBtnY = stack.getY();
+    const enterBtnH = 50;
     const enterBtnW = w - 28;
 
     const enterBtnG = this.add.graphics();
@@ -7860,6 +7975,65 @@ export class LifeScene extends Phaser.Scene {
     }).setDepth(22);
     this.view.add(title);
 
+    // 3 秒前置规则教学卡（杜绝无前置引导直接开局）
+    if (!this.isCardSlapTutorialConfirmed) {
+      const tutW = w - 48;
+      const tutH = 220;
+      const tutX = x + 24;
+      const tutY = y + 70;
+
+      const tutBg = this.add.graphics();
+      tutBg.fillStyle(0x0e2430, 0.98).fillRoundedRect(tutX, tutY, tutW, tutH, 10);
+      tutBg.lineStyle(2, 0xf59e0b, 1).strokeRoundedRect(tutX, tutY, tutW, tutH, 10);
+      tutBg.setDepth(30);
+      this.view.add(tutBg);
+
+      const tutTitle = this.add.text(x + w / 2, tutY + 24, "🃏 拍画片规则：掌风绝技", {
+        fontFamily: FONT_FAMILY,
+        fontSize: "16px",
+        fontStyle: "bold",
+        color: "#f59e0b",
+      }).setOrigin(0.5).setDepth(31);
+      this.view.add(tutTitle);
+
+      const tutDesc = this.add.text(x + w / 2, tutY + 68, "【胜利条件】\n点击拍掌蓄力，在黄色 65%~92% 最佳区间松开以掀起强劲掌风！\n先将对方画片成功掀翻 2 次者夺得对决胜利！", {
+        fontFamily: FONT_FAMILY,
+        fontSize: "12px",
+        lineSpacing: 5,
+        color: "#e2e8f0",
+        align: "center",
+      }).setOrigin(0.5).setDepth(31);
+      this.view.add(tutDesc);
+
+      const btnW = 180;
+      const btnH = 38;
+      const btnX = x + (w - btnW) / 2;
+      const btnY = tutY + tutH - 52;
+
+      const btnG = this.add.graphics();
+      btnG.fillStyle(0xb55a3c, 1).fillRoundedRect(btnX, btnY, btnW, btnH, 8);
+      btnG.lineStyle(1.5, 0xffd8a1, 1).strokeRoundedRect(btnX, btnY, btnW, btnH, 8);
+      btnG.setDepth(31);
+      this.view.add(btnG);
+
+      const btnT = this.add.text(x + w / 2, btnY + btnH / 2, "【 明白，开战！▶ 】", {
+        fontFamily: FONT_FAMILY,
+        fontSize: "14px",
+        fontStyle: "bold",
+        color: "#ffffff",
+      }).setOrigin(0.5).setDepth(32);
+      this.view.add(btnT);
+
+      const hit = this.add.rectangle(x + w / 2, btnY + btnH / 2, btnW, btnH, 0x000000, 0);
+      hit.setInteractive({ useHandCursor: true }).setDepth(33);
+      hit.on("pointerdown", () => {
+        this.isCardSlapTutorialConfirmed = true;
+        this.render();
+      });
+      this.view.add(hit);
+      return;
+    }
+
     // 比分看板
     const scoreBg = this.add.graphics();
     scoreBg.fillStyle(0x102b38, 0.98).fillRoundedRect(x + 14, y + 46, w - 28, 42, 8);
@@ -8037,6 +8211,64 @@ export class LifeScene extends Phaser.Scene {
     }).setDepth(22);
     this.view.add(title);
 
+    if (!this.isMarblesTutorialConfirmed) {
+      // 3秒前置规则教学卡
+      const tutW = w - 48;
+      const tutH = 200;
+      const tutY = y + (h - tutH) / 2;
+
+      const tutBg = this.add.graphics();
+      tutBg.fillStyle(0x0e2430, 0.98).fillRoundedRect(x + 24, tutY, tutW, tutH, 10);
+      tutBg.lineStyle(2, 0x38bdf8, 1).strokeRoundedRect(x + 24, tutY, tutW, tutH, 10);
+      tutBg.setDepth(30);
+      this.view.add(tutBg);
+
+      const tutTitle = this.add.text(x + w / 2, tutY + 28, "🔮 经典打弹珠 · 竞技规则指引", {
+        fontFamily: FONT_FAMILY,
+        fontSize: "16px",
+        fontStyle: "bold",
+        color: "#38bdf8",
+      }).setOrigin(0.5).setDepth(31);
+      this.view.add(tutTitle);
+
+      const tutDesc = this.add.text(x + w / 2, tutY + 76, "1. 瞄准泥地核心坑位或对方彩珠，蓄力拉动弹弓手势！\n2. 击中并弹飞对方玻璃弹珠，即可夺得战利品！\n3. 赢得全部弹珠可收获稀有双色猫眼珠与零花钱！", {
+        fontFamily: FONT_FAMILY,
+        fontSize: "12px",
+        lineSpacing: 5,
+        color: "#e2e8f0",
+        align: "center",
+      }).setOrigin(0.5).setDepth(31);
+      this.view.add(tutDesc);
+
+      const btnW = 180;
+      const btnH = 38;
+      const btnX = x + (w - btnW) / 2;
+      const btnY = tutY + tutH - 52;
+
+      const btnG = this.add.graphics();
+      btnG.fillStyle(0xb55a3c, 1).fillRoundedRect(btnX, btnY, btnW, btnH, 8);
+      btnG.lineStyle(1.5, 0xffd8a1, 1).strokeRoundedRect(btnX, btnY, btnW, btnH, 8);
+      btnG.setDepth(31);
+      this.view.add(btnG);
+
+      const btnT = this.add.text(x + w / 2, btnY + btnH / 2, "【 明白，瞄准！▶ 】", {
+        fontFamily: FONT_FAMILY,
+        fontSize: "14px",
+        fontStyle: "bold",
+        color: "#ffffff",
+      }).setOrigin(0.5).setDepth(32);
+      this.view.add(btnT);
+
+      const hit = this.add.rectangle(x + w / 2, btnY + btnH / 2, btnW, btnH, 0x000000, 0);
+      hit.setInteractive({ useHandCursor: true }).setDepth(33);
+      hit.on("pointerdown", () => {
+        this.isMarblesTutorialConfirmed = true;
+        this.render();
+      });
+      this.view.add(hit);
+      return;
+    }
+
     // 弹珠数量状态
     const statusBg = this.add.graphics();
     statusBg.fillStyle(0x102b38, 0.98).fillRoundedRect(x + 14, y + 46, w - 28, 42, 8);
@@ -8118,6 +8350,7 @@ export class LifeScene extends Phaser.Scene {
           this.accumulatedYearBonus.health += 5;
           this.accumulatedYearBonus.cash += 1.5;
         }
+        this.isMarblesTutorialConfirmed = false;
         this.activeModal = null;
         this.activeMarblesGame = null;
         this.render();
@@ -8141,6 +8374,64 @@ export class LifeScene extends Phaser.Scene {
       color: "#ffd8a1",
     }).setDepth(22);
     this.view.add(title);
+
+    if (!this.isExamQuizTutorialConfirmed) {
+      // 3秒前置开考须知卡
+      const tutW = w - 48;
+      const tutH = 200;
+      const tutY = y + (h - tutH) / 2;
+
+      const tutBg = this.add.graphics();
+      tutBg.fillStyle(0x0e2430, 0.98).fillRoundedRect(x + 24, tutY, tutW, tutH, 10);
+      tutBg.lineStyle(2, 0x38bdf8, 1).strokeRoundedRect(x + 24, tutY, tutW, tutH, 10);
+      tutBg.setDepth(30);
+      this.view.add(tutBg);
+
+      const tutTitle = this.add.text(x + w / 2, tutY + 28, "📝 期末真题考 · 考试须知指引", {
+        fontFamily: FONT_FAMILY,
+        fontSize: "16px",
+        fontStyle: "bold",
+        color: "#38bdf8",
+      }).setOrigin(0.5).setDepth(31);
+      this.view.add(tutTitle);
+
+      const tutDesc = this.add.text(x + w / 2, tutY + 76, "1. 本次考试包含语文、数学等基础学科共 3 道真题！\n2. 仔细审题并在选项中挑选唯一正确答案！\n3. 考取 90 分以上可荣获三好学生奖状与丰厚属性奖励！", {
+        fontFamily: FONT_FAMILY,
+        fontSize: "12px",
+        lineSpacing: 5,
+        color: "#e2e8f0",
+        align: "center",
+      }).setOrigin(0.5).setDepth(31);
+      this.view.add(tutDesc);
+
+      const btnW = 180;
+      const btnH = 38;
+      const btnX = x + (w - btnW) / 2;
+      const btnY = tutY + tutH - 52;
+
+      const btnG = this.add.graphics();
+      btnG.fillStyle(0xb55a3c, 1).fillRoundedRect(btnX, btnY, btnW, btnH, 8);
+      btnG.lineStyle(1.5, 0xffd8a1, 1).strokeRoundedRect(btnX, btnY, btnW, btnH, 8);
+      btnG.setDepth(31);
+      this.view.add(btnG);
+
+      const btnT = this.add.text(x + w / 2, btnY + btnH / 2, "【 提笔开考！▶ 】", {
+        fontFamily: FONT_FAMILY,
+        fontSize: "14px",
+        fontStyle: "bold",
+        color: "#ffffff",
+      }).setOrigin(0.5).setDepth(32);
+      this.view.add(btnT);
+
+      const hit = this.add.rectangle(x + w / 2, btnY + btnH / 2, btnW, btnH, 0x000000, 0);
+      hit.setInteractive({ useHandCursor: true }).setDepth(33);
+      hit.on("pointerdown", () => {
+        this.isExamQuizTutorialConfirmed = true;
+        this.render();
+      });
+      this.view.add(hit);
+      return;
+    }
 
     if (!game.state.isFinished && q) {
       // 题目卡片
@@ -8247,6 +8538,7 @@ export class LifeScene extends Phaser.Scene {
         } else {
           this.accumulatedYearBonus.intelligence += 8;
         }
+        this.isExamQuizTutorialConfirmed = false;
         this.activeModal = null;
         this.activeExamQuizGame = null;
         this.render();

@@ -3,14 +3,22 @@ import { palette } from "./game-palette";
 
 /**
  * 统一跨平台现代高清中文字体栈
- * 优先匹配系统现代无衬线字体（iOS/macOS PingFang SC，Windows 微软雅黑/Segoe UI，Android 思源黑体/Noto Sans），杜绝生硬点阵/老旧黑体
+ * 优先匹配系统现代无衬线字体（鸿蒙字体、苹果苹方、微软雅黑UI、思源黑体），杜绝生硬点阵/老旧黑体
  */
-export const DEFAULT_FONT_FAMILY = "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'PingFang SC', 'Microsoft YaHei', 'Source Han Sans SC', 'Noto Sans SC', sans-serif";
+export const DEFAULT_FONT_FAMILY =
+  "'HarmonyOS Sans SC', 'PingFang SC', 'Microsoft YaHei UI', 'Microsoft YaHei', 'Source Han Sans SC', 'Noto Sans SC', system-ui, -apple-system, sans-serif";
+
+/**
+ * 强制坐标整数对齐（消除亚像素插值虚化与半像素模糊）
+ */
+export function snapToPixel(val: number): number {
+  return Math.round(val);
+}
 
 /**
  * 统一跨平台高清超采样分辨率，默认最小2倍，彻底杜绝Canvas字体与像素拉伸发虚
  */
-export const GAME_RESOLUTION = typeof window !== "undefined" ? Math.max(window.devicePixelRatio || 2, 2) : 2;
+export const GAME_RESOLUTION = typeof window !== "undefined" ? Math.max(window.devicePixelRatio || 1, 2) : 2;
 
 export function text(
   scene: Phaser.Scene,
@@ -21,7 +29,7 @@ export function text(
   color = palette.ink,
   bold = false,
 ): Phaser.GameObjects.Text {
-  return scene.add.text(x, y, value, {
+  return scene.add.text(snapToPixel(x), snapToPixel(y), value, {
     fontFamily: DEFAULT_FONT_FAMILY,
     fontSize: `${size}px`,
     color: `#${color.toString(16).padStart(6, "0")}`,

@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { pixelPalette, toColorString } from "./pixel-palette";
-import { DEFAULT_FONT_FAMILY, GAME_RESOLUTION } from "../ui/game-text";
+import { DEFAULT_FONT_FAMILY, GAME_RESOLUTION, snapToPixel } from "../ui/game-text";
 
 export type PanelTheme = "parchment" | "wood" | "dark" | "brass";
 
@@ -45,7 +45,7 @@ export class PixelPanel extends Phaser.GameObjects.Container {
   private subtitleText?: Phaser.GameObjects.Text;
 
   constructor(scene: Phaser.Scene, options: PixelPanelOptions) {
-    super(scene, options.x, options.y);
+    super(scene, snapToPixel(options.x), snapToPixel(options.y));
 
     this.panelWidth = Math.max(32, Math.round(options.width));
     this.panelHeight = Math.max(32, Math.round(options.height));
@@ -211,7 +211,7 @@ export class PixelPanel extends Phaser.GameObjects.Container {
       : toColorString(pixelPalette.parchmentWarm);
 
     if (!this.titleText) {
-      this.titleText = this.scene.add.text(this.panelWidth / 2, 14, title, {
+      this.titleText = this.scene.add.text(snapToPixel(this.panelWidth / 2), 14, title, {
         fontFamily: DEFAULT_FONT_FAMILY,
         fontSize: "14px",
         fontStyle: "bold",
@@ -219,6 +219,7 @@ export class PixelPanel extends Phaser.GameObjects.Container {
         stroke: this.theme === "parchment" ? undefined : "#111111",
         strokeThickness: this.theme === "parchment" ? 0 : 2,
         resolution: GAME_RESOLUTION,
+        padding: { x: 2, y: 2 },
       }).setOrigin(0.5, 0.5);
       this.add(this.titleText);
     } else {
@@ -228,13 +229,14 @@ export class PixelPanel extends Phaser.GameObjects.Container {
 
     if (subtitle) {
       if (!this.subtitleText) {
-        this.subtitleText = this.scene.add.text(this.panelWidth / 2, 28, subtitle, {
+        this.subtitleText = this.scene.add.text(snapToPixel(this.panelWidth / 2), 28, subtitle, {
           fontFamily: DEFAULT_FONT_FAMILY,
           fontSize: "10px",
           color: subtitleColorHex,
           stroke: this.theme === "parchment" ? undefined : "#111111",
           strokeThickness: this.theme === "parchment" ? 0 : 1,
           resolution: GAME_RESOLUTION,
+          padding: { x: 2, y: 2 },
         }).setOrigin(0.5, 0.5);
         this.add(this.subtitleText);
       } else {

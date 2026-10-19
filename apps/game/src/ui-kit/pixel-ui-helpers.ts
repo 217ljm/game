@@ -12,7 +12,7 @@ import {
 } from "./pixel-palette";
 import { PixelPanel, type PanelTheme } from "./pixel-panel";
 import { PixelButton, createPixelButton, type PixelButtonVariant } from "./pixel-button";
-import { DEFAULT_FONT_FAMILY, GAME_RESOLUTION } from "../ui/game-text";
+import { DEFAULT_FONT_FAMILY, GAME_RESOLUTION, snapToPixel } from "../ui/game-text";
 
 // ============================================================================
 // 1. 纯代码 Web Audio 8-bit 复古像素音效合成器 (零外部音频文件加载)
@@ -174,7 +174,7 @@ export class PixelRelationCard extends Phaser.GameObjects.Container {
   private onToggleExpandCallback?: (expanded: boolean) => void;
 
   constructor(scene: Phaser.Scene, options: PixelRelationCardOptions) {
-    super(scene, options.x, options.y);
+    super(scene, snapToPixel(options.x), snapToPixel(options.y));
 
     this.cardWidth = Math.max(260, Math.round(options.width ?? 350));
     this.expandable = options.expandable ?? true;
@@ -223,6 +223,7 @@ export class PixelRelationCard extends Phaser.GameObjects.Container {
       fontStyle: "bold",
       color: toColorString(pixelPalette.charcoalInk),
       resolution: GAME_RESOLUTION,
+      padding: { x: 2, y: 2 },
     }).setOrigin(0.5, 0.5);
     avatarBox.add(avatarTextObj);
 
@@ -233,6 +234,7 @@ export class PixelRelationCard extends Phaser.GameObjects.Container {
       fontStyle: "bold",
       color: toColorString(pixelPalette.charcoalInk),
       resolution: GAME_RESOLUTION,
+      padding: { x: 2, y: 2 },
     }).setOrigin(0, 0);
     this.add(nameText);
 
@@ -248,21 +250,23 @@ export class PixelRelationCard extends Phaser.GameObjects.Container {
     relGfx.fillStyle(PARCHMENT_PALETTE.light, 1);
     relGfx.fillRect(1, 1, relTagWidth - 2, 14);
 
-    const relText = scene.add.text(relTagWidth / 2, 8, options.relation, {
+    const relText = scene.add.text(snapToPixel(relTagWidth / 2), 8, options.relation, {
       fontFamily: DEFAULT_FONT_FAMILY,
       fontSize: "10px",
       fontStyle: "bold",
       color: toColorString(WALNUT_PALETTE.dark),
       resolution: GAME_RESOLUTION,
+      padding: { x: 2, y: 2 },
     }).setOrigin(0.5, 0.5);
     relationBox.add(relText);
 
     // 右侧状态心声
-    this.statusTextObj = scene.add.text(this.cardWidth - 28, 16, options.statusText ?? "关系稳定", {
+    this.statusTextObj = scene.add.text(snapToPixel(this.cardWidth - 28), 16, options.statusText ?? "关系稳定", {
       fontFamily: DEFAULT_FONT_FAMILY,
       fontSize: "11px",
       color: toColorString(pixelPalette.bodyMuted),
       resolution: GAME_RESOLUTION,
+      padding: { x: 2, y: 2 },
     }).setOrigin(1, 0);
     this.add(this.statusTextObj);
 
@@ -276,17 +280,19 @@ export class PixelRelationCard extends Phaser.GameObjects.Container {
       fontStyle: "bold",
       color: toColorString(pixelPalette.bodyMuted),
       resolution: GAME_RESOLUTION,
+      padding: { x: 2, y: 2 },
     }).setOrigin(0, 0.5);
     this.add(this.intimacyText);
 
     // 5. 右上展开箭头指示
     if (this.expandable) {
-      this.arrowText = scene.add.text(this.cardWidth - 14, 18, this.isCardExpanded ? "▲" : "▼", {
+      this.arrowText = scene.add.text(snapToPixel(this.cardWidth - 14), 18, this.isCardExpanded ? "▲" : "▼", {
         fontFamily: DEFAULT_FONT_FAMILY,
         fontSize: "11px",
         fontStyle: "bold",
         color: toColorString(pixelPalette.brassGold),
         resolution: GAME_RESOLUTION,
+        padding: { x: 2, y: 2 },
       }).setOrigin(0.5, 0.5);
       this.add(this.arrowText);
     }
@@ -624,7 +630,7 @@ export class PixelLocationCard extends Phaser.GameObjects.Container {
   private descTextObj: Phaser.GameObjects.Text;
 
   constructor(scene: Phaser.Scene, options: PixelLocationCardOptions) {
-    super(scene, options.x, options.y);
+    super(scene, snapToPixel(options.x), snapToPixel(options.y));
 
     this.cardWidth = Math.max(260, Math.round(options.width ?? 350));
     this.cardHeight = Math.max(64, Math.round(options.height ?? 74));
@@ -663,6 +669,7 @@ export class PixelLocationCard extends Phaser.GameObjects.Container {
       fontFamily: DEFAULT_FONT_FAMILY,
       fontSize: "22px",
       resolution: GAME_RESOLUTION,
+      padding: { x: 2, y: 2 },
     }).setOrigin(0.5, 0.5);
     iconContainer.add(iconText);
 
@@ -673,6 +680,7 @@ export class PixelLocationCard extends Phaser.GameObjects.Container {
       fontStyle: "bold",
       color: toColorString(pixelPalette.charcoalInk),
       resolution: GAME_RESOLUTION,
+      padding: { x: 2, y: 2 },
     }).setOrigin(0, 0);
     this.add(this.titleTextObj);
 
@@ -681,6 +689,7 @@ export class PixelLocationCard extends Phaser.GameObjects.Container {
       fontSize: "10px",
       color: toColorString(pixelPalette.bodyMuted),
       resolution: GAME_RESOLUTION,
+      padding: { x: 2, y: 2 },
     }).setOrigin(0, 0);
     this.add(this.descTextObj);
 
@@ -698,12 +707,13 @@ export class PixelLocationCard extends Phaser.GameObjects.Container {
     pillGfx.fillStyle(AZURE_CYAN_PALETTE.cyanDark, 1);
     pillGfx.fillRect(1, 1, pillW - 2, 14);
 
-    const pillLabel = scene.add.text(pillW / 2, 8, energyText, {
+    const pillLabel = scene.add.text(snapToPixel(pillW / 2), 8, energyText, {
       fontFamily: DEFAULT_FONT_FAMILY,
       fontSize: "9px",
       fontStyle: "bold",
       color: "#ffffff",
       resolution: GAME_RESOLUTION,
+      padding: { x: 2, y: 2 },
     }).setOrigin(0.5, 0.5);
     pillContainer.add(pillLabel);
 
@@ -720,12 +730,13 @@ export class PixelLocationCard extends Phaser.GameObjects.Container {
       rGfx.fillStyle(BRONZE_GREEN_PALETTE.jade, 1);
       rGfx.fillRect(1, 1, rW - 2, 14);
 
-      const rLabel = scene.add.text(rW / 2, 8, options.rewardBadge, {
+      const rLabel = scene.add.text(snapToPixel(rW / 2), 8, options.rewardBadge, {
         fontFamily: DEFAULT_FONT_FAMILY,
         fontSize: "9px",
         fontStyle: "bold",
         color: "#ffffff",
         resolution: GAME_RESOLUTION,
+        padding: { x: 2, y: 2 },
       }).setOrigin(0.5, 0.5);
       rewardBox.add(rLabel);
     }
@@ -734,7 +745,7 @@ export class PixelLocationCard extends Phaser.GameObjects.Container {
     const btnW = 72;
     const btnH = 32;
     const btnX = this.cardWidth - btnW - 12;
-    const btnY = (this.cardHeight - btnH) / 2;
+    const btnY = snapToPixel((this.cardHeight - btnH) / 2);
 
     this.actionBtn = createPixelButton(scene, {
       x: btnX,
@@ -855,7 +866,7 @@ export class PixelVintageItemSlot extends Phaser.GameObjects.Container {
   private tooltipBox?: Phaser.GameObjects.Container;
 
   constructor(scene: Phaser.Scene, options: PixelVintageItemSlotOptions) {
-    super(scene, options.x, options.y);
+    super(scene, snapToPixel(options.x), snapToPixel(options.y));
 
     this.slotSize = Math.max(56, Math.round(options.size ?? 72));
     this.quality = options.quality ?? "common";
@@ -878,17 +889,23 @@ export class PixelVintageItemSlot extends Phaser.GameObjects.Container {
     this.add(this.auraGraphics);
 
     // 3. 物件图标
-    this.iconTextObj = scene.add.text(this.slotSize / 2, this.slotSize / 2 - 4, this.isUnlocked ? this.iconStr : "🔒", {
-      fontFamily: DEFAULT_FONT_FAMILY,
-      fontSize: "26px",
-      resolution: GAME_RESOLUTION,
-    }).setOrigin(0.5, 0.5);
+    this.iconTextObj = scene.add.text(
+      snapToPixel(this.slotSize / 2),
+      snapToPixel(this.slotSize / 2 - 4),
+      this.isUnlocked ? this.iconStr : "🔒",
+      {
+        fontFamily: DEFAULT_FONT_FAMILY,
+        fontSize: "26px",
+        resolution: GAME_RESOLUTION,
+        padding: { x: 2, y: 2 },
+      }
+    ).setOrigin(0.5, 0.5);
     this.add(this.iconTextObj);
 
     // 4. 底部物品简称
     this.nameTextObj = scene.add.text(
-      this.slotSize / 2,
-      this.slotSize - 8,
+      snapToPixel(this.slotSize / 2),
+      snapToPixel(this.slotSize - 8),
       this.isUnlocked ? this.itemName.slice(0, 4) : "???",
       {
         fontFamily: DEFAULT_FONT_FAMILY,
@@ -896,6 +913,7 @@ export class PixelVintageItemSlot extends Phaser.GameObjects.Container {
         fontStyle: "bold",
         color: this.isUnlocked ? toColorString(pixelPalette.charcoalInk) : toColorString(pixelPalette.bodyMuted),
         resolution: GAME_RESOLUTION,
+        padding: { x: 2, y: 2 },
       }
     ).setOrigin(0.5, 0.5);
     this.add(this.nameTextObj);
@@ -916,6 +934,7 @@ export class PixelVintageItemSlot extends Phaser.GameObjects.Container {
         fontStyle: "bold",
         color: "#ffffff",
         resolution: GAME_RESOLUTION,
+        padding: { x: 2, y: 2 },
       }).setOrigin(0.5, 0.5);
       badgeBox.add(this.badgeTextObj);
     }
@@ -1165,8 +1184,8 @@ export function createPixelActionButton(
   const fullLabel = options.icon ? `${options.icon} ${options.label}` : options.label;
 
   const btn = createPixelButton(scene, {
-    x: options.x,
-    y: options.y,
+    x: snapToPixel(options.x),
+    y: snapToPixel(options.y),
     width: options.width ?? 180,
     height: options.height ?? 42,
     label: fullLabel,
@@ -1196,7 +1215,7 @@ export function createPixelActionButton(
     const badgeW = Math.max(14, badgeStr.length * 8 + 6);
     const badgeH = 14;
     const badgeContainer = scene.add.container(
-      (options.width ?? 180) - badgeW / 2 + 2,
+      snapToPixel((options.width ?? 180) - badgeW / 2 + 2),
       -2
     );
     btn.add(badgeContainer);
@@ -1206,12 +1225,13 @@ export function createPixelActionButton(
     bGfx.fillStyle(CRIMSON_PALETTE.crimson, 1);
     bGfx.fillRect(0, 0, badgeW, badgeH);
 
-    const bText = scene.add.text(badgeW / 2, badgeH / 2, badgeStr, {
+    const bText = scene.add.text(snapToPixel(badgeW / 2), snapToPixel(badgeH / 2), badgeStr, {
       fontFamily: DEFAULT_FONT_FAMILY,
       fontSize: "9px",
       fontStyle: "bold",
       color: "#ffffff",
       resolution: GAME_RESOLUTION,
+      padding: { x: 2, y: 2 },
     }).setOrigin(0.5, 0.5);
     badgeContainer.add(bText);
   }
@@ -1249,7 +1269,7 @@ export class PixelNavBar extends Phaser.GameObjects.Container {
   private indicatorGraphics: Phaser.GameObjects.Graphics;
 
   constructor(scene: Phaser.Scene, options: PixelNavBarOptions) {
-    super(scene, options.x, options.y);
+    super(scene, snapToPixel(options.x), snapToPixel(options.y));
 
     this.navWidth = Math.max(200, Math.round(options.width ?? 370));
     this.navHeight = Math.max(36, Math.round(options.height ?? 46));
@@ -1283,7 +1303,7 @@ export class PixelNavBar extends Phaser.GameObjects.Container {
     const itemW = Math.floor(this.navWidth / count);
 
     this.items.forEach((item, index) => {
-      const itemX = index * itemW;
+      const itemX = snapToPixel(index * itemW);
       const container = this.scene.add.container(itemX, 0);
       this.add(container);
       this.itemContainers.set(item.id, container);
@@ -1360,12 +1380,13 @@ export class PixelNavBar extends Phaser.GameObjects.Container {
         : toColorString(PARCHMENT_PALETTE.warm);
 
       const contentStr = item.icon ? `${item.icon} ${item.label}` : item.label;
-      const labelText = this.scene.add.text(itemW / 2, h / 2, contentStr, {
+      const labelText = this.scene.add.text(snapToPixel(itemW / 2), snapToPixel(h / 2), contentStr, {
         fontFamily: DEFAULT_FONT_FAMILY,
         fontSize: isActive ? "12px" : "11px",
         fontStyle: isActive ? "bold" : "normal",
         color: labelColor,
         resolution: GAME_RESOLUTION,
+        padding: { x: 2, y: 2 },
       }).setOrigin(0.5, 0.5);
       container.add(labelText);
 
@@ -1378,12 +1399,13 @@ export class PixelNavBar extends Phaser.GameObjects.Container {
         bGfx.fillRect(itemW - bW - 4, 4, bW, 11);
         container.add(bGfx);
 
-        const bText = this.scene.add.text(itemW - bW / 2 - 4, 9, bStr, {
+        const bText = this.scene.add.text(snapToPixel(itemW - bW / 2 - 4), 9, bStr, {
           fontFamily: DEFAULT_FONT_FAMILY,
           fontSize: "8px",
           fontStyle: "bold",
           color: "#ffffff",
           resolution: GAME_RESOLUTION,
+          padding: { x: 2, y: 2 },
         }).setOrigin(0.5, 0.5);
         container.add(bText);
       }

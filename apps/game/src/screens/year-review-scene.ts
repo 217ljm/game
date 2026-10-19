@@ -3,6 +3,8 @@ import { type GameRuntimePort, type GameRuntimeSnapshot } from "../contracts";
 import { p2Button, p2Chip, p2Compact, p2Cover, p2Frame, p2FormatPercent, p2TextBlock, p2TopMeta } from "../ui/p2-screen-primitives";
 import { panel, text } from "../ui/game-text";
 
+import { VerticalStack } from "../ui/vertical-stack";
+
 /** Annual review gate: facts are Core-owned; the screen only presents and confirms. */
 export class YearReviewScene extends Phaser.Scene {
   private readonly port: GameRuntimePort;
@@ -73,13 +75,16 @@ export class YearReviewScene extends Phaser.Scene {
   }
 
   private renderHighlights(highlights: string[]): void {
-    this.view.add(text(this, 16, 390, "这一年最重要的变化", 12, 0xffd8a1, true));
+    this.view.add(text(this, 16, 382, "这一年最重要的变化", 13, 0xffd8a1, true));
     const visible = highlights.slice(0, 5);
-    visible.forEach((highlight, index) => {
-      const y = 420 + index * 42;
-      this.view.add(text(this, 22, y, "·", 15, 0xa991c8, true));
-      this.view.add(p2TextBlock(this, 38, y, 330, p2Compact(highlight, 36), 10, 0xfff5e9));
+    const stack = new VerticalStack(38, 408, 10);
+    visible.forEach((highlight) => {
+      const currentY = stack.getY();
+      this.view.add(text(this, 22, currentY + 7, "·", 15, 0xa991c8, true));
+      const block = p2TextBlock(this, 38, currentY, 330, p2Compact(highlight, 44), 11, 0xfff5e9);
+      this.view.add(block);
+      stack.add(block);
     });
-    if (!visible.length) this.view.add(text(this, 22, 420, "这一年留下了安静但真实的积累。", 11, 0xb7c4c2));
+    if (!visible.length) this.view.add(text(this, 22, 412, "这一年留下了安静但真实的积累。", 11, 0xb7c4c2));
   }
 }

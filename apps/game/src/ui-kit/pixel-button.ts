@@ -1,6 +1,6 @@
 import Phaser from "phaser";
 import { pixelPalette, toColorString } from "./pixel-palette";
-import { DEFAULT_FONT_FAMILY, GAME_RESOLUTION } from "../ui/game-text";
+import { DEFAULT_FONT_FAMILY, GAME_RESOLUTION, snapToPixel } from "../ui/game-text";
 
 export type PixelButtonVariant =
   | "primary"     // 湛蓝/专注
@@ -153,7 +153,7 @@ export class PixelButton extends Phaser.GameObjects.Container {
   private isPressed = false;
 
   constructor(scene: Phaser.Scene, options: PixelButtonOptions) {
-    super(scene, options.x, options.y);
+    super(scene, snapToPixel(options.x), snapToPixel(options.y));
 
     this.btnWidth = Math.max(24, Math.round(options.width ?? 100));
     this.btnHeight = Math.max(20, Math.round(options.height ?? 36));
@@ -180,13 +180,19 @@ export class PixelButton extends Phaser.GameObjects.Container {
     this.bodyGraphics = scene.add.graphics();
     this.bodyContainer.add(this.bodyGraphics);
 
-    this.textObject = scene.add.text(this.btnWidth / 2, this.btnHeight / 2 - 1, this.labelText, {
-      fontFamily: DEFAULT_FONT_FAMILY,
-      fontSize: `${this.fontSize}px`,
-      fontStyle: "bold",
-      color: "#ffffff",
-      resolution: GAME_RESOLUTION,
-    }).setOrigin(0.5, 0.5);
+    this.textObject = scene.add.text(
+      snapToPixel(this.btnWidth / 2),
+      snapToPixel(this.btnHeight / 2 - 1),
+      this.labelText,
+      {
+        fontFamily: DEFAULT_FONT_FAMILY,
+        fontSize: `${this.fontSize}px`,
+        fontStyle: "bold",
+        color: "#ffffff",
+        resolution: GAME_RESOLUTION,
+        padding: { x: 2, y: 2 },
+      }
+    ).setOrigin(0.5, 0.5);
     this.bodyContainer.add(this.textObject);
 
     this.renderButton();

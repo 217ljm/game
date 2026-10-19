@@ -72,9 +72,91 @@ export class EsportsQteSmite extends Phaser.GameObjects.Container {
     this.onCompleteCallback = config.onComplete;
 
     this.createQteElements();
-    this.startQteLoop();
+    this.showTutorialCard();
 
     this.scene.add.existing(this);
+  }
+
+  /**
+   * 3秒前置规则教学提示卡 (Tutorial Overlay)
+   */
+  private showTutorialCard(): void {
+    const w = this.qteWidth;
+    const h = this.qteHeight;
+
+    const tutContainer = this.scene.add.container(0, 0).setDepth(100);
+    this.add(tutContainer);
+
+    const tutMask = this.scene.add.graphics();
+    tutMask.fillStyle(0x050b14, 0.92);
+    tutMask.fillRect(0, 0, w, h);
+    tutMask.setInteractive(new Phaser.Geom.Rectangle(0, 0, w, h), Phaser.Geom.Rectangle.Contains);
+    tutContainer.add(tutMask);
+
+    const cardW = 320;
+    const cardH = 220;
+    const cardX = (w - cardW) / 2;
+    const cardY = (h - cardH) / 2 - 20;
+
+    const cardBg = this.scene.add.graphics();
+    cardBg.fillStyle(0x0f172a, 0.98).fillRoundedRect(cardX, cardY, cardW, cardH, 12);
+    cardBg.lineStyle(2, 0xf59e0b, 1).strokeRoundedRect(cardX, cardY, cardW, cardH, 12);
+    tutContainer.add(cardBg);
+
+    const tutTitle = this.scene.add.text(w / 2, cardY + 26, "⚡ 规则提示：龙坑拼惩戒", {
+      fontFamily: DEFAULT_FONT_FAMILY,
+      fontSize: "16px",
+      fontStyle: "bold",
+      color: "#f59e0b",
+      resolution: GAME_RESOLUTION,
+    }).setOrigin(0.5);
+    tutContainer.add(tutTitle);
+
+    const tutDesc = this.scene.add.text(w / 2, cardY + 68, "【胜负条件】\n当金色光圈收缩至中央靶心（900血斩杀线）瞬间，\n按下 [D] 键或点击【惩戒】抢下大龙！", {
+      fontFamily: DEFAULT_FONT_FAMILY,
+      fontSize: "12px",
+      lineSpacing: 5,
+      color: "#e2e8f0",
+      align: "center",
+      resolution: GAME_RESOLUTION,
+    }).setOrigin(0.5);
+    tutContainer.add(tutDesc);
+
+    const tutHint = this.scene.add.text(w / 2, cardY + 120, "🎯 越贴合圆心判定越高：PERFECT 必抢大龙！", {
+      fontFamily: DEFAULT_FONT_FAMILY,
+      fontSize: "11px",
+      color: "#86efac",
+      resolution: GAME_RESOLUTION,
+    }).setOrigin(0.5);
+    tutContainer.add(tutHint);
+
+    const btnW = 180;
+    const btnH = 38;
+    const btnX = (w - btnW) / 2;
+    const btnY = cardY + cardH - 52;
+
+    const btnG = this.scene.add.graphics();
+    btnG.fillStyle(0xd97706, 1).fillRoundedRect(btnX, btnY, btnW, btnH, 8);
+    btnG.lineStyle(1.5, 0xfde68a, 1).strokeRoundedRect(btnX, btnY, btnW, btnH, 8);
+    tutContainer.add(btnG);
+
+    const btnT = this.scene.add.text(w / 2, btnY + btnH / 2, "【 明白，开战！▶ 】", {
+      fontFamily: DEFAULT_FONT_FAMILY,
+      fontSize: "14px",
+      fontStyle: "bold",
+      color: "#ffffff",
+      resolution: GAME_RESOLUTION,
+    }).setOrigin(0.5);
+    tutContainer.add(btnT);
+
+    const hit = this.scene.add.rectangle(w / 2, btnY + btnH / 2, btnW, btnH, 0x000000, 0);
+    hit.setInteractive({ useHandCursor: true });
+    tutContainer.add(hit);
+
+    hit.on("pointerdown", () => {
+      tutContainer.destroy();
+      this.startQteLoop();
+    });
   }
 
   private createQteElements(): void {

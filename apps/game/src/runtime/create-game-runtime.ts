@@ -32,8 +32,9 @@ export function createGameRuntime({
     width: GAME_WIDTH,
     height: GAME_HEIGHT,
     backgroundColor: "#f7efe3",
-    render: { antialias: false, pixelArt: true, roundPixels: true },
-    scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH },
+    resolution: typeof window !== "undefined" ? Math.max(window.devicePixelRatio || 1, 2) : 2,
+    render: { antialias: true, pixelArt: false, roundPixels: true },
+    scale: { mode: Phaser.Scale.FIT, autoCenter: Phaser.Scale.CENTER_BOTH, autoDensity: true },
     scene: [
       new BootScene(),
       new PreloadScene(),

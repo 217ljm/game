@@ -15,12 +15,12 @@ export function p2Frame(scene: Phaser.Scene, title: string, subtitle: string, ac
 
 export function p2TopMeta(scene: Phaser.Scene, snapshot: { calendarYear: number; age: number; quarter: number; identityLabel: string }): Phaser.GameObjects.Container {
   const year = scene.add.text(374, 25, `${snapshot.calendarYear} · ${snapshot.age}岁 · Q${snapshot.quarter}`, {
-    fontFamily: "Arial, 'Microsoft YaHei', sans-serif",
+    fontFamily: DEFAULT_FONT_FAMILY,
     fontSize: "11px",
     color: "#b7c4c2",
   }).setOrigin(1, 0.5);
   const identity = scene.add.text(374, 58, snapshot.identityLabel.replace(`${snapshot.age}岁 · `, ""), {
-    fontFamily: "Arial, 'Microsoft YaHei', sans-serif",
+    fontFamily: DEFAULT_FONT_FAMILY,
     fontSize: "10px",
     color: "#8fa7a5",
   }).setOrigin(1, 0.5);

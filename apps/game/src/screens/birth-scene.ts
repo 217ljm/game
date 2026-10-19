@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import { GAME_HEIGHT, GAME_WIDTH } from "../contracts";
 import { p2Button } from "../ui/p2-screen-primitives";
 import { bindInteractiveFeedback, DEFAULT_FONT_FAMILY } from "../ui/game-text";
+import { AudioManager } from "../audio/audio-manager";
 
 /**
  * 统一标准高清中文字体栈
@@ -451,6 +452,7 @@ export class BirthScene extends Phaser.Scene {
       const nextZone = this.add.rectangle(264, 711, 160, 42, 0x000000, 0);
       nextZone.setInteractive({ useHandCursor: true }).setDepth(25);
       nextZone.on("pointerdown", () => {
+        AudioManager.getInstance().playSfx("page_flip");
         this.currentStage = "NAMING";
         this.render();
       });
@@ -479,6 +481,7 @@ export class BirthScene extends Phaser.Scene {
       clickZone.input!.cursor = "pointer";
       clickZone.on("pointerdown", () => {
         if (this.dialogueIndex < PARENTS_DIALOGUES.length - 1) {
+          AudioManager.getInstance().playSfx("page_flip");
           this.dialogueIndex++;
           this.render();
         }

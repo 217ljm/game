@@ -2298,6 +2298,54 @@ P0 已完成；P1/P2 代码完成待验收；F0 方向确认；F1 代码修复�
    - `VINTAGE_ASSETS_CATALOG` 全面合并 `LOL_NARRATIVE_VINTAGE_ASSETS`；
    - 跨年结算回调自动调用 `eraAssetsSys.advanceQuarterlyCycle`，实现财务周期自动结转与净现金流累加。
 
+---
+
+## 18. 【视听填充与全屏沉浸专项 Sprint】成果与实施交付台账
+
+- **执行周期**：2026-10-19
+- **核心指令**：暂缓编写更多系统逻辑，100% 聚焦于“视觉与听觉的填充”。把 AI 生成的图片挂载上去，把音乐响起来，让游戏跑在全屏模式下。
+
+### 一、 核心病灶排查与根因解决（AI 图片资产挂载）
+
+1. **资源路径多层退回致命 Bug 修复**：
+   - **根因排查**：在 `apps/game/src/assets/asset-manifest.ts` 中，所有 11 个核心素材的原声明使用了 4 个 `..`（即 `../../../../public/assets/...`），导致向上退回到了项目根目录之上，在 Vite 和浏览器中全部 404；
+   - **触发连锁反应**：Phaser 的 `ensureManifestTextures` 在捕获加载错误后，自动调用了 `createProceduralFallback` 生成 96×96 的纯色块替换了原图，导致玩家在游戏中“只看到色块而看不到 AI 插画”；
+   - **精准手术修复**：全部 11 个素材的相对路径纠正为 3 个 `..`（`../../../public/assets/...`），使所有电影级高清插画（小男孩立绘 `player.childNeutral`、时代晨曦 `scene.title`、阳光书房 `scene.growth`、大院红砖 `scene.relations`、漫漫人生路 `scene.timeline`、老物件居室 `scene.memory`、行动插画 `action.study` / `action.play` / `action.family`）100% 成功预载进显存！
+2. **场景与组件插画全面挂载**：
+   - **`CharacterAvatarStage`**：优先检测并挂载 `player.childNeutral`（1984 年代手捧练习本少年全身立绘）；
+   - **`CharacterStageWidget`**：展台内幕挂载 `scene.growth`（木窗暖阳与书桌写实油画大图）；
+   - **`MainMenuScene`**：主界面全屏铺满 `scene.title`（1978 时代晨光老街大图）；
+   - **`BirthScene`**：父母对白阶段铺满 `scene.title`，起名阶段铺满 `scene.growth`；
+   - **`LifeScene` 快捷行动卡（`renderQuickActionDeck`）**：在行动卡右侧以 0.38 半透明融合挂载 `action.play`、`action.study`、`action.family` 专属写实插画；
+   - **`LifeScene` 抓周弹窗（`renderZhuazhouModalContent`）**：挂载 `scene.memory`（怀旧红木桌与老物件大图）；
+   - **`LifeScene` 生平大事记弹窗（`renderChronicleArchiveModalContent`）**：挂载 `scene.timeline`（漫漫时代人生路写实场景）。
+
+### 二、 全局时代音乐与音效系统全面响起来（AudioManager）
+
+1. **零依赖高品质 Web Audio API 时代音频引擎**：
+   - 建立 `apps/game/src/audio/audio-manager.ts`，原生振荡器、双二阶滤波、ADSR 动态包络与白噪拟真，零外部体积消耗，随开随响；
+   - 提供 1978 时代温暖五声音阶复古旋律：
+     * `nostalgia_theme`：八音盒复古慢板主题曲，用于主菜单与序章；
+     * `daily_life`：温暖明朗的时代生活民谣钢琴曲，用于主屏日常生活；
+   - 提供 5 大细腻触感操作音效：
+     * `click`：木质机械按键反馈；
+     * `page_flip`：纸质书本翻页脆响；
+     * `stat_ding`：双音阶清脆铃音（属性提升与奖励）；
+     * `quarter_tick`：复古时钟机械齿轮推进脆响（季度与年份演进）；
+     * `milestone`：庄严肃穆时代和弦（授奖、抓周、新岁庆典）。
+2. **场景全面接入**：
+   - `MainMenuScene`：播放 `nostalgia_theme`，点击任意处自动解除浏览器 Autoplay 策略；
+   - `BirthScene`：对白步进播放 `page_flip`；
+   - `LifeScene`：进入自动播放 `daily_life`；底栏 5 大 Tab 切换播放 `page_flip`；行动卡点击播放 `click`；推进下一年播放 `quarter_tick`；属性飘字播放 `stat_ding`；获得勋章、抓周礼、跨年总结弹窗播放 `milestone`。
+
+### 三、 PC 全屏沉浸化视口自适应
+
+1. **视口完全全屏**：
+   - `apps/game/src/game-shell.css` 设置 `width: 100vw; height: 100vh; overflow: hidden;`，死锁滚动条与文字选中，中央呈现高清复古画布与金光投影；
+   - 右上角常驻全屏悬浮控制胶囊 `⛶ 全屏沉浸 [F]`，并监听键盘 `F` 键一键全屏与退出；
+   - 全屏点击兼作浏览器 Web Audio API Autoplay 的一键唤醒激活点。
+
+
 
 
 

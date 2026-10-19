@@ -114,6 +114,7 @@ export class CharacterStageWidget extends Phaser.GameObjects.Container {
 
   // 内部图形与渲染节点
   private backgroundGraphics: Phaser.GameObjects.Graphics;
+  private roomBackgroundImage?: Phaser.GameObjects.Image;
   private spotlightContainer: Phaser.GameObjects.Container;
   private spotlightGraphics: Phaser.GameObjects.Graphics;
   private stagePedestalGraphics: Phaser.GameObjects.Graphics;
@@ -276,6 +277,16 @@ export class CharacterStageWidget extends Phaser.GameObjects.Container {
     bg.fillStyle(pixelPalette.cardBorder, 0.25);
     bg.fillRect(pad + innerW - 2, pad, 2, innerH);
     bg.fillRect(pad, pad + innerH - 2, innerW, 2);
+
+    // 优先挂载 1978 真实居室写实大图 (阳光透过木窗洒在书桌上的时代氛围)
+    if (!this.roomBackgroundImage && this.scene.textures.exists("scene.growth")) {
+      this.roomBackgroundImage = this.scene.add.image(w / 2, h / 2, "scene.growth");
+      const scaleX = innerW / this.roomBackgroundImage.width;
+      const scaleY = innerH / this.roomBackgroundImage.height;
+      this.roomBackgroundImage.setScale(Math.max(scaleX, scaleY));
+      this.roomBackgroundImage.setAlpha(0.68);
+      this.addAt(this.roomBackgroundImage, 1);
+    }
 
     // (5) 四角像素黄铜角花
     this.drawCornerOrnaments(pad, pad, innerW, innerH);

@@ -10,6 +10,7 @@ import {
 import { bindInteractiveFeedback, DEFAULT_FONT_FAMILY, text } from "../ui/game-text";
 import { GamePresentationDirector, ProceduralGameFeedback, type MotionLevel } from "../presentation";
 import { HAPTIC_ENABLED_REGISTRY_KEY, MOTION_LEVEL_REGISTRY_KEY, REDUCED_MOTION_REGISTRY_KEY, SOUND_ENABLED_REGISTRY_KEY } from "./boot-scene";
+import { AudioManager } from "../audio/audio-manager";
 import { SHUIHU_CARDS_DATABASE, SHUIHU_CARD_COMBOS, type ShuihuCard, type CardSetCombo } from "../minigames/shuihu-card-system";
 import { CardSlapMiniGame } from "../minigames/card-slap-game";
 import { MarblesMiniGame } from "../minigames/marbles-game";
@@ -3877,6 +3878,9 @@ export class LifeScene extends Phaser.Scene {
   }
 
   create(): void {
+    const audio = AudioManager.getInstance();
+    audio.initContext();
+    audio.playBgm("daily_life");
     this.events.once(Phaser.Scenes.Events.SHUTDOWN, this.shutdown, this);
     this.view = this.add.group();
     this.advanceDirector = new AdvanceDirector(this);
@@ -4179,6 +4183,7 @@ export class LifeScene extends Phaser.Scene {
   }
 
   public spawnFloatingText(x: number, y: number, textContent: string, color: string = "#ffd8a1"): void {
+    AudioManager.getInstance().playSfx("stat_ding");
     const floatTxt = this.add.text(x, y, textContent, {
       fontFamily: FONT_FAMILY,
       fontSize: "15px",
@@ -4507,7 +4512,9 @@ export class LifeScene extends Phaser.Scene {
         cost: "⚡-12精力 · 夺画片",
         color: 0x1d3c4a,
         border: 0xd4a359,
+        textureKey: "action.play",
         action: () => {
+          AudioManager.getInstance().playSfx("click");
           this.activeModal = "card_slap";
           this.render();
         },
@@ -4520,7 +4527,9 @@ export class LifeScene extends Phaser.Scene {
         cost: "⚡-10精力 · 💡智力+6",
         color: 0x173644,
         border: 0x38bdf8,
+        textureKey: "action.study",
         action: () => {
+          AudioManager.getInstance().playSfx("click");
           if (stats.availableEnergy < 10) {
             this.spawnFloatingText(deckX + cardW / 2, deckY + cardH / 2, "⚡ 精力不足！", "#ff7875");
             return;
@@ -4554,7 +4563,9 @@ export class LifeScene extends Phaser.Scene {
         cost: "自选柜台 · 快乐翻倍",
         color: 0x22363e,
         border: 0xf59e0b,
+        textureKey: "action.family",
         action: () => {
+          AudioManager.getInstance().playSfx("click");
           this.activeModal = "supply_coop_shop";
           this.render();
         },
@@ -4567,7 +4578,9 @@ export class LifeScene extends Phaser.Scene {
         cost: "⚡-10精力 · ❤️健康+5",
         color: 0x183a3f,
         border: 0x34d399,
+        textureKey: "action.play",
         action: () => {
+          AudioManager.getInstance().playSfx("click");
           if (stats.availableEnergy < 10) {
             this.spawnFloatingText(deckX + cardW + gapX + cardW / 2, deckY + cardH + gapY + cardH / 2, "⚡ 精力不足！", "#ff7875");
             return;
@@ -4593,7 +4606,16 @@ export class LifeScene extends Phaser.Scene {
       cardBg.setDepth(5);
       this.view.add(cardBg);
 
-      const iconTxt = this.add.text(cx + 20, cy + 22, act.icon, { fontSize: "22px" }).setOrigin(0.5).setDepth(6);
+      // 真实 AI 行动插图挂载（右侧半透明融合，富有时代美术质感）
+      if (act.textureKey && this.textures.exists(act.textureKey)) {
+        const texImg = this.add.image(cx + cardW - 30, cy + cardH / 2, act.textureKey);
+        texImg.setDisplaySize(54, cardH - 8);
+        texImg.setAlpha(0.38);
+        texImg.setDepth(6);
+        this.view.add(texImg);
+      }
+
+      const iconTxt = this.add.text(cx + 20, cy + 22, act.icon, { fontSize: "22px" }).setOrigin(0.5).setDepth(7);
       this.view.add(iconTxt);
 
       const titleTxt = this.add.text(cx + 40, cy + 10, act.title, {
@@ -4601,18 +4623,18 @@ export class LifeScene extends Phaser.Scene {
         fontSize: "13px",
         fontStyle: "bold",
         color: "#ffffff",
-      }).setDepth(6);
+      }).setDepth(7);
       this.view.add(titleTxt);
 
       const costTxt = this.add.text(cx + 40, cy + 32, act.cost, {
         fontFamily: FONT_FAMILY,
         fontSize: "11px",
         color: "#ffd8a1",
-      }).setDepth(6);
+      }).setDepth(7);
       this.view.add(costTxt);
 
       const hit = this.add.rectangle(cx + cardW / 2, cy + cardH / 2, cardW, cardH, 0x000000, 0);
-      hit.setInteractive({ useHandCursor: true }).setDepth(7);
+      hit.setInteractive({ useHandCursor: true }).setDepth(8);
       hit.on("pointerdown", () => {
         this.tweens.add({
           targets: iconTxt,
@@ -4659,6 +4681,7 @@ export class LifeScene extends Phaser.Scene {
     const hit = this.add.rectangle(btnX + btnW / 2, btnY + btnH / 2, btnW, btnH, 0x000000, 0);
     hit.setInteractive({ useHandCursor: true }).setDepth(10);
     hit.on("pointerdown", () => {
+      AudioManager.getInstance().playSfx("quarter_tick");
       const settlement = this.calculateYearSettlement(s);
       this.pendingSettlement = settlement;
       this.advanceDirector.play({
@@ -4735,6 +4758,14 @@ export class LifeScene extends Phaser.Scene {
     s: GameRuntimeSnapshot,
   ): void {
     const stats = this.getEffectiveStats(s);
+    if (this.textures.exists("scene.timeline")) {
+      const bg = this.add.image(modalX + modalW / 2, modalY + modalH / 2, "scene.timeline");
+      bg.setDisplaySize(modalW - 12, modalH - 12);
+      bg.setAlpha(0.25);
+      bg.setDepth(21);
+      this.view.add(bg);
+    }
+
     const headerTitle = this.add.text(
       modalX + 24,
       modalY + 22,
@@ -5918,6 +5949,7 @@ export class LifeScene extends Phaser.Scene {
         isUnlocked: true,
         depth: 6,
         onClick: () => {
+          AudioManager.getInstance().playSfx("click");
           this.lastActionResult = {
             title: `品鉴藏品 · ${asset.name}`,
             narrative: `你抚摸着这件${asset.yearAcquired}年获得的珍品：${asset.description}。岁月流转，它依然诉说着昔日的光阴故事。`,
@@ -6040,6 +6072,7 @@ export class LifeScene extends Phaser.Scene {
       const hit = this.add.rectangle(x + btnW / 2, navY + btnH / 2, btnW, btnH, 0x000000, 0);
       hit.setInteractive({ useHandCursor: true }).setDepth(18);
       hit.on("pointerdown", () => {
+        AudioManager.getInstance().playSfx("page_flip");
         this.activeTab = tab.id;
         this.activeModal = null;
         this.render();
@@ -6266,6 +6299,7 @@ export class LifeScene extends Phaser.Scene {
 
   // 时代金色勋章授奖仪式
   private renderMedalAwardModalContent(x: number, y: number, w: number, h: number): void {
+    AudioManager.getInstance().playSfx("milestone");
     const medal = this.activeMedalInfo || {
       title: "🏅 时代金星 · 大院孩子王勋章",
       desc: "全大院孩子唯你马首是瞻，不仅声名远扬，更极大磨砺了自信体魄！",
@@ -6708,6 +6742,7 @@ export class LifeScene extends Phaser.Scene {
 
   // 年度成长结算与跨年过渡弹窗内容
   private renderYearTransitionModalContent(x: number, y: number, w: number, h: number, s: GameRuntimeSnapshot): void {
+    AudioManager.getInstance().playSfx("milestone");
     const st = this.pendingSettlement ?? this.calculateYearSettlement(s);
 
     // 1. 顶部醒目标题
@@ -6882,6 +6917,7 @@ export class LifeScene extends Phaser.Scene {
     const hit = this.add.rectangle(x + 14 + enterBtnW / 2, enterBtnY + enterBtnH / 2, enterBtnW, enterBtnH, 0x000000, 0);
     hit.setInteractive({ useHandCursor: true }).setDepth(25);
     hit.on("pointerdown", () => {
+      AudioManager.getInstance().playSfx("quarter_tick");
       this.energySpentThisYear = 0; // 重置精力
       this.accumulatedYearBonus.yearOffset += 1;
       this.accumulatedYearBonus.happiness += st.happinessGain;
@@ -6921,6 +6957,14 @@ export class LifeScene extends Phaser.Scene {
 
   // 抓周大事件弹窗内容
   private renderZhuazhouModalContent(x: number, y: number, w: number, h: number): void {
+    if (this.textures.exists("scene.memory")) {
+      const bg = this.add.image(x + w / 2, y + h / 2, "scene.memory");
+      bg.setDisplaySize(w - 12, h - 12);
+      bg.setAlpha(0.25);
+      bg.setDepth(21);
+      this.view.add(bg);
+    }
+
     const title = this.add.text(x + 20, y + 16, "🎂 满周岁 · 红木八仙桌抓周礼", {
       fontFamily: FONT_FAMILY,
       fontSize: "17px",
@@ -7006,6 +7050,7 @@ export class LifeScene extends Phaser.Scene {
       const hit = this.add.rectangle(x + 16 + (w - 32) / 2, itemY + 47, w - 32, 94, 0x000000, 0);
       hit.setInteractive({ useHandCursor: true }).setDepth(25);
       hit.on("pointerdown", () => {
+        AudioManager.getInstance().playSfx("milestone");
         this.completedZhuazhouItem = item;
         this.unlockedAssetIds.add(item.id);
         const hasEvent = this.triggerNextAgeEvent(1);

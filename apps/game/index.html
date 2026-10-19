@@ -11,8 +11,34 @@
     <title>1978—一生</title>
   </head>
   <body>
+    <button id="fullscreen-btn" class="fullscreen-toggle-btn" type="button" aria-label="切换全屏">
+      <span style="font-size: 15px;">⛶</span> 全屏沉浸 [F]
+    </button>
     <main id="game-root" aria-label="1978—一生游戏画面"></main>
     <aside id="game-utility-root" aria-live="polite"></aside>
     <script type="module" src="/src/main.ts"></script>
+    <script>
+      // 全屏切换处理
+      const fsBtn = document.getElementById('fullscreen-btn');
+      function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen().catch(() => {});
+          fsBtn.innerHTML = '<span style="font-size: 15px;">⛷</span> 退出全屏 [F]';
+        } else {
+          document.exitFullscreen().catch(() => {});
+          fsBtn.innerHTML = '<span style="font-size: 15px;">⛶</span> 全屏沉浸 [F]';
+        }
+      }
+      if (fsBtn) fsBtn.addEventListener('click', toggleFullscreen);
+
+      // 全局 F 键全屏切换
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'f' || e.key === 'F') {
+          // 仅在非输入框下响应
+          if (['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) return;
+          toggleFullscreen();
+        }
+      });
+    </script>
   </body>
 </html>

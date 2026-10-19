@@ -2,6 +2,7 @@ import Phaser from "phaser";
 import { GAME_HEIGHT, GAME_WIDTH } from "../contracts";
 import { MenuUtilityScene, type MenuSaveSummary } from "./menu-utility-scene";
 import { MOTION_LEVEL_REGISTRY_KEY } from "./boot-scene";
+import { AudioManager } from "../audio/audio-manager";
 
 export interface StartLifePayload {
   seed?: string;
@@ -62,6 +63,14 @@ export class MainMenuScene extends Phaser.Scene {
     this.confirmLayer = null;
     this.utilityOpen = false;
     this.cameras.main.setBackgroundColor(COLORS.black);
+
+    // 唤醒全局音频并播放 1978 怀旧主旋律
+    const audio = AudioManager.getInstance();
+    audio.playBgm("nostalgia_theme");
+    this.input.once("pointerdown", () => {
+      audio.initContext();
+      audio.playBgm("nostalgia_theme");
+    });
 
     const background = this.add.image(GAME_WIDTH / 2, GAME_HEIGHT / 2, "scene.title");
     const coverScale = Math.max(GAME_WIDTH / background.width, GAME_HEIGHT / background.height);
@@ -234,6 +243,7 @@ export class MainMenuScene extends Phaser.Scene {
       background.input!.cursor = "pointer";
       background.on(Phaser.Input.Events.POINTER_DOWN, () => {
         if (this.loading || this.confirmLayer || this.utilityOpen) return;
+        AudioManager.getInstance().playSfx("click");
         this.tweens.add({
           targets: container,
           scaleX: 0.96,

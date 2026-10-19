@@ -82,6 +82,7 @@ export class CharacterAvatarStage extends Phaser.GameObjects.Container {
   private characterGraphics: Phaser.GameObjects.Graphics;
   private faceGraphics: Phaser.GameObjects.Graphics;
   private overlayGraphics: Phaser.GameObjects.Graphics;
+  private characterImage?: Phaser.GameObjects.Image;
   private tagContainer: Phaser.GameObjects.Container;
   private tagText: Phaser.GameObjects.Text;
 
@@ -190,7 +191,22 @@ export class CharacterAvatarStage extends Phaser.GameObjects.Container {
     this.faceGraphics.clear();
     this.overlayGraphics.clear();
 
+    if (this.characterImage) {
+      this.characterImage.destroy();
+      this.characterImage = undefined;
+    }
+
     const stage = getStageByAge(this.currentAge);
+
+    // 优先挂载 1984 时代高清写实立绘图片 (真实手持练习本的少年代入感)
+    if (this.scene.textures.exists("player.childNeutral")) {
+      this.characterImage = this.scene.add.image(0, -22, "player.childNeutral");
+      const targetHeight = 152;
+      const scale = targetHeight / (this.characterImage.height || targetHeight);
+      this.characterImage.setScale(scale);
+      this.characterBodyContainer.add(this.characterImage);
+      return;
+    }
 
     switch (stage.stageId) {
       case "infant":

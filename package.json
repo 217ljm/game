@@ -5,6 +5,7 @@
   "description": "中文竖屏季度回合制人生模拟游戏",
   "type": "module",
   "scripts": {
+    "dev": "npm run game:play",
     "birth:sample": "node scripts/simulate-births.mjs --count 1 --seed demo",
     "birth:batch": "node scripts/simulate-births.mjs --count 10000 --seed batch",
     "birth:check": "node scripts/check-birth-generator.mjs",

@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "name": "GameAssetManifest",
+  "version": "2.0.0",
+  "description": "全套纹理键值与分类路径资源清单（含程序化贴图兜底配置）",
+  "defaultFormat": "png",
+  "categories": {
+    "backgrounds": {
+      "description": "游戏场景与环境大图",
+      "items": {
+        "bg_dungeon_arena": {
+          "key": "bg_dungeon_arena",
+          "path": "assets/backgrounds/bg_dungeon_arena.png",
+          "width": 1920,
+          "height": 1080,
+          "description": "暗黑地牢石板竞技场（深色石砖纹路、微光符文阵、火把暖光晕染、边缘暗角）",
+          "fallbackGenerator": "generateDungeonArenaBg"
+        }
+      }
+    },
+    "characters": {
+      "description": "玩家主角角色",
+      "items": {
+        "hero_warrior": {
+          "key": "hero_warrior",
+          "path": "assets/characters/hero_warrior.png",
+          "width": 512,
+          "height": 512,
+          "description": "战士主角（银灰铠甲、发光剑刃、动态战斗姿势、透明通道）",
+          "fallbackGenerator": "generateHeroWarrior"
+        }
+      }
+    },
+    "enemies": {
+      "description": "敌人与首领怪物",
+      "items": {
+        "enemy_skeleton": {
+          "key": "enemy_skeleton",
+          "path": "assets/enemies/enemy_skeleton.png",
+          "width": 512,
+          "height": 512,
+          "description": "骷髅战士（红眼幽火、骨质身躯、持锈刀、透明通道）",
+          "fallbackGenerator": "generateEnemySkeleton"
+        },
+        "boss_dragon_knight": {
+          "key": "boss_dragon_knight",
+          "path": "assets/enemies/boss_dragon_knight.png",
+          "width": 512,
+          "height": 512,
+          "description": "暗黑龙骑士Boss（黑色龙角、重装大剑、暗红魔焰光环、透明通道）",
+          "fallbackGenerator": "generateBossDragonKnight"
+        }
+      }
+    },
+    "icons": {
+      "description": "技能与状态图标（128x128 金属边框高对比发光符号）",
+      "items": {
+        "icon_slash": {
+          "key": "icon_slash",
+          "path": "assets/icons/icon_slash.png",
+          "width": 128,
+          "height": 128,
+          "description": "技能图标-斩击（凌厉银白至湛蓝弧光斩痕）",
+          "fallbackGenerator": "generateIconSlash"
+        },
+        "icon_fireball": {
+          "key": "icon_fireball",
+          "path": "assets/icons/icon_fireball.png",
+          "width": 128,
+          "height": 128,
+          "description": "技能图标-烈火（炽热旋转火球与螺旋火舌）",
+          "fallbackGenerator": "generateIconFireball"
+        },
+        "icon_shield": {
+          "key": "icon_shield",
+          "path": "assets/icons/icon_shield.png",
+          "width": 128,
+          "height": 128,
+          "description": "技能图标-护盾（圣殿骑士护盾与金光防御矩阵）",
+          "fallbackGenerator": "generateIconShield"
+        },
+        "icon_dash": {
+          "key": "icon_dash",
+          "path": "assets/icons/icon_dash.png",
+          "width": 128,
+          "height": 128,
+          "description": "技能图标-疾冲（青绿极速破空折线残影）",
+          "fallbackGenerator": "generateIconDash"
+        },
+        "icon_thunder": {
+          "key": "icon_thunder",
+          "path": "assets/icons/icon_thunder.png",
+          "width": 128,
+          "height": 128,
+          "description": "技能图标-落雷（狂暴电紫贯穿雷霆与环绕电弧）",
+          "fallbackGenerator": "generateIconThunder"
+        }
+      }
+    },
+    "ui": {
+      "description": "界面组件与控件纹理",
+      "items": {
+        "panel_frame": {
+          "key": "panel_frame",
+          "path": "assets/ui/panel_frame.png",
+          "width": 256,
+          "height": 256,
+          "description": "九宫格面板（暗金边框黑晶底板，适合9-slice拉伸）",
+          "fallbackGenerator": "generatePanelFrame"
+        },
+        "card_frame": {
+          "key": "card_frame",
+          "path": "assets/ui/card_frame.png",
+          "width": 280,
+          "height": 400,
+          "description": "3选1强化卡牌底框（精致符文金边与分层布局）",
+          "fallbackGenerator": "generateCardFrame"
+        },
+        "hp_bar_bg": {
+          "key": "hp_bar_bg",
+          "path": "assets/ui/hp_bar_bg.png",
+          "width": 360,
+          "height": 36,
+          "description": "生命槽底槽（深黑重金属凹槽底座）",
+          "fallbackGenerator": "generateHpBarBg"
+        },
+        "hp_bar_fill": {
+          "key": "hp_bar_fill",
+          "path": "assets/ui/hp_bar_fill.png",
+          "width": 360,
+          "height": 36,
+          "description": "生命槽填充条（红到橙高光渐变晶莹血条）",
+          "fallbackGenerator": "generateHpBarFill"
+        }
+      }
+    },
+    "vfx": {
+      "description": "特效与粒子精灵图",
+      "items": {
+        "vfx_spark": {
+          "key": "vfx_spark",
+          "path": "assets/vfx/vfx_spark.png",
+          "width": 64,
+          "height": 64,
+          "description": "高亮受击火花（菱形星芒辐射强光）",
+          "fallbackGenerator": "generateVfxSpark"
+        },
+        "vfx_slash_arc": {
+          "key": "vfx_slash_arc",
+          "path": "assets/vfx/vfx_slash_arc.png",
+          "width": 256,
+          "height": 128,
+          "description": "弧形发光刀光（月牙刀痕渐隐光晕）",
+          "fallbackGenerator": "generateVfxSlashArc"
+        },
+        "vfx_fire_particle": {
+          "key": "vfx_fire_particle",
+          "path": "assets/vfx/vfx_fire_particle.png",
+          "width": 64,
+          "height": 64,
+          "description": "火焰余烬粒子（炽热羽化光球）",
+          "fallbackGenerator": "generateVfxFireParticle"
+        }
+      }
+    }
+  }
+}

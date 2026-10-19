@@ -60,6 +60,7 @@ npm run play
 
 ## 文档与数据
 
+- [游戏项目全面重构与后续开发规范文档 (v2.0)](DEVELOPMENT_DOC.md)
 - [季度回合制人生模拟器开发总纲 v5.0（最新唯一产品基线）](docs/QUARTERLY_LIFE_SIMULATOR_MASTER_PLAN.md)
 - [项目开发情况与进度（唯一执行台账）](docs/PROJECT_DEVELOPMENT_STATUS.md)
 - [技术架构：确定性 Core + Phaser/Canvas 游戏运行时](docs/TECHNICAL_ARCHITECTURE.md)
